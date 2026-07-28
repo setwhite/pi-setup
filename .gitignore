@@ -1,0 +1,18 @@
+# pi 敏感数据
+auth.json
+models-store.json
+sessions/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

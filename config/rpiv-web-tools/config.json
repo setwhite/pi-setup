@@ -1,0 +1,13 @@
+{
+  "provider": "exa",
+  "apiKeys": {
+    "exa": "<your-exa-api-key>"
+  },
+  "interceptors": {
+    "github": {
+      "maxRepoSizeMB": 100,
+      "cloneTimeoutSeconds": 240,
+      "clonePath": ".pi-github-repos"
+    }
+  }
+}

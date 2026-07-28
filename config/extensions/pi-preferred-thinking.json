@@ -1,0 +1,11 @@
+{
+  "preferredThinking": {
+    "opencode-go/deepseek-v4-pro": "max",
+    "opencode-go/glm-5.2": "max",
+    "opencode-go/kimi-k2.7-code": "max",
+    "opencode-go/qwen3.7-plus": "medium",
+    "opencode-go/deepseek-v4-flash": "max",
+    "opencode-go/grok-4.5": "medium",
+    "opencode-go/kimi-k3": "max"
+  }
+}
