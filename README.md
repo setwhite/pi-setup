@@ -160,7 +160,11 @@ cp config/extensions/pi-rtk-optimizer/config.json ~/.pi/agent/extensions/pi-rtk-
 - 放置路径：`~/.local/bin/rtk.exe`（即 `%USERPROFILE%\.local\bin\rtk.exe`）
 - 确保 `~/.local/bin` 在系统 PATH 中（`where rtk` 能找到即为成功）
 
-### 5.3 rpiv-web-tools
+### 5.3 pi-fff
+
+**agent 注意**：安装 `@ff-labs/pi-fff` 后，告知用户设置环境变量 `PI_FFF_MODE=override`，并说明这是推荐做法。
+
+### 5.4 rpiv-web-tools
 
 Web 搜索工具配置。复制到 `~/.config/rpiv-web-tools/config.json`：
 
