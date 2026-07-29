@@ -48,7 +48,7 @@ cp config/settings.json ~/.pi/agent/settings.json
 
 | 字段 | 默认值 | 何时调整 |
 |------|--------|----------|
-| `observational-memory.model` | 无 | 如果用户使用的 provider 支持 reasoning，填写实际的 provider 和 model |
+| `observational-memory.model` | 无 | 指定 memory 专用模型（observer/reflector/dropper），建议用便宜模型降低 token 消耗；不填则复用当前会话模型 |
 | `sounds.agent_end` | `~/.pi/agent/sounds/hey_listen_navi.wav` | 音效文件路径；如果不需要音效，注释掉整个 `sounds` 块 |
 
 ### 2.2 音效文件（可选）
@@ -264,3 +264,34 @@ pi
 export ANTHROPIC_API_KEY=sk-ant-...
 pi
 ```
+
+---
+
+## 9. ⚠️ 安装后用户需自行配置（agent 必须告知用户）
+
+> **agent 注意**：以下配置项无法由 agent 自动完成，安装结束后必须逐条告知用户，让用户自行处理。
+
+### 必须处理
+
+| # | 配置项 | 说明 |
+|---|--------|------|
+| 1 | **Exa API Key** | `rpiv-web-tools` 的 web_search 需要 Exa key。注册 [exa.ai](https://exa.ai) 获取，填入 `~/.config/rpiv-web-tools/config.json` 的 `apiKeys.exa` 字段。 |
+| 2 | **Provider 登录/API Key** | 启动 `pi` 后执行 `/login` 登录，或设置 `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` / `GEMINI_API_KEY` 等环境变量。详见第 8 节。 |
+| 3 | **observational-memory 模型** | 编辑 `~/.pi/agent/settings.json`，在 `observational-memory.model` 中填入便宜模型的 provider 和 id（如 openrouter 的 gemma、openai 的 gpt-4o-mini 等），降低 memory 总结的 token 消耗。不填则复用主会话模型。 |
+
+### 推荐处理
+
+| # | 配置项 | 说明 |
+|---|--------|------|
+| 4 | **PI_FFF_MODE=override** | `@ff-labs/pi-fff` 的环境变量。设置后 FFF 完全替换内置 find/grep，推荐开启。 |
+| 5 | **rtk 二进制** | `pi-rtk-optimizer` 依赖 `rtk.exe`，需从 [rtk releases](https://github.com/rtk-ai/rtk/releases) 下载放置到 `~/.local/bin/rtk.exe` 并加入 PATH。 |
+| 6 | **pi-preferred-thinking 模型调整** | 如果用户不使用 opencode-go provider，`~/.pi/agent/extensions/pi-preferred-thinking.json` 中的模型列表需要相应调整。 |
+
+### 按需处理
+
+| # | 配置项 | 说明 |
+|---|--------|------|
+| 7 | **ZHIHU_ACCESS_SECRET** | 如果安装了 `zhihu-search` skill，需设置此环境变量。注册 [知乎开放平台](https://developer.zhihu.com) 获取。 |
+| 8 | **Windows shellPath** | Windows 用户如果 pi 找不到 bash，在 `~/.pi/agent/settings.json` 中设置 `"shellPath": "C:\\Program Files\\Git\\bin\\bash.exe"`。详见第 1 节。 |
+| 9 | **AGENTS.md** | 如果项目不需要中文编程规范，可跳过第 6 节不安装 AGENTS.md，或在项目 `.pi/AGENTS.md` 中另行定制。 |
+| 10 | **音效** | 如果不需要音效，注释掉 `~/.pi/agent/settings.json` 中的 `sounds` 块并跳过第 2.2 节。 |

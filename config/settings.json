@@ -19,8 +19,14 @@
     "npm:pi-rtk-optimizer"
   ],
   "observational-memory": {
-    "compactAfterTokensMode": "ratio",
-    "compactAfterTokensRatio": 0.5
+    "observeAfterTokens": 10000,
+    "reflectAfterTokens": 20000,
+    "compactAfterTokens": 81000,
+    "model": {
+      "provider": "<your-cheap-model-provider>",
+      "id": "<your-cheap-model-id>",
+      "thinking": "low"
+    }
   },
   "sounds": {
     "agent_end": "~/.pi/agent/sounds/hey_listen_navi.wav"
