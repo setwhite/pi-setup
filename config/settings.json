@@ -9,7 +9,6 @@
   "packages": [
     "npm:@ff-labs/pi-fff",
     "npm:pi-observational-memory",
-    "npm:pi-workspace-history",
     "npm:pi-context-usage",
     "npm:pi-chrome",
     "npm:pi-jingle",
@@ -22,11 +21,6 @@
   "observational-memory": {
     "compactAfterTokensMode": "ratio",
     "compactAfterTokensRatio": 0.5
-  },
-  "workspaceHistory": {
-    "storageDir": ".pi-history",
-    "maxSessionsPerWorkspace": 5,
-    "maxWorkspaces": 10
   },
   "sounds": {
     "agent_end": "~/.pi/agent/sounds/hey_listen_navi.wav"

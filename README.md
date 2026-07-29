@@ -48,7 +48,6 @@ cp config/settings.json ~/.pi/agent/settings.json
 
 | 字段 | 默认值 | 何时调整 |
 |------|--------|----------|
-| `workspaceHistory.storageDir` | `.pi-history` | 工作区历史存储目录。默认为工作路径下的相对目录 `.pi-history`，可改为绝对路径 |
 | `observational-memory.model` | 无 | 如果用户使用的 provider 支持 reasoning，填写实际的 provider 和 model |
 | `sounds.agent_end` | `~/.pi/agent/sounds/hey_listen_navi.wav` | 音效文件路径；如果不需要音效，注释掉整个 `sounds` 块 |
 
@@ -94,7 +93,6 @@ pi --version
 ```bash
 pi install npm:@ff-labs/pi-fff
 pi install npm:pi-observational-memory
-pi install npm:pi-workspace-history
 pi install npm:pi-context-usage
 pi install npm:pi-chrome
 pi install npm:pi-jingle
@@ -111,7 +109,6 @@ pi install npm:pi-rtk-optimizer
 |--------|------|
 | `@ff-labs/pi-fff` | 替换 pi 内置工具为优化版本 |
 | `pi-observational-memory` | 自动压缩长对话历史，保留关键信息 |
-| `pi-workspace-history` | 记录各项目的会话历史，支持 `/resume` 恢复 |
 | `pi-context-usage` | 在页脚显示上下文使用量 |
 | `pi-chrome` | Chrome 浏览器集成，用于网页测试和自动化 |
 | `pi-jingle` | agent 完成工作时播放提示音 |
