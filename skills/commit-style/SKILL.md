@@ -22,11 +22,19 @@ description: 生成符合 Conventional Commits 的提交信息。当用户要求
 - `!` —— 标记 BREAKING CHANGE，可选
 - `description` —— 中文、动词开头、≤ 50 字、不加句号，必填
 - `body` —— 空行后，说明变更动机与上下文，可选
-- `footer` —— 空行后，`BREAKING CHANGE:` 等元数据，可选
+- `footer` —— 空行后，`BREAKING CHANGE:` 等元数据；必带 Co-Authored-By 署名（见下）
 
 BREAKING CHANGE 两种写法，二选一：
 - 标题加 `!`：`feat(api)!: 移除 /v1/users 接口`
 - Footer 说明：`BREAKING CHANGE: 移除 /v1/users，迁移至 /v2/users`
+
+## Co-Authored-By
+
+所有提交的 footer 区必带署名：
+
+```
+Co-Authored-By: pi <noreply@pi.dev>
+```
 
 ## Type
 
@@ -49,12 +57,23 @@ BREAKING CHANGE 两种写法，二选一：
 2. 判断主力 type，混合时拆 commit
 3. 提炼 ≤ 50 字中文摘要，动词开头
 4. 有 breaking change 加 `!` 或 footer
-5. 用户确认后 `git commit`
+5. 用户确认后 `git commit`，message 末尾带 Co-Authored-By 署名
 
 ## 示例
 
+完整格式（footer 必带）：
+
 ```
 feat(parser): 支持 Markdown 表格解析
+
+重构解析入口，支持嵌套表格。
+
+Co-Authored-By: pi <noreply@pi.dev>
+```
+
+以下示例省略了必带的 footer：
+
+```
 fix: 修复用户名为空时 NPE
 refactor(api): 提取公共认证中间件
 perf(cache): 缓存热点查询减少 30% 延迟
@@ -68,3 +87,4 @@ feat(auth)!: JWT 令牌签名算法升级为 RS256
 - 描述加句号或“了”“的”结尾
 - 强行编造 scope
 - breaking change 不标注
+- 提交信息漏加 Co-Authored-By 署名
