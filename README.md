@@ -19,7 +19,7 @@
 
 **Windows 用户请注意**：pi 在 Windows 上需要 Git Bash 或 WSL 环境，不要使用 PowerShell 或 CMD。pi 安装完成后，可直接问 pi 如何配置 Windows 环境。
 
-> **agent 注意——Windows bash 检测异常处理**：pi 按以下顺序查找 bash：
+> **bash 查找顺序与异常处理**：pi 按以下顺序查找 bash：
 > 1. `~/.pi/agent/settings.json` 中 `shellPath` 指定的路径
 > 2. `C:\Program Files\Git\bin\bash.exe`（Git Bash）
 > 3. PATH 中的 `bash.exe`（可能是 Cygwin、MSYS2、WSL 等）
@@ -42,12 +42,13 @@ cp config/settings.json ~/.pi/agent/settings.json
 
 ### 2.1 配置项说明
 
-`config/settings.json` 中各字段含义：
-
-**agent 注意**：以下字段可能需要根据用户情况调整：
+`config/settings.json` 中各字段含义，按需调整：
 
 | 字段 | 默认值 | 何时调整 |
 |------|--------|----------|
+| `defaultProvider` / `defaultModel` / `defaultThinkingLevel` | 占位符（必填） | 默认模型配置。安装后必须填写实际 provider / 模型 / 思考等级，否则删除这三个字段，让 pi 首次启动引导选择 |
+| `enabledModels` | 空数组 | Ctrl+P 切换模型的候选列表，格式 `provider/model`，按用户可用模型填写 |
+| `observational-memory.compactAfterTokensMode` / `compactAfterTokensRatio` | `ratio` / `0.5` | memory 压缩阈值：`ratio` 模式按当前模型 contextWindow × 比例触发压缩；`calibrated` 模式则使用固定 token 数 |
 | `observational-memory.model` | 无 | 指定 memory 专用模型（observer/reflector/dropper），建议用便宜模型降低 token 消耗；不填则复用当前会话模型 |
 | `sounds.agent_end` | `~/.pi/agent/sounds/hey_listen_navi.wav` | 音效文件路径；如果不需要音效，注释掉整个 `sounds` 块 |
 
@@ -101,24 +102,26 @@ pi install npm:@narumitw/pi-btw
 pi install npm:@juicesharp/rpiv-web-tools
 pi install npm:@juicesharp/rpiv-ask-user-question
 pi install npm:pi-rtk-optimizer
+pi install npm:pi-workspace-history
 ```
 
 ### 4.1 各扩展包的作用
 
 | 扩展包 | 作用 |
 |--------|------|
-| `@ff-labs/pi-fff` | 替换 pi 内置工具为优化版本 |
-| `pi-observational-memory` | 自动压缩长对话历史，保留关键信息 |
-| `pi-context-usage` | 在页脚显示上下文使用量 |
-| `pi-chrome` | Chrome 浏览器集成，用于网页测试和自动化 |
-| `pi-jingle` | agent 完成工作时播放提示音 |
-| `@tifan/pi-preferred-thinking` | 为不同模型预设思考等级 |
-| `@narumitw/pi-btw` | agent 等待期间显示动画 |
-| `@juicesharp/rpiv-web-tools` | 提供 `web_search` 和 `web_fetch` 工具 |
-| `@juicesharp/rpiv-ask-user-question` | 提供 `ask_user_question` 工具，向用户提问 |
-| `pi-rtk-optimizer` | 压缩工具输出，减少 token 消耗 |
+| [`@ff-labs/pi-fff`](https://www.npmjs.com/package/@ff-labs/pi-fff) | 替换 pi 内置工具为优化版本 |
+| [`pi-observational-memory`](https://www.npmjs.com/package/pi-observational-memory) | 自动压缩长对话历史，保留关键信息 |
+| [`pi-context-usage`](https://www.npmjs.com/package/pi-context-usage) | 在页脚显示上下文使用量 |
+| [`pi-chrome`](https://www.npmjs.com/package/pi-chrome) | Chrome 浏览器集成，用于网页测试和自动化 |
+| [`pi-jingle`](https://www.npmjs.com/package/pi-jingle) | agent 完成工作时播放提示音 |
+| [`@tifan/pi-preferred-thinking`](https://www.npmjs.com/package/@tifan/pi-preferred-thinking) | 为不同模型预设思考等级 |
+| [`@narumitw/pi-btw`](https://www.npmjs.com/package/@narumitw/pi-btw) | agent 等待期间显示动画 |
+| [`@juicesharp/rpiv-web-tools`](https://www.npmjs.com/package/@juicesharp/rpiv-web-tools) | 提供 `web_search` 和 `web_fetch` 工具 |
+| [`@juicesharp/rpiv-ask-user-question`](https://www.npmjs.com/package/@juicesharp/rpiv-ask-user-question) | 提供 `ask_user_question` 工具，向用户提问 |
+| [`pi-rtk-optimizer`](https://www.npmjs.com/package/pi-rtk-optimizer) | 压缩工具输出，减少 token 消耗 |
+| [`pi-workspace-history`](https://www.npmjs.com/package/pi-workspace-history) | 工作区级 undo/redo（`/undo`、`/redo`、`/tree` 时间机器），恢复聊天历史节点对应的真实文件状态 |
 
-**agent 注意**：默认全装。仅以下两种情况需要去掉对应扩展：
+默认全装。仅两种场景需要去掉对应扩展：
 
 | 场景 | 操作 |
 |------|------|
@@ -140,7 +143,7 @@ mkdir -p ~/.pi/agent/extensions
 cp config/extensions/pi-preferred-thinking.json ~/.pi/agent/extensions/pi-preferred-thinking.json
 ```
 
-**agent 注意**：此配置文件中的模型列表基于 opencode-go provider。如果用户使用其他 provider（如 Anthropic、OpenAI），需要据此调整模型 ID。格式为 `provider/model` 映射到 thinking level（`off`/`low`/`medium`/`high`/`max`）。
+此配置基于 opencode-go provider。使用其他 provider（如 Anthropic、OpenAI）时按需调整模型 ID。格式为 `provider/model` 映射到 thinking level（`off`/`minimal`/`low`/`medium`/`high`/`xhigh`/`max`）。
 
 ### 5.2 pi-rtk-optimizer
 
@@ -151,7 +154,7 @@ mkdir -p ~/.pi/agent/extensions/pi-rtk-optimizer
 cp config/extensions/pi-rtk-optimizer/config.json ~/.pi/agent/extensions/pi-rtk-optimizer/config.json
 ```
 
-**agent 注意**：`pi-rtk-optimizer` 依赖 `rtk` 二进制，无法通过 npm 安装。需从 GitHub Releases 下载：
+`pi-rtk-optimizer` 依赖 `rtk` 二进制，无法通过 npm 安装。需从 GitHub Releases 下载：
 
 - 下载地址：[rtk releases](https://github.com/rtk-ai/rtk/releases)（找最新版本，下载 Windows 版 `rtk.exe`）
 - 放置路径：`~/.local/bin/rtk.exe`（即 `%USERPROFILE%\.local\bin\rtk.exe`）
@@ -159,7 +162,7 @@ cp config/extensions/pi-rtk-optimizer/config.json ~/.pi/agent/extensions/pi-rtk-
 
 ### 5.3 pi-fff
 
-**agent 注意**：安装 `@ff-labs/pi-fff` 后，告知用户设置环境变量 `PI_FFF_MODE=override`，并说明这是推荐做法。
+安装 `@ff-labs/pi-fff` 后，设置环境变量 `PI_FFF_MODE=override`（推荐做法），FFF 将完全替换内置的 find/grep。
 
 ### 5.4 rpiv-web-tools
 
@@ -170,7 +173,7 @@ mkdir -p ~/.config/rpiv-web-tools
 cp config/rpiv-web-tools/config.json ~/.config/rpiv-web-tools/config.json
 ```
 
-**agent 注意**：此文件中的 `apiKeys` 字段为占位符。用户需要将 Exa 的 API key 填入。注册地址：https://exa.ai
+此文件中的 `apiKeys` 字段为占位符。`web_search` 支持多个搜索 provider（exa、jina、tavily、firecrawl 等），至少填一个 key 即可使用；`provider` 字段指定当前激活的搜索后端。常用注册地址：https://exa.ai、https://jina.ai、https://tavily.com、https://firecrawl.dev
 
 ---
 
@@ -184,7 +187,7 @@ cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 
 **内容概要**：中文编程规范——包含环境约束（bash、uv）、中文注释要求、类型标注、函数长度/文件长度/嵌套深度/参数数量/圈复杂度等代码格式限制，以及死代码清理原则。
 
-**agent 注意**：如果用户的项目不需要中文规范，可以跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
+不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 
 ---
 
@@ -235,7 +238,7 @@ cp -r skills/<skill-name> ~/.pi/agent/skills/
 
 ### 7.3 选择策略
 
-**agent 注意**：询问用户需要哪些 skills，按需复制安装。
+询问用户需要哪些 skills，按需复制安装。
 
 ---
 
@@ -267,17 +270,17 @@ pi
 
 ---
 
-## 9. ⚠️ 安装后用户需自行配置（agent 必须告知用户）
+## 9. 安装后用户需自行配置
 
-> **agent 注意**：以下配置项无法由 agent 自动完成，安装结束后必须逐条告知用户，让用户自行处理。
+> 以下配置项无法由安装流程自动完成，agent 安装结束后必须逐条告知用户，让用户自行处理。
 
 ### 必须处理
 
 | # | 配置项 | 说明 |
 |---|--------|------|
-| 1 | **Exa API Key** | `rpiv-web-tools` 的 web_search 需要 Exa key。注册 [exa.ai](https://exa.ai) 获取，填入 `~/.config/rpiv-web-tools/config.json` 的 `apiKeys.exa` 字段。 |
-| 2 | **Provider 登录/API Key** | 启动 `pi` 后执行 `/login` 登录，或设置 `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` / `GEMINI_API_KEY` 等环境变量。详见第 8 节。 |
-| 3 | **observational-memory 模型** | 编辑 `~/.pi/agent/settings.json`，在 `observational-memory.model` 中填入便宜模型的 provider 和 id（如 openrouter 的 gemma、openai 的 gpt-4o-mini 等），降低 memory 总结的 token 消耗。不填则复用主会话模型。 |
+| 1 | **搜索 API Key** | `rpiv-web-tools` 的 `web_search` 需要至少一个 provider 的 key（exa/jina/tavily/firecrawl 任选，推荐 exa）。填入 `~/.config/rpiv-web-tools/config.json` 的 `apiKeys` 字段，并确认 `provider` 指向已填 key 的后端。 |
+| 2 | **Provider 登录/API Key** | 启动 `pi` 后执行 `/login` 登录，或设置 `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` / `GEMINI_API_KEY` 等环境变量（详见第 8 节）。同时填写 `settings.json` 中 `defaultProvider` / `defaultModel` / `defaultThinkingLevel` 占位符；不固定默认模型则删除这三个字段，让 pi 首次启动引导选择。 |
+| 3 | **observational-memory 模型** | 编辑 `~/.pi/agent/settings.json`，在 `observational-memory.model` 中填入便宜模型的 provider 和 id（如 opencode-go 的 deepseek-v4-flash、openai 的 gpt-4o-mini 等），降低 memory 总结的 token 消耗。不填则复用主会话模型。 |
 
 ### 推荐处理
 
@@ -292,6 +295,6 @@ pi
 | # | 配置项 | 说明 |
 |---|--------|------|
 | 7 | **ZHIHU_ACCESS_SECRET** | 如果安装了 `zhihu-search` skill，需设置此环境变量。注册 [知乎开放平台](https://developer.zhihu.com) 获取。 |
-| 8 | **Windows shellPath** | Windows 用户如果 pi 找不到 bash，在 `~/.pi/agent/settings.json` 中设置 `"shellPath": "C:\\Program Files\\Git\\bin\\bash.exe"`。详见第 1 节。 |
-| 9 | **AGENTS.md** | 如果项目不需要中文编程规范，可跳过第 6 节不安装 AGENTS.md，或在项目 `.pi/AGENTS.md` 中另行定制。 |
-| 10 | **音效** | 如果不需要音效，注释掉 `~/.pi/agent/settings.json` 中的 `sounds` 块并跳过第 2.2 节。 |
+| 8 | **Windows shellPath** | pi 找不到 bash 时在 `settings.json` 设置 `shellPath`，排查步骤见第 1 节。 |
+| 9 | **AGENTS.md** | 不需要中文规范则跳过第 6 节，或改用项目级 `.pi/AGENTS.md`。 |
+| 10 | **音效** | 不需要音效则注释 `sounds` 块并跳过第 2.2 节。 |
