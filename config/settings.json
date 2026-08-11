@@ -1,11 +1,11 @@
 {
-  "lastChangelogVersion": "0.82.1",
+  "lastChangelogVersion": "0.84.1",
   "theme": "dark",
-  "defaultProjectTrust": "ask",
-  "showHardwareCursor": true,
+  "defaultProvider": "<your-provider>",
+  "defaultModel": "<your-default-model>",
+  "defaultThinkingLevel": "<your-thinking-level>",
   "hideThinkingBlock": true,
-  "doubleEscapeAction": "tree",
-  "treeFilterMode": "all",
+  "defaultProjectTrust": "ask",
   "packages": [
     "npm:@ff-labs/pi-fff",
     "npm:pi-observational-memory",
@@ -16,18 +16,22 @@
     "npm:@narumitw/pi-btw",
     "npm:@juicesharp/rpiv-web-tools",
     "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:pi-rtk-optimizer"
+    "npm:pi-rtk-optimizer",
+    "npm:pi-workspace-history"
   ],
+  "showHardwareCursor": true,
+  "enabledModels": [],
+  "doubleEscapeAction": "tree",
   "observational-memory": {
-    "observeAfterTokens": 10000,
-    "reflectAfterTokens": 20000,
-    "compactAfterTokens": 81000,
+    "compactAfterTokensMode": "ratio",
+    "compactAfterTokensRatio": 0.5,
     "model": {
       "provider": "<your-cheap-model-provider>",
       "id": "<your-cheap-model-id>",
       "thinking": "low"
     }
   },
+  "treeFilterMode": "all",
   "sounds": {
     "agent_end": "~/.pi/agent/sounds/hey_listen_navi.wav"
   }

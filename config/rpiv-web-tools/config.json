@@ -1,7 +1,10 @@
 {
   "provider": "exa",
   "apiKeys": {
-    "exa": "<your-exa-api-key>"
+    "exa": "<your-exa-api-key>",
+    "jina": "<your-jina-api-key>",
+    "tavily": "<your-tavily-api-key>",
+    "firecrawl": "<your-firecrawl-api-key>"
   },
   "interceptors": {
     "github": {
