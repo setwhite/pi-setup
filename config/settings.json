@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.84.1",
+  "lastChangelogVersion": "0.84.2",
   "theme": "dark",
   "defaultProvider": "<your-provider>",
   "defaultModel": "<your-default-model>",
@@ -34,5 +34,10 @@
   "treeFilterMode": "all",
   "sounds": {
     "agent_end": "~/.pi/agent/sounds/hey_listen_navi.wav"
-  }
+  },
+  "markdown": {
+    "mermaid": "streaming"
+  },
+  "tuiMode": "regular",
+  "editorPaddingX": 0
 }

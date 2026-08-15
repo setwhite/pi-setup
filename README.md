@@ -48,9 +48,14 @@ cp config/settings.json ~/.pi/agent/settings.json
 |------|--------|----------|
 | `defaultProvider` / `defaultModel` / `defaultThinkingLevel` | 占位符（必填） | 默认模型配置。安装后必须填写实际 provider / 模型 / 思考等级，否则删除这三个字段，让 pi 首次启动引导选择 |
 | `enabledModels` | 空数组 | Ctrl+P 切换模型的候选列表，格式 `provider/model`，按用户可用模型填写 |
-| `observational-memory.compactAfterTokensMode` / `compactAfterTokensRatio` | `ratio` / `0.5` | memory 压缩阈值：`ratio` 模式按当前模型 contextWindow × 比例触发压缩；`calibrated` 模式则使用固定 token 数 |
+| `observational-memory.compactAfterTokensMode` | `ratio` | memory 压缩阈值模式：`ratio` 按当前模型 contextWindow × `compactAfterTokensRatio` 触发压缩；`calibrated` 则使用固定 token 数（`compactAfterTokens`） |
+| `observational-memory.compactAfterTokensRatio` | `0.5` | `ratio` 模式下的压缩触发比例 |
+| `observational-memory.compactAfterTokens` | 无 | `calibrated` 模式下的固定压缩阈值（token 数），按模型 contextWindow 自行估算 |
 | `observational-memory.model` | 无 | 指定 memory 专用模型（observer/reflector/dropper），建议用便宜模型降低 token 消耗；不填则复用当前会话模型 |
 | `sounds.agent_end` | `~/.pi/agent/sounds/hey_listen_navi.wav` | 音效文件路径；如果不需要音效，注释掉整个 `sounds` 块 |
+| `markdown.mermaid` | `streaming` | Mermaid 图表渲染模式：`off` 不渲染、`final` 完成后一次性渲染、`streaming` 边生成边渲染 |
+| `tuiMode` | `regular` | TUI 模式：`regular` 常规，或实验性 `fullscreen`；`/settings` 中修改立即生效 |
+| `editorPaddingX` | `0` | 输入编辑器水平内边距（0-3），数值越大输入框左右留白越多 |
 
 ### 2.2 音效文件（可选）
 
