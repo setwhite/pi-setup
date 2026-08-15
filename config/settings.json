@@ -28,7 +28,7 @@
     "model": {
       "provider": "<your-cheap-model-provider>",
       "id": "<your-cheap-model-id>",
-      "thinking": "high"
+      "thinking": "low"
     }
   },
   "treeFilterMode": "all",
