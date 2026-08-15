@@ -23,12 +23,12 @@
   "enabledModels": [],
   "doubleEscapeAction": "tree",
   "observational-memory": {
-    "compactAfterTokensMode": "ratio",
-    "compactAfterTokensRatio": 0.5,
+    "compactAfterTokensMode": "calibrated",
+    "compactAfterTokens": 81000,
     "model": {
       "provider": "<your-cheap-model-provider>",
       "id": "<your-cheap-model-id>",
-      "thinking": "low"
+      "thinking": "high"
     }
   },
   "treeFilterMode": "all",
