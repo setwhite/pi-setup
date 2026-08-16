@@ -3,6 +3,7 @@
 ## 环境
 - 使用 bash，不使用 powershell / cmd。
 - 使用 uv 管理 Python 包，不使用 pip。
+- 使用bash命令date，可以获取当前时间
 
 ## 语言
 - 注释、Docstring、设计文档、提交信息一律用中文编写（专业术语除外）。
