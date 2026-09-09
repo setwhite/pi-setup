@@ -184,7 +184,7 @@ cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 
 ## 7. 安装 Skills（按需选择）
 
-Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 发现。
+Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 发现。写作类 skill（`article-writing`、`prior-research`、`systematic-learning`）的文风规则由第 6 节 AGENTS.md 的「语言约束」提供。
 
 ### 7.1 安装方法
 
@@ -218,7 +218,6 @@ cp -r skills/<skill-name> ~/.pi/agent/skills/
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
 | `article-writing` | user-invoked | 结构化技术文章写作 |
-| `prose-style` | user-invoked | 技术写作风格参考（被其他 skill 引用） |
 | `html-card` | user-invoked | 生成自包含 HTML 卡片（被其他 skill 引用） |
 
 #### 中文社区
