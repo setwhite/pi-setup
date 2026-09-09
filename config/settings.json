@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.84.2",
+  "lastChangelogVersion": "0.85.1",
   "theme": "dark",
   "defaultProvider": "<your-provider>",
   "defaultModel": "<your-default-model>",
@@ -12,7 +12,6 @@
     "npm:pi-context-usage",
     "npm:pi-chrome",
     "npm:pi-jingle",
-    "npm:@tifan/pi-preferred-thinking",
     "npm:@narumitw/pi-btw",
     "npm:@juicesharp/rpiv-web-tools",
     "npm:@juicesharp/rpiv-ask-user-question",
