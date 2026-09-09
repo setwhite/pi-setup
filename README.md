@@ -17,7 +17,7 @@
 | Git | `git --version` | ≥ 2.30 |
 | Bash | `bash --version` | 任意（Windows 需 Git Bash 或 WSL） |
 
-**Windows 用户请注意**：pi 在 Windows 上需要 Git Bash 或 WSL 环境，不要使用 PowerShell 或 CMD。pi 安装完成后，可直接问 pi 如何配置 Windows 环境。
+**Windows**：pi 需要 Git Bash 或 WSL，不支持 PowerShell 和 CMD。安装完成后可直接向 pi 询问 Windows 环境配置。
 
 > **bash 查找顺序与异常处理**：pi 按以下顺序查找 bash：
 > 1. `~/.pi/agent/settings.json` 中 `shellPath` 指定的路径
@@ -47,11 +47,12 @@ cp config/settings.json ~/.pi/agent/settings.json
 | 字段 | 默认值 | 何时调整 |
 |------|--------|----------|
 | `defaultProvider` / `defaultModel` / `defaultThinkingLevel` | 占位符（必填） | 默认模型配置。安装后必须填写实际 provider / 模型 / 思考等级，否则删除这三个字段，让 pi 首次启动引导选择 |
-| `enabledModels` | 空数组 | Ctrl+P 切换模型的候选列表，格式 `provider/model`，按用户可用模型填写 |
+| `modelThinkingLevels` | 无 | 按模型固定启动思考等级，key 为 `provider/modelId`，value 为 `off`/`minimal`/`low`/`medium`/`high`/`xhigh`/`max`。在 `/settings` → Default thinking level per model 中设置，或手写进 `settings.json` |
+| `enabledModels` | 空数组 | Ctrl+P 切换模型的候选列表，格式 `provider/model`（可加 `:thinking` 后缀指定该模型的思考等级，如 `opencode-go/model:high`），按用户可用模型填写 |
 | `observational-memory.compactAfterTokensMode` | `calibrated` | memory 压缩阈值模式：`ratio` 按当前模型 contextWindow × `compactAfterTokensRatio` 触发压缩；`calibrated` 则使用固定 token 数（`compactAfterTokens`） |
 | `observational-memory.compactAfterTokens` | `81000` | `calibrated` 模式下的固定压缩阈值（token 数），按模型 contextWindow 自行估算 |
 | `observational-memory.compactAfterTokensRatio` | 无 | `ratio` 模式下的压缩触发比例；改用 `ratio` 模式时填写（如 `0.5`） |
-| `observational-memory.model` | 无 | 指定 memory 专用模型（observer/reflector/dropper），建议用便宜模型降低 token 消耗；不填则复用当前会话模型 |
+| `observational-memory.model` | 无 | 指定 memory 专用模型（observer/reflector/dropper），用便宜模型降低 token 消耗（如 opencode-go 的 `deepseek-v4-flash`、openai 的 `gpt-4o-mini`）；不填则复用当前会话模型 |
 | `sounds.agent_end` | `~/.pi/agent/sounds/hey_listen_navi.wav` | 音效文件路径；如果不需要音效，注释掉整个 `sounds` 块 |
 | `markdown.mermaid` | `streaming` | Mermaid 图表渲染模式：`off` 不渲染、`final` 完成后一次性渲染、`streaming` 边生成边渲染 |
 | `tuiMode` | `regular` | TUI 模式：`regular` 常规，或实验性 `fullscreen`；`/settings` 中修改立即生效 |
@@ -102,7 +103,6 @@ pi install npm:pi-observational-memory
 pi install npm:pi-context-usage
 pi install npm:pi-chrome
 pi install npm:pi-jingle
-pi install npm:@tifan/pi-preferred-thinking
 pi install npm:@narumitw/pi-btw
 pi install npm:@juicesharp/rpiv-web-tools
 pi install npm:@juicesharp/rpiv-ask-user-question
@@ -114,12 +114,11 @@ pi install npm:pi-workspace-history
 
 | 扩展包 | 作用 |
 |--------|------|
-| [`@ff-labs/pi-fff`](https://www.npmjs.com/package/@ff-labs/pi-fff) | 替换 pi 内置工具为优化版本 |
-| [`pi-observational-memory`](https://www.npmjs.com/package/pi-observational-memory) | 自动压缩长对话历史，保留关键信息 |
+| [`@ff-labs/pi-fff`](https://www.npmjs.com/package/@ff-labs/pi-fff) | 替换内置 find/grep，按 frecency 排序、git-aware |
+| [`pi-observational-memory`](https://www.npmjs.com/package/pi-observational-memory) | 将长对话历史压缩为 observation/reflection 条目，原文用 `recall(<id>)` 取回 |
 | [`pi-context-usage`](https://www.npmjs.com/package/pi-context-usage) | 在页脚显示上下文使用量 |
 | [`pi-chrome`](https://www.npmjs.com/package/pi-chrome) | Chrome 浏览器集成，用于网页测试和自动化 |
 | [`pi-jingle`](https://www.npmjs.com/package/pi-jingle) | agent 完成工作时播放提示音 |
-| [`@tifan/pi-preferred-thinking`](https://www.npmjs.com/package/@tifan/pi-preferred-thinking) | 为不同模型预设思考等级 |
 | [`@narumitw/pi-btw`](https://www.npmjs.com/package/@narumitw/pi-btw) | agent 等待期间显示动画 |
 | [`@juicesharp/rpiv-web-tools`](https://www.npmjs.com/package/@juicesharp/rpiv-web-tools) | 提供 `web_search` 和 `web_fetch` 工具 |
 | [`@juicesharp/rpiv-ask-user-question`](https://www.npmjs.com/package/@juicesharp/rpiv-ask-user-question) | 提供 `ask_user_question` 工具，向用户提问 |
@@ -139,20 +138,7 @@ pi install npm:pi-workspace-history
 
 部分扩展有独立的配置文件，需要复制到位。
 
-### 5.1 pi-preferred-thinking
-
-为不同模型设置默认思考等级：
-
-```bash
-mkdir -p ~/.pi/agent/extensions
-cp config/extensions/pi-preferred-thinking.json ~/.pi/agent/extensions/pi-preferred-thinking.json
-```
-
-此配置基于 opencode-go provider。使用其他 provider（如 Anthropic、OpenAI）时按需调整模型 ID。格式为 `provider/model` 映射到 thinking level（`off`/`minimal`/`low`/`medium`/`high`/`xhigh`/`max`）。
-
-### 5.2 pi-rtk-optimizer
-
-上下文/Token 优化器：
+### 5.1 pi-rtk-optimizer
 
 ```bash
 mkdir -p ~/.pi/agent/extensions/pi-rtk-optimizer
@@ -165,20 +151,20 @@ cp config/extensions/pi-rtk-optimizer/config.json ~/.pi/agent/extensions/pi-rtk-
 - 放置路径：`~/.local/bin/rtk.exe`（即 `%USERPROFILE%\.local\bin\rtk.exe`）
 - 确保 `~/.local/bin` 在系统 PATH 中（`where rtk` 能找到即为成功）
 
-### 5.3 pi-fff
+### 5.2 pi-fff
 
-安装 `@ff-labs/pi-fff` 后，设置环境变量 `PI_FFF_MODE=override`（推荐做法），FFF 将完全替换内置的 find/grep。
+安装 `@ff-labs/pi-fff` 后，设置环境变量 `PI_FFF_MODE=override`，FFF 完全替换内置 find/grep。
 
-### 5.4 rpiv-web-tools
+### 5.3 rpiv-web-tools
 
-Web 搜索工具配置。复制到 `~/.config/rpiv-web-tools/config.json`：
+配置文件复制到 `~/.config/rpiv-web-tools/config.json`：
 
 ```bash
 mkdir -p ~/.config/rpiv-web-tools
 cp config/rpiv-web-tools/config.json ~/.config/rpiv-web-tools/config.json
 ```
 
-此文件中的 `apiKeys` 字段为占位符。`web_search` 支持多个搜索 provider（exa、jina、tavily、firecrawl 等），至少填一个 key 即可使用；`provider` 字段指定当前激活的搜索后端。常用注册地址：https://exa.ai、https://jina.ai、https://tavily.com、https://firecrawl.dev
+此文件中的 `apiKeys` 字段为占位符。`web_search` 支持多个搜索 provider（exa、jina、tavily、firecrawl 等），至少填一个 key 即可使用，推荐 exa；`provider` 字段指定当前激活的搜索后端。注册地址：https://exa.ai、https://jina.ai、https://tavily.com、https://firecrawl.dev
 
 ---
 
@@ -190,7 +176,7 @@ AGENTS.md 是 pi 启动时加载的全局项目指令。复制到全局位置：
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-**内容概要**：中文编程规范——包含环境约束（bash、uv）、中文注释要求、类型标注、函数长度/文件长度/嵌套深度/参数数量/圈复杂度等代码格式限制，以及死代码清理原则。
+**内容概要**：中文编程规范——包含环境约定（bash、uv、pnpm、ruff、basedpyright）、语言与文风约束（中文注释、禁止套话）、工程原则、工作流程（TDD、lint + test）、Python 代码风格（函数长度/文件长度/嵌套深度/参数数量/类型标注），以及未经确认不 commit / 改依赖 / 破坏性操作的硬约束。
 
 不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 
@@ -239,7 +225,7 @@ cp -r skills/<skill-name> ~/.pi/agent/skills/
 
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
-| `zhihu-search` | user-invoked | 搜索知乎站内内容（需 `ZHIHU_ACCESS_SECRET` 环境变量） |
+| `zhihu-search` | user-invoked | 搜索知乎站内内容（需 `ZHIHU_ACCESS_SECRET`，在 [知乎开放平台](https://developer.zhihu.com) 注册获取） |
 
 ### 7.3 选择策略
 
@@ -249,7 +235,7 @@ cp -r skills/<skill-name> ~/.pi/agent/skills/
 
 ## 8. 登录认证
 
-pi 支持多种 provider。让用户在 pi 交互界面中登录：
+pi 支持多种 provider，认证在交互界面完成：
 
 ```bash
 pi
@@ -257,7 +243,7 @@ pi
 /login
 ```
 
-然后根据提示选择 provider 并完成认证。
+按提示选择 provider 并完成认证。
 
 常见 provider 的准备工作：
 - **Anthropic**：需要 `ANTHROPIC_API_KEY` 环境变量，或通过 `/login` 订阅登录
@@ -277,29 +263,29 @@ pi
 
 ## 9. 安装后用户需自行配置
 
-> 以下配置项无法由安装流程自动完成，agent 安装结束后必须逐条告知用户，让用户自行处理。
+安装流程无法自动完成的配置项，agent 安装结束后逐条告知用户。具体做法见对应小节，本节只做清单。
 
 ### 必须处理
 
-| # | 配置项 | 说明 |
-|---|--------|------|
-| 1 | **搜索 API Key** | `rpiv-web-tools` 的 `web_search` 需要至少一个 provider 的 key（exa/jina/tavily/firecrawl 任选，推荐 exa）。填入 `~/.config/rpiv-web-tools/config.json` 的 `apiKeys` 字段，并确认 `provider` 指向已填 key 的后端。 |
-| 2 | **Provider 登录/API Key** | 启动 `pi` 后执行 `/login` 登录，或设置 `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` / `GEMINI_API_KEY` 等环境变量（详见第 8 节）。同时填写 `settings.json` 中 `defaultProvider` / `defaultModel` / `defaultThinkingLevel` 占位符；不固定默认模型则删除这三个字段，让 pi 首次启动引导选择。 |
-| 3 | **observational-memory 模型** | 编辑 `~/.pi/agent/settings.json`，在 `observational-memory.model` 中填入便宜模型的 provider 和 id（如 opencode-go 的 deepseek-v4-flash、openai 的 gpt-4o-mini 等），降低 memory 总结的 token 消耗。不填则复用主会话模型。 |
+| # | 配置项 | 位置 | 参见 |
+|---|--------|------|------|
+| 1 | 搜索 API Key | `~/.config/rpiv-web-tools/config.json` | 5.3 |
+| 2 | Provider 认证、默认模型 | `/login` 或环境变量；`settings.json` | 8、2.1 |
+| 3 | memory 专用模型 | `settings.json` → `observational-memory.model` | 2.1 |
 
 ### 推荐处理
 
-| # | 配置项 | 说明 |
-|---|--------|------|
-| 4 | **PI_FFF_MODE=override** | `@ff-labs/pi-fff` 的环境变量。设置后 FFF 完全替换内置 find/grep，推荐开启。 |
-| 5 | **rtk 二进制** | `pi-rtk-optimizer` 依赖 `rtk.exe`，需从 [rtk releases](https://github.com/rtk-ai/rtk/releases) 下载放置到 `~/.local/bin/rtk.exe` 并加入 PATH。 |
-| 6 | **pi-preferred-thinking 模型调整** | 如果用户不使用 opencode-go provider，`~/.pi/agent/extensions/pi-preferred-thinking.json` 中的模型列表需要相应调整。 |
+| # | 配置项 | 位置 | 参见 |
+|---|--------|------|------|
+| 4 | `PI_FFF_MODE=override` | 环境变量 | 5.2 |
+| 5 | `rtk.exe` | `~/.local/bin/rtk.exe` + PATH | 5.1 |
+| 6 | 每模型思考等级 | `settings.json` → `modelThinkingLevels` | 2.1 |
 
 ### 按需处理
 
-| # | 配置项 | 说明 |
-|---|--------|------|
-| 7 | **ZHIHU_ACCESS_SECRET** | 如果安装了 `zhihu-search` skill，需设置此环境变量。注册 [知乎开放平台](https://developer.zhihu.com) 获取。 |
-| 8 | **Windows shellPath** | pi 找不到 bash 时在 `settings.json` 设置 `shellPath`，排查步骤见第 1 节。 |
-| 9 | **AGENTS.md** | 不需要中文规范则跳过第 6 节，或改用项目级 `.pi/AGENTS.md`。 |
-| 10 | **音效** | 不需要音效则注释 `sounds` 块并跳过第 2.2 节。 |
+| # | 配置项 | 位置 | 参见 |
+|---|--------|------|------|
+| 7 | `ZHIHU_ACCESS_SECRET` | 环境变量 | 7.2 |
+| 8 | `shellPath` | `settings.json` | 1 |
+| 9 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 6 |
+| 10 | 音效 | `settings.json` → `sounds` | 2.2 |
