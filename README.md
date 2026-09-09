@@ -220,12 +220,6 @@ cp -r skills/<skill-name> ~/.pi/agent/skills/
 | `article-writing` | user-invoked | 结构化技术文章写作 |
 | `html-card` | user-invoked | 生成自包含 HTML 卡片（被其他 skill 引用） |
 
-#### 中文社区
-
-| Skill | 触发方式 | 用途 |
-|-------|----------|------|
-| `zhihu-search` | user-invoked | 搜索知乎站内内容（需 `ZHIHU_ACCESS_SECRET`，在 [知乎开放平台](https://developer.zhihu.com) 注册获取） |
-
 ### 7.3 选择策略
 
 询问用户需要哪些 skills，按需复制安装。
@@ -284,7 +278,6 @@ pi
 
 | # | 配置项 | 位置 | 参见 |
 |---|--------|------|------|
-| 7 | `ZHIHU_ACCESS_SECRET` | 环境变量 | 7.2 |
-| 8 | `shellPath` | `settings.json` | 1 |
-| 9 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 6 |
-| 10 | 音效 | `settings.json` → `sounds` | 2.2 |
+| 7 | `shellPath` | `settings.json` | 1 |
+| 8 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 6 |
+| 9 | 音效 | `settings.json` → `sounds` | 2.2 |
