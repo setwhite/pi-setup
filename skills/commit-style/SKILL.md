@@ -19,7 +19,7 @@ description: 生成符合 Conventional Commits 的提交信息。当用户要求
 
 - `type` —— 必填，用 Conventional Commits 的类型
 - `scope` —— 模块/组件名，可选，没有不强加
-- `description` —— 中文、动词开头、≤ 50 字、不加句号
+- `description` —— 动词开头、≤ 50 字、不加句号
 - `body` —— 空行后，说明变更动机与上下文
 - `footer` —— 空行后，`BREAKING CHANGE:` 等元数据
 
@@ -34,7 +34,7 @@ Co-Authored-By: pi <noreply@pi.dev>
 ## 流程
 
 1. `git diff --stat` 回顾改动，判断主力 type；混合多种变更就拆成多个 commit
-2. 提炼 ≤ 50 字中文摘要，动词开头
+2. 提炼 ≤ 50 字摘要，动词开头
 3. 有 breaking change 加 `!` 或 footer
 4. 用户确认后 `git commit`，message 末尾带 Co-Authored-By 署名
 
