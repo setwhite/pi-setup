@@ -176,7 +176,7 @@ AGENTS.md 是 pi 启动时加载的全局项目指令。复制到全局位置：
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-**内容概要**：中文编程规范——包含环境约定（bash、uv、pnpm、ruff、basedpyright）、语言与文风约束（中文注释、禁止套话）、工程原则、工作流程（需求不明先读代码再问用户），以及未经确认不 commit / 改依赖 / 破坏性操作的硬约束。TDD、lint + test 与 Python 代码风格由第 7 节的 `coding` skill 提供。
+**内容概要**：中文编程规范——包含环境约定（bash、uv、pnpm、ruff、basedpyright）、语言与文风约束（中文注释、禁止套话）、工程原则、工作流程（需求不明先读代码再问用户），以及未经确认不 commit / 改依赖 / 破坏性操作的硬约束。TDD、lint + test、模块结构与代码风格由第 7 节的 `coding` skill 提供。
 
 不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 
@@ -201,10 +201,9 @@ cp -r skills/<skill-name> ~/.pi/agent/skills/
 
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
-| `plan` | user-invoked | 联网调研、追问至共识，产出带验收标准的 `PLAN.md` |
-| `coding` | user-invoked | 红/绿 TDD、lint + test、Python 代码风格 |
-| `verify` | user-invoked | 跑检查、整理机器证据，交用户人审 |
-| `judge` | user-invoked | 新会话独立评审交付物，按验收标准逐条核验 |
+| `plan` | user-invoked | 联网调研、追问至共识，产出 `PLAN.md`、`ARCHITECTURE.md`、`TODO.md` |
+| `coding` | user-invoked | 领任务、红/绿 TDD、lint + test、模块与代码风格 |
+| `audit` | user-invoked | 新会话独立审计：机器门槛、验收标准与仓库规范两轴核查 |
 | `commit-style` | model-invoked | 生成 Conventional Commits 格式的提交信息 |
 | `create-skills` | user-invoked | 创建或优化 agent skill 的向导 |
 
