@@ -5,6 +5,7 @@
 - 当前时间用 `bash: date` 获取
 - 有 ruff 和 basedpyright
 - 有 gh cli
+- 有 rg、fd，不用 grep、find
 
 # 语言约束
 - 短句、陈述句、少形容词。像内部 wiki
