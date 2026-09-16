@@ -176,7 +176,7 @@ AGENTS.md 是 pi 启动时加载的全局项目指令。复制到全局位置：
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-**内容概要**：中文编程规范——包含环境约定（bash、uv、pnpm、ruff、basedpyright）、语言与文风约束（中文注释、禁止套话）、工程原则、工作流程（需求不明先读代码再问用户），以及未经确认不 commit / 改依赖 / 破坏性操作的硬约束。TDD、lint + test、模块结构与代码风格由第 7 节的 `coding` skill 提供。
+**内容概要**：中文编程规范——包含环境约定（bash、uv、pnpm、ruff、basedpyright、gh）、语言与文风约束（中文注释、禁止套话）、工程原则、工作流程（需求不明先读代码再问用户），以及未经确认不 commit / 改依赖 / 破坏性操作的硬约束。TDD、lint + test、模块结构与代码风格由第 7 节的 `coding` skill 提供。
 
 不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 

@@ -1,9 +1,10 @@
 # 环境
-- 用 bash，不用 powershell
-- 用 uv，不用 pip
-- 用 pnpm，不用 npm
-- 当前时间用 `date` 命令获取
+- 有 bash，不用 powershell、cmd
+- 有 uv，不用 pip
+- 有 pnpm，不用 npm
+- 当前时间用 `bash: date` 获取
 - 有 ruff 和 basedpyright
+- 有 gh cli
 
 # 语言约束
 - 短句、陈述句、少形容词。像内部 wiki
