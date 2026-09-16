@@ -98,7 +98,6 @@ pi --version
 如果上一步自动安装未触发，手动安装：
 
 ```bash
-pi install npm:@ff-labs/pi-fff
 pi install npm:pi-observational-memory
 pi install npm:pi-context-usage
 pi install npm:pi-chrome
@@ -114,7 +113,6 @@ pi install npm:pi-workspace-history
 
 | 扩展包 | 作用 |
 |--------|------|
-| [`@ff-labs/pi-fff`](https://www.npmjs.com/package/@ff-labs/pi-fff) | 替换内置 find/grep，按 frecency 排序、git-aware |
 | [`pi-observational-memory`](https://www.npmjs.com/package/pi-observational-memory) | 将长对话历史压缩为 observation/reflection 条目，原文用 `recall(<id>)` 取回 |
 | [`pi-context-usage`](https://www.npmjs.com/package/pi-context-usage) | 在页脚显示上下文使用量 |
 | [`pi-chrome`](https://www.npmjs.com/package/pi-chrome) | Chrome 浏览器集成，用于网页测试和自动化 |
@@ -151,11 +149,7 @@ cp config/extensions/pi-rtk-optimizer/config.json ~/.pi/agent/extensions/pi-rtk-
 - 放置路径：`~/.local/bin/rtk.exe`（即 `%USERPROFILE%\.local\bin\rtk.exe`）
 - 确保 `~/.local/bin` 在系统 PATH 中（`where rtk` 能找到即为成功）
 
-### 5.2 pi-fff
-
-安装 `@ff-labs/pi-fff` 后，设置环境变量 `PI_FFF_MODE=override`，FFF 完全替换内置 find/grep。
-
-### 5.3 rpiv-web-tools
+### 5.2 rpiv-web-tools
 
 配置文件复制到 `~/.config/rpiv-web-tools/config.json`：
 
@@ -263,7 +257,7 @@ pi
 
 | # | 配置项 | 位置 | 参见 |
 |---|--------|------|------|
-| 1 | 搜索 API Key | `~/.config/rpiv-web-tools/config.json` | 5.3 |
+| 1 | 搜索 API Key | `~/.config/rpiv-web-tools/config.json` | 5.2 |
 | 2 | Provider 认证、默认模型 | `/login` 或环境变量；`settings.json` | 8、2.1 |
 | 3 | memory 专用模型 | `settings.json` → `observational-memory.model` | 2.1 |
 
@@ -271,14 +265,13 @@ pi
 
 | # | 配置项 | 位置 | 参见 |
 |---|--------|------|------|
-| 4 | `PI_FFF_MODE=override` | 环境变量 | 5.2 |
-| 5 | `rtk.exe` | `~/.local/bin/rtk.exe` + PATH | 5.1 |
-| 6 | 每模型思考等级 | `settings.json` → `modelThinkingLevels` | 2.1 |
+| 4 | `rtk.exe` | `~/.local/bin/rtk.exe` + PATH | 5.1 |
+| 5 | 每模型思考等级 | `settings.json` → `modelThinkingLevels` | 2.1 |
 
 ### 按需处理
 
 | # | 配置项 | 位置 | 参见 |
 |---|--------|------|------|
-| 7 | `shellPath` | `settings.json` | 1 |
-| 8 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 6 |
-| 9 | 音效 | `settings.json` → `sounds` | 2.2 |
+| 6 | `shellPath` | `settings.json` | 1 |
+| 7 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 6 |
+| 8 | 音效 | `settings.json` → `sounds` | 2.2 |

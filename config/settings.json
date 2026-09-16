@@ -7,7 +7,6 @@
   "hideThinkingBlock": true,
   "defaultProjectTrust": "ask",
   "packages": [
-    "npm:@ff-labs/pi-fff",
     "npm:pi-observational-memory",
     "npm:pi-context-usage",
     "npm:pi-chrome",
