@@ -8,14 +8,15 @@
   "defaultProjectTrust": "ask",
   "packages": [
     "npm:pi-observational-memory",
-    "npm:pi-context-usage",
+    "npm:pi-lazy-evo",
+    "npm:pi-context-inspector",
     "npm:pi-chrome",
     "npm:pi-jingle",
     "npm:@narumitw/pi-btw",
+    "npm:@narumitw/pi-usage",
     "npm:@juicesharp/rpiv-web-tools",
     "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:pi-rtk-optimizer",
-    "npm:pi-workspace-history"
+    "npm:pi-rtk-optimizer"
   ],
   "showHardwareCursor": true,
   "enabledModels": [],

@@ -99,14 +99,15 @@ pi --version
 
 ```bash
 pi install npm:pi-observational-memory
-pi install npm:pi-context-usage
+pi install npm:pi-lazy-evo
+pi install npm:pi-context-inspector
 pi install npm:pi-chrome
 pi install npm:pi-jingle
 pi install npm:@narumitw/pi-btw
+pi install npm:@narumitw/pi-usage
 pi install npm:@juicesharp/rpiv-web-tools
 pi install npm:@juicesharp/rpiv-ask-user-question
 pi install npm:pi-rtk-optimizer
-pi install npm:pi-workspace-history
 ```
 
 ### 4.1 各扩展包的作用
@@ -114,14 +115,15 @@ pi install npm:pi-workspace-history
 | 扩展包 | 作用 |
 |--------|------|
 | [`pi-observational-memory`](https://www.npmjs.com/package/pi-observational-memory) | 将长对话历史压缩为 observation/reflection 条目，原文用 `recall(<id>)` 取回 |
-| [`pi-context-usage`](https://www.npmjs.com/package/pi-context-usage) | 在页脚显示上下文使用量 |
+| [`pi-lazy-evo`](https://www.npmjs.com/package/pi-lazy-evo) | `/memory` 把会话信息沉淀为可验证的长期记忆实体，本地 md 存储（默认项目目录 `.memory/`，`MEMORY_DIR` 可覆盖），验证门控决定是否采纳 |
+| [`pi-context-inspector`](https://www.npmjs.com/package/pi-context-inspector) | 打开 `/context` 浮层，查看系统提示词、激活工具、消息与 token 占比 |
 | [`pi-chrome`](https://www.npmjs.com/package/pi-chrome) | Chrome 浏览器集成，用于网页测试和自动化 |
 | [`pi-jingle`](https://www.npmjs.com/package/pi-jingle) | agent 完成工作时播放提示音 |
 | [`@narumitw/pi-btw`](https://www.npmjs.com/package/@narumitw/pi-btw) | agent 等待期间显示动画 |
+| [`@narumitw/pi-usage`](https://www.npmjs.com/package/@narumitw/pi-usage) | `/usage` 查看当前账号用量与 DeepSeek API 余额，`/fast` 切换 Codex Fast 模式 |
 | [`@juicesharp/rpiv-web-tools`](https://www.npmjs.com/package/@juicesharp/rpiv-web-tools) | 提供 `web_search` 和 `web_fetch` 工具 |
 | [`@juicesharp/rpiv-ask-user-question`](https://www.npmjs.com/package/@juicesharp/rpiv-ask-user-question) | 提供 `ask_user_question` 工具，向用户提问 |
 | [`pi-rtk-optimizer`](https://www.npmjs.com/package/pi-rtk-optimizer) | 压缩工具输出，减少 token 消耗 |
-| [`pi-workspace-history`](https://www.npmjs.com/package/pi-workspace-history) | 工作区级 undo/redo（`/undo`、`/redo`、`/tree` 时间机器），恢复聊天历史节点对应的真实文件状态 |
 
 默认全装。仅两种场景需要去掉对应扩展：
 
