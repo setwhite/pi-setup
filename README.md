@@ -136,16 +136,13 @@ pi install npm:pi-workspace-history
 
 ## 5. 配置扩展
 
-部分扩展有独立的配置文件，需要复制到位。
+部分扩展有独立的配置文件或外部依赖，需要额外处理。
 
 ### 5.1 pi-rtk-optimizer
 
-```bash
-mkdir -p ~/.pi/agent/extensions/pi-rtk-optimizer
-cp config/extensions/pi-rtk-optimizer/config.json ~/.pi/agent/extensions/pi-rtk-optimizer/config.json
-```
+`pi-rtk-optimizer` 的配置文件 `~/.pi/agent/extensions/pi-rtk-optimizer/config.json` 由扩展首次加载时自动生成，内容即默认设置，无需手动创建。要调整设置用 `/rtk` 命令。
 
-`pi-rtk-optimizer` 依赖 `rtk` 二进制，无法通过 npm 安装。需从 GitHub Releases 下载：
+扩展依赖 `rtk` 二进制，无法通过 npm 安装。需从 GitHub Releases 下载：
 
 - 下载地址：[rtk releases](https://github.com/rtk-ai/rtk/releases)（找最新版本，下载 Windows 版 `rtk.exe`）
 - 放置路径：`~/.local/bin/rtk.exe`（即 `%USERPROFILE%\.local\bin\rtk.exe`）
