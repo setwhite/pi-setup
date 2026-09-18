@@ -99,7 +99,7 @@ pi --version
 
 ```bash
 pi install npm:pi-observational-memory
-pi install npm:pi-context-inspector
+pi install npm:pi-context-view
 pi install npm:pi-chrome
 pi install npm:pi-jingle
 pi install npm:@narumitw/pi-btw
@@ -115,7 +115,7 @@ pi install npm:pi-workspace-history
 | 扩展包 | 作用 |
 |--------|------|
 | [`pi-observational-memory`](https://www.npmjs.com/package/pi-observational-memory) | 将长对话历史压缩为 observation/reflection 条目，原文用 `recall(<id>)` 取回 |
-| [`pi-context-inspector`](https://www.npmjs.com/package/pi-context-inspector) | 打开 `/context` 浮层，查看系统提示词、激活工具、消息与 token 占比 |
+| [`pi-context-view`](https://www.npmjs.com/package/pi-context-view) | `/context usage` 查看上下文占用分布（工具、技能、消息等分类），`/context injections` 查看初始系统提示词、工具定义、各扩展注入的内容 |
 | [`pi-chrome`](https://www.npmjs.com/package/pi-chrome) | Chrome 浏览器集成，用于网页测试和自动化 |
 | [`pi-jingle`](https://www.npmjs.com/package/pi-jingle) | agent 完成工作时播放提示音 |
 | [`@narumitw/pi-btw`](https://www.npmjs.com/package/@narumitw/pi-btw) | agent 等待期间显示动画 |

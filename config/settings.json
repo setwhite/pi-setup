@@ -8,7 +8,7 @@
   "defaultProjectTrust": "ask",
   "packages": [
     "npm:pi-observational-memory",
-    "npm:pi-context-inspector",
+    "npm:pi-context-view",
     "npm:pi-chrome",
     "npm:pi-jingle",
     "npm:@narumitw/pi-btw",
