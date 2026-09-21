@@ -1,20 +1,20 @@
 # 环境
 - 执行命令用 bash，不用 powershell、cmd
-- python环境用 uv，不用 pip
-- lint用 ruff 和 basedpyright
-- node环境用 pnpm，不用 npm
+- Python 环境用 uv，不用 pip；脚本用 `uv run python` 执行
+- lint 用 ruff，类型检查用 basedpyright
+- Node 环境用 pnpm，不用 npm
 - 搜索用 rg、fd，不用 grep、find
-- Github PR/issue 用 gh cli
-- 查当前时间用 `bash: date` 
+- GitHub 的 PR / Issue 用 gh CLI
+- 当前时间跑 `date` 查
 
 # 语言表达
 - 短句、陈述句
 - 面向不了解背景的读者，通俗易懂
 - 写具体数字和对象，不用「显著」「大幅」这类形容词
 - 结论给依据：引用原文与来源，观点给例子或代码；给不出就说明原因
+- 代码注释、Docstring、设计文档、提交信息用中文（专业术语除外）
 
 # 产出
-- 代码注释、Docstring、设计文档、提交信息用中文（专业术语除外）
 - 交付物直接可用，不附版本补丁说明、修改说明
 
 # 工程原则
@@ -29,7 +29,7 @@
 - 一个变更只做一件事；完成后停下等 review
 - 声称完成前跑测试与检查；无法执行时说明原因
 
-# 不确认不能执行
+# 先确认再执行
 - commit、push、建分支、改 git 历史
 - 新增生产依赖、改数据库 schema / migration、改 CI 配置
 - 批量删除、覆盖非本次会话生成的文件、`reset --hard`

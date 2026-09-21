@@ -169,7 +169,7 @@ AGENTS.md 是 pi 启动时加载的全局项目指令。复制到全局位置：
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-**内容概要**：中文编程规范——包含环境约定（bash、uv、pnpm、ruff、basedpyright、gh、rg/fd）、语言表达约束（短句、具体数字、结论给依据）、产出约束（中文注释与文档、不写修改说明）、工程原则（KISS、修根因、只实现当前需求、复用顺序、组件内封装复杂度）、工作流程（需求不明先读代码再问用户；一个变更只做一件事；声称完成前跑测试），以及未经确认不 commit / 改依赖 / 破坏性操作的硬约束。TDD、lint + test、模块布局与代码风格上限由第 7 节的 `coding` skill 提供。
+**内容概要**：中文编程规范——包含环境约定（bash、uv、pnpm、ruff、basedpyright、gh、rg/fd）、语言表达约束（短句、具体数字、结论给依据、中文注释与文档）、产出约束（不写修改说明）、工程原则（KISS、修根因、只实现当前需求、复用顺序、组件内封装复杂度）、工作流程（需求不明先读代码再问用户；一个变更只做一件事；声称完成前跑测试），以及未经确认不 commit / 改依赖 / 破坏性操作的硬约束。TDD、lint + test、代码风格由第 7 节的 `coding` skill 提供。
 
 不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 
@@ -181,7 +181,7 @@ Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 
 
 ### 7.1 安装方法
 
-每个 skill 是一个目录，包含 `SKILL.md`（以及可选的 `scripts/`）。将需要的 skill 目录复制到 `~/.pi/agent/skills/`：
+每个 skill 是一个目录，包含 `SKILL.md`（以及可选的 `scripts/`、`references/` 等资源目录）。将需要的 skill 目录复制到 `~/.pi/agent/skills/`：
 
 ```bash
 mkdir -p ~/.pi/agent/skills
@@ -194,9 +194,9 @@ cp -r skills/<skill-name> ~/.pi/agent/skills/
 
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
-| `plan` | user-invoked | 联网调研、追问至共识，产出 `PLAN.md`、`ARCHITECTURE.md`、`TODO.md` |
-| `coding` | user-invoked | 领 TODO 任务、红绿 TDD、lint/test 与证据记录，含模块布局与代码风格上限 |
-| `audit` | user-invoked | 新会话独立审计：机器门槛、验收标准与仓库规范两轴核查 |
+| `plan` | user-invoked | 联网调研、追问至共识，产出 `docs/PLAN.md`、`docs/ARCHITECTURE.md`、`docs/TODO.md` |
+| `coding` | user-invoked | 开发流程：领 TODO 任务、红绿 TDD、lint/test，含代码风格 |
+| `audit` | user-invoked | 新会话独立审计「待审」任务：逐条核对验收标准与代码质量，只报告不改代码 |
 | `commit-style` | model-invoked | 生成 Conventional Commits 格式的提交信息 |
 | `create-skills` | user-invoked | 创建或优化 agent skill 的向导 |
 
@@ -205,7 +205,7 @@ cp -r skills/<skill-name> ~/.pi/agent/skills/
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
 | `systematic-learning` | user-invoked | 费曼式体系化学习，输出 HTML 知识卡片 |
-| `hackernews-search` | user-invoked | 搜索 HN 帖子与热门 |
+| `hackernews-search` | user-invoked | 搜索 HN 帖子、评论与热门 |
 
 #### 内容创作
 

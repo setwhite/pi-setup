@@ -8,10 +8,10 @@
 
 from __future__ import annotations
 
+import io
 import json
-import os
 import sys
-import time
+from datetime import datetime, timezone
 from typing import Any, Dict, List, NoReturn
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
@@ -66,8 +66,8 @@ def parse_count(payload: Dict[str, Any], max_val: int) -> int:
     return max(1, min(max_val, count))
 
 
-def _http_get(url: str) -> Dict[str, Any]:
-    """发送 GET 请求，解析 JSON。"""
+def _http_get(url: str) -> Any:
+    """发送 GET 请求，解析 JSON（形状由调用方校验）。"""
     req = Request(url, headers={"User-Agent": "hackernews-search-skill/1.0"})
     try:
         with urlopen(req, timeout=REQUEST_TIMEOUT_SECONDS) as resp:
@@ -144,6 +144,9 @@ def search_hn(query: str, count: int, search_type: str) -> Dict[str, Any]:
     url = f"{SEARCH_BASE}/search?{urlencode(params)}"
     data = _http_get(url)
 
+    if not isinstance(data, dict):
+        die(f"Unexpected response from Algolia: expected object, got {type(data).__name__}")
+
     items = [_build_search_item(hit, search_type) for hit in data.get("hits", [])]
     return {
         "item_count": len(items),
@@ -168,10 +171,17 @@ def _parse_feed_mode(payload: Dict[str, Any]) -> str:
 
 def _fetch_item(item_id: int) -> Dict[str, Any]:
     url = f"{FIREBASE_BASE}/item/{item_id}.json"
-    return _http_get(url)
+    item = _http_get(url)
+    return item if isinstance(item, dict) else {}
 
 
 def _build_feed_item(item: Dict[str, Any]) -> Dict[str, Any]:
+    timestamp = item.get("time")
+    created_at = (
+        datetime.fromtimestamp(timestamp, tz=timezone.utc).isoformat()
+        if isinstance(timestamp, int)
+        else ""
+    )
     return {
         "title": item.get("title", ""),
         "url": item.get("url"),
@@ -179,6 +189,7 @@ def _build_feed_item(item: Dict[str, Any]) -> Dict[str, Any]:
         "points": item.get("score", 0),
         "num_comments": item.get("descendants", 0),
         "author": item.get("by", ""),
+        "created_at": created_at,
         "type": item.get("type", "story"),
     }
 
@@ -226,6 +237,10 @@ def _truncate(text: str) -> str:
 # ─── Main ─────────────────────────────────────────────────────────────
 
 def main() -> None:
+    # Windows 管道输出默认 GBK，强制 UTF-8，避免 JSON 里的中文乱码
+    if isinstance(sys.stdout, io.TextIOWrapper):
+        sys.stdout.reconfigure(encoding="utf-8")
+
     if len(sys.argv) >= 2 and sys.argv[1] in {"-h", "--help"}:
         print_usage()
         raise SystemExit(0)
