@@ -1,6 +1,6 @@
 ---
 name: commit-style
-description: 按 Conventional Commits 生成提交信息。当用户要求提交代码、写提交信息，或提到「提交」「commit」时使用。
+description: 当用户要求提交代码、写提交信息，或提到「提交」「commit」时使用。
 ---
 
 # Commit 信息规范
