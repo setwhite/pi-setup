@@ -49,10 +49,7 @@ cp config/settings.json ~/.pi/agent/settings.json
 | `defaultProvider` / `defaultModel` / `defaultThinkingLevel` | 占位符（必填） | 默认模型配置。安装后必须填写实际 provider / 模型 / 思考等级，否则删除这三个字段，让 pi 首次启动引导选择 |
 | `modelThinkingLevels` | 无 | 按模型固定启动思考等级，key 为 `provider/modelId`，value 为 `off`/`minimal`/`low`/`medium`/`high`/`xhigh`/`max`。在 `/settings` → Default thinking level per model 中设置，或手写进 `settings.json` |
 | `enabledModels` | 空数组 | Ctrl+P 切换模型的候选列表，格式 `provider/model`（可加 `:thinking` 后缀指定该模型的思考等级，如 `opencode-go/model:high`），按用户可用模型填写 |
-| `observational-memory.compactAfterTokensMode` | `calibrated` | memory 压缩阈值模式：`ratio` 按当前模型 contextWindow × `compactAfterTokensRatio` 触发压缩；`calibrated` 则使用固定 token 数（`compactAfterTokens`） |
-| `observational-memory.compactAfterTokens` | `81000` | `calibrated` 模式下的固定压缩阈值（token 数），按模型 contextWindow 自行估算 |
-| `observational-memory.compactAfterTokensRatio` | 无 | `ratio` 模式下的压缩触发比例；改用 `ratio` 模式时填写（如 `0.5`） |
-| `observational-memory.model` | 无 | 指定 memory 专用模型（observer/reflector/dropper），用便宜模型降低 token 消耗（如 opencode-go 的 `deepseek-v4-flash`、openai 的 `gpt-4o-mini`）；不填则复用当前会话模型 |
+| `cacheWarming` | `streaming` | 提示缓存保温：`off` 关闭、`streaming` 仅运行中保温、`idle` 空闲时也保温；仅当模型声明缓存有效期且预估节省成本超过 $0.05 时生效。全局设置 |
 | `sounds.agent_end` | `~/.pi/agent/sounds/hey_listen_navi.wav` | 音效文件路径；如果不需要音效，注释掉整个 `sounds` 块 |
 | `markdown.mermaid` | `streaming` | Mermaid 图表渲染模式：`off` 不渲染、`final` 完成后一次性渲染、`streaming` 边生成边渲染 |
 | `tuiMode` | `regular` | TUI 模式：`regular` 常规，或实验性 `fullscreen`；`/settings` 中修改立即生效 |
@@ -98,39 +95,46 @@ pi --version
 如果上一步自动安装未触发，手动安装：
 
 ```bash
-pi install npm:pi-observational-memory
+pi install npm:pi-blackhole
 pi install npm:pi-context-view
 pi install npm:pi-chrome
 pi install npm:pi-jingle
 pi install npm:@narumitw/pi-btw
 pi install npm:@narumitw/pi-usage
 pi install npm:@juicesharp/rpiv-web-tools
-pi install npm:@juicesharp/rpiv-ask-user-question
-pi install npm:pi-rtk-optimizer
-pi install npm:pi-workspace-history
+pi install npm:@ssk_dev/rpiv-ask-user-question-lean
+pi install npm:@ssk_dev/rpiv-todo-lean
 ```
 
 ### 4.1 各扩展包的作用
 
 | 扩展包 | 作用 |
 |--------|------|
-| [`pi-observational-memory`](https://www.npmjs.com/package/pi-observational-memory) | 将长对话历史压缩为 observation/reflection 条目，原文用 `recall(<id>)` 取回 |
+| [`pi-blackhole`](https://www.npmjs.com/package/pi-blackhole) | 合并压缩与观察记忆：`/blackhole` 用算法生成结构化摘要替代 `/compact`（不调用 LLM），observer / reflector / dropper 三个后台 worker 把事实与决策沉淀为 observation / reflection，`recall` 工具在压缩后取回原文 |
 | [`pi-context-view`](https://www.npmjs.com/package/pi-context-view) | `/context usage` 查看上下文占用分布（工具、技能、消息等分类），`/context injections` 查看初始系统提示词、工具定义、各扩展注入的内容 |
 | [`pi-chrome`](https://www.npmjs.com/package/pi-chrome) | Chrome 浏览器集成，用于网页测试和自动化 |
 | [`pi-jingle`](https://www.npmjs.com/package/pi-jingle) | agent 完成工作时播放提示音 |
 | [`@narumitw/pi-btw`](https://www.npmjs.com/package/@narumitw/pi-btw) | agent 等待期间显示动画 |
 | [`@narumitw/pi-usage`](https://www.npmjs.com/package/@narumitw/pi-usage) | `/usage` 查看当前账号用量与 DeepSeek API 余额，`/fast` 切换 Codex Fast 模式 |
 | [`@juicesharp/rpiv-web-tools`](https://www.npmjs.com/package/@juicesharp/rpiv-web-tools) | 提供 `web_search` 和 `web_fetch` 工具 |
-| [`@juicesharp/rpiv-ask-user-question`](https://www.npmjs.com/package/@juicesharp/rpiv-ask-user-question) | 提供 `ask_user_question` 工具，向用户提问 |
-| [`pi-rtk-optimizer`](https://www.npmjs.com/package/pi-rtk-optimizer) | 压缩工具输出，减少 token 消耗 |
-| [`pi-workspace-history`](https://www.npmjs.com/package/pi-workspace-history) | 工作区级 undo/redo（`/undo`、`/redo`、`/tree` 时间机器），恢复聊天历史节点对应的真实文件状态 |
+| [`@ssk_dev/rpiv-ask-user-question-lean`](https://www.npmjs.com/package/@ssk_dev/rpiv-ask-user-question-lean) | 提供 `ask_user_question` 工具，向用户提问。原版 `@juicesharp/rpiv-ask-user-question` 的精简版，初始化 token 减少 83% |
+| [`@ssk_dev/rpiv-todo-lean`](https://www.npmjs.com/package/@ssk_dev/rpiv-todo-lean) | 提供 `todo` 任务追踪工具。原版 `@juicesharp/rpiv-todo` 的精简版，初始化 token 减少 72% |
 
-默认全装。仅两种场景需要去掉对应扩展：
+默认全装。以下场景需要调整：
 
 | 场景 | 操作 |
 |------|------|
 | 不需要音效 | 去掉 `pi-jingle` |
 | 不需要浏览器集成 | 去掉 `pi-chrome` |
+| 已装独立的 `pi-observational-memory` 或 `pi-vcc` | 先卸载再装 `pi-blackhole`，三者冲突，见 5.1 |
+| 已装原版 `@juicesharp/rpiv-ask-user-question` 或 `@juicesharp/rpiv-todo` | 先卸载再装对应的 lean 版，两个版本同时加载会重复注册工具 |
+
+lean 包依赖原版包，原版代码随 lean 包自动装好，pi 的 `packages` 里只需列 lean 版。已装原版的卸载命令：
+
+```bash
+pi uninstall npm:@juicesharp/rpiv-ask-user-question
+pi uninstall npm:@juicesharp/rpiv-todo
+```
 
 ---
 
@@ -138,15 +142,24 @@ pi install npm:pi-workspace-history
 
 部分扩展有独立的配置文件或外部依赖，需要额外处理。
 
-### 5.1 pi-rtk-optimizer
+### 5.1 pi-blackhole
 
-`pi-rtk-optimizer` 的配置文件 `~/.pi/agent/extensions/pi-rtk-optimizer/config.json` 由扩展首次加载时自动生成，内容即默认设置，无需手动创建。要调整设置用 `/rtk` 命令。
+配置文件位于 `~/.pi/agent/pi-blackhole/pi-blackhole-config.json`，扩展首次加载时按默认值自动生成，开箱即用。压缩模式、阈值、记忆开关等用 `/blackhole settings` 在 TUI 里调整，保存后立即生效；只有 worker 模型（`model` / `observerModel` / `reflectorModel` / `dropperModel` 及各自的 fallback 数组）不在 overlay 里，只能手改配置文件。
 
-扩展依赖 `rtk` 二进制，无法通过 npm 安装。需从 GitHub Releases 下载：
+要一次性指定阈值和便宜 worker 模型时，复制仓库模板：
 
-- 下载地址：[rtk releases](https://github.com/rtk-ai/rtk/releases)（找最新版本，下载 Windows 版 `rtk.exe`）
-- 放置路径：`~/.local/bin/rtk.exe`（即 `%USERPROFILE%\.local\bin\rtk.exe`）
-- 确保 `~/.local/bin` 在系统 PATH 中（`where rtk` 能找到即为成功）
+```bash
+mkdir -p ~/.pi/agent/pi-blackhole
+cp config/pi-blackhole/pi-blackhole-config.json ~/.pi/agent/pi-blackhole/pi-blackhole-config.json
+```
+
+然后替换模板占位符：`<your-compact-after-tokens>` 为自动压缩触发阈值（token 数，按模型上下文窗口估算）；`<your-cheap-model-provider>` / `<your-cheap-model-id>` 为 observer / reflector / dropper 共用的便宜模型。不需要指定时，删掉模板里的 `compactAfterTokens` 和 `model` 键：阈值用扩展默认值，worker 复用会话模型。
+
+`pi-blackhole` 与独立的 `pi-observational-memory`、`pi-vcc` 冲突，需先卸载：
+
+```bash
+pi uninstall npm:pi-observational-memory
+```
 
 ### 5.2 rpiv-web-tools
 
@@ -169,7 +182,7 @@ AGENTS.md 是 pi 启动时加载的全局项目指令。复制到全局位置：
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-**内容概要**：中文编程规范，六节——Style（自然地道简洁的中文、引用原文并给出处、注释与文档用中文）、KISS（7 条优先级：先提问、不写代码、复用、原生、精准修改、新抽象、改架构）、Confirmation（git 写操作、新增生产依赖、改 schema / migration / CI、批量删除等先获同意）、Tooling（bash、uv、ruff、basedpyright、pnpm、rg/fd、gh、date）、Engineering（复用现成实现、修根因、只实现当前需求、组件内封装复杂度、测试范围、连续三次失败即停）、Output（直接给最终版；文档只写索引与事实）。开发流程与 Python 代码风格由第 7 节的 `coding` skill 提供。
+**内容概要**：中文编程规范，六节——Communication（自然地道简洁的中文、引用原文并给出处、注释与文档用中文）、Execution（7 条优先级：先提问、不写代码、复用、原生、精准修改、新抽象、改架构）、Confirmation（列明未经同意禁止的操作：git 写操作、新增生产依赖、改 schema / migration / CI、批量删除等）、Tooling（bash、uv、ruff、basedpyright、pnpm、rg/fd、gh、date）、Engineering（复用现成实现、修根因、只实现当前需求、组件内封装复杂度、测试范围、三次失败即停）、Output（直接给最终版；文档只写索引与事实）。开发流程与 Python 代码风格由第 7 节的 `coding` skill 提供。
 
 不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 
@@ -177,7 +190,7 @@ cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 
 ## 7. 安装 Skills（按需选择）
 
-Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 发现。写作类 skill（`article-writing`、`systematic-learning`）的文风规则由第 6 节 AGENTS.md 的 Style 提供。
+Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 发现。写作类 skill（`article-writing`、`systematic-learning`）的文风规则由第 6 节 AGENTS.md 的 Communication 提供。
 
 ### 7.1 安装方法
 
@@ -258,19 +271,18 @@ pi
 |---|--------|------|------|
 | 1 | 搜索 API Key | `~/.config/rpiv-web-tools/config.json` | 5.2 |
 | 2 | Provider 认证、默认模型 | `/login` 或环境变量；`settings.json` | 8、2.1 |
-| 3 | memory 专用模型 | `settings.json` → `observational-memory.model` | 2.1 |
 
 ### 推荐处理
 
 | # | 配置项 | 位置 | 参见 |
 |---|--------|------|------|
-| 4 | `rtk.exe` | `~/.local/bin/rtk.exe` + PATH | 5.1 |
-| 5 | 每模型思考等级 | `settings.json` → `modelThinkingLevels` | 2.1 |
+| 3 | pi-blackhole 压缩阈值、worker 模型 | `~/.pi/agent/pi-blackhole/pi-blackhole-config.json` | 5.1 |
+| 4 | 每模型思考等级 | `settings.json` → `modelThinkingLevels` | 2.1 |
 
 ### 按需处理
 
 | # | 配置项 | 位置 | 参见 |
 |---|--------|------|------|
-| 6 | `shellPath` | `settings.json` | 1 |
-| 7 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 6 |
-| 8 | 音效 | `settings.json` → `sounds` | 2.2 |
+| 5 | `shellPath` | `settings.json` | 1 |
+| 6 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 6 |
+| 7 | 音效 | `settings.json` → `sounds` | 2.2 |

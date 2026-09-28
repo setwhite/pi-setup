@@ -1,0 +1,10 @@
+{
+  "compactAfterTokens": "<your-compact-after-tokens>",
+  "model": {
+    "provider": "<your-cheap-model-provider>",
+    "id": "<your-cheap-model-id>",
+    "thinking": "low",
+    "cooldownHours": 0
+  },
+  "statusBar": false
+}

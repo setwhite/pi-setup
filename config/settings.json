@@ -7,29 +7,20 @@
   "hideThinkingBlock": true,
   "defaultProjectTrust": "ask",
   "packages": [
-    "npm:pi-observational-memory",
-    "npm:pi-context-view",
     "npm:pi-chrome",
     "npm:pi-jingle",
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-usage",
+    "npm:pi-context-view",
+    "npm:@ssk_dev/rpiv-ask-user-question-lean",
     "npm:@juicesharp/rpiv-web-tools",
-    "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:pi-rtk-optimizer",
-    "npm:pi-workspace-history"
+    "npm:@ssk_dev/rpiv-todo-lean",
+    "npm:pi-blackhole"
   ],
   "showHardwareCursor": true,
   "enabledModels": [],
+  "modelThinkingLevels": {},
   "doubleEscapeAction": "tree",
-  "observational-memory": {
-    "compactAfterTokensMode": "calibrated",
-    "compactAfterTokens": 81000,
-    "model": {
-      "provider": "<your-cheap-model-provider>",
-      "id": "<your-cheap-model-id>",
-      "thinking": "low"
-    }
-  },
   "treeFilterMode": "all",
   "sounds": {
     "agent_end": "~/.pi/agent/sounds/hey_listen_navi.wav"
@@ -38,5 +29,6 @@
     "mermaid": "streaming"
   },
   "tuiMode": "regular",
-  "editorPaddingX": 0
+  "editorPaddingX": 0,
+  "cacheWarming": "streaming"
 }
