@@ -52,8 +52,11 @@ cp config/settings.json ~/.pi/agent/settings.json
 | `cacheWarming` | `streaming` | 提示缓存保温：`off` 关闭、`streaming` 仅运行中保温、`idle` 空闲时也保温；仅当模型声明缓存有效期且预估节省成本超过 $0.05 时生效。全局设置 |
 | `sounds.agent_end` | `~/.pi/agent/sounds/hey_listen_navi.wav` | 音效文件路径；如果不需要音效，注释掉整个 `sounds` 块 |
 | `markdown.mermaid` | `streaming` | Mermaid 图表渲染模式：`off` 不渲染、`final` 完成后一次性渲染、`streaming` 边生成边渲染 |
-| `tuiMode` | `regular` | TUI 模式：`regular` 常规，或实验性 `fullscreen`；`/settings` 中修改立即生效 |
+| `tuiMode` | `fullscreen` | TUI 模式：`fullscreen` 全屏（pi 1.0 起为默认），或 `regular` 常规滚动；`/settings` 中修改立即生效 |
+| `fullscreenScrollbar` | `hidden` | 全屏模式滚动条：`auto` / `always` / `hidden` |
+| `fullscreenCopyOnSelect` | `false` | 全屏模式选中文本后是否自动复制；`false` 时用 Ctrl+X 复制选中内容 |
 | `editorPaddingX` | `0` | 输入编辑器水平内边距（0-3），数值越大输入框左右留白越多 |
+| `defaultTools` | `["+codemode"]` | 启动时启用的工具，`+name` / `-name` 在默认工具（`read`、`bash`、`edit`、`write`）基础上增减；`+codemode` 启用 codemode，让 agent 写 JS 脚本并行调用工具、过滤大结果后再送入模型 |
 
 ### 2.2 音效文件（可选）
 
@@ -182,7 +185,7 @@ AGENTS.md 是 pi 启动时加载的全局项目指令。复制到全局位置：
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-**内容概要**：中文编程规范，六节——Communication（自然地道简洁的中文、引用原文并给出处、注释与文档用中文）、Execution（7 条优先级：先提问、不写代码、复用、原生、精准修改、新抽象、改架构）、Confirmation（列明未经同意禁止的操作：git 写操作、新增生产依赖、改 schema / migration / CI、批量删除等）、Tooling（bash、uv、ruff、basedpyright、pnpm、rg/fd、gh、date）、Engineering（复用现成实现、修根因、只实现当前需求、组件内封装复杂度、测试范围、三次失败即停）、Output（直接给最终版；文档只写索引与事实）。开发流程与 Python 代码风格由第 7 节的 `coding` skill 提供。
+**内容概要**：中文编程规范，六节——Communication（自然地道的中文、先结果后解释、引用原文并给出处、收尾给 2 分钟内可完成的下一步、注释与文档用中文）、Execution（7 条优先级：先提问、不新增文件、复用、原生、最小改动、新抽象、优化架构）、Engineering（组件内封装复杂度、超过 5 步用 todo、测试范围、三次失败即停）、Output（直接给最终版；文档只写索引与事实）、Confirmation（未经同意禁止：git 写操作、新增生产依赖、改 schema / migration / CI、删除或覆盖非本会话文件）、Tooling（bash、uv、ruff、basedpyright、pnpm、rg/fd、gh、date）。开发流程与 Python 代码风格由第 7 节的 `coding` skill 提供。
 
 不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 

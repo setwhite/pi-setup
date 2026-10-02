@@ -1,10 +1,9 @@
 {
-  "lastChangelogVersion": "0.85.1",
   "theme": "dark",
   "defaultProvider": "<your-provider>",
   "defaultModel": "<your-default-model>",
   "defaultThinkingLevel": "<your-thinking-level>",
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "defaultProjectTrust": "ask",
   "packages": [
     "npm:pi-chrome",
@@ -17,18 +16,21 @@
     "npm:@ssk_dev/rpiv-todo-lean",
     "npm:pi-blackhole"
   ],
-  "showHardwareCursor": true,
+  "showHardwareCursor": false,
   "enabledModels": [],
   "modelThinkingLevels": {},
   "doubleEscapeAction": "tree",
-  "treeFilterMode": "all",
+  "treeFilterMode": "default",
   "sounds": {
     "agent_end": "~/.pi/agent/sounds/hey_listen_navi.wav"
   },
   "markdown": {
     "mermaid": "streaming"
   },
-  "tuiMode": "regular",
+  "tuiMode": "fullscreen",
+  "fullscreenScrollbar": "hidden",
+  "fullscreenCopyOnSelect": false,
   "editorPaddingX": 0,
-  "cacheWarming": "streaming"
+  "cacheWarming": "streaming",
+  "defaultTools": ["+codemode"]
 }
