@@ -48,4 +48,4 @@ feat(parser): 支持 Markdown 表格解析
 Co-Authored-By: pi <noreply@pi.dev>
 ```
 
-单行示例：`fix: 修复用户名为空时 NPE`、`refactor(api): 提取公共认证中间件`、`perf(cache): 缓存热点查询`、`feat(auth)!: JWT 令牌签名算法升级为 RS256`
+单行示例：`fix: 修复用户名为空时 NPE`、`feat(auth)!: JWT 令牌签名算法升级为 RS256`

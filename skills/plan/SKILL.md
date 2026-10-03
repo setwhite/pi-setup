@@ -4,15 +4,14 @@ disable-model-invocation: true
 description: 调研需求、追问到共识，产出 PLAN、ARCHITECTURE、TODO 三份文档。
 ---
 
-# Plan
+# 规划
 
 产出 `docs/PLAN.md`（决策）、`docs/ARCHITECTURE.md`（架构）、`docs/TODO.md`（任务队列）。
 
 ## 硬约束
 
-- 不动代码，不写具体实现。
-- 产出文件简洁、格式固定。
-- 系统架构按业务模块划分，不按技术分层。
+- 不动代码，不写具体实现
+- 系统架构按业务模块划分，不按技术分层
 
 | 文档 | 只负责 |
 | --- | --- |
@@ -43,22 +42,21 @@ description: 调研需求、追问到共识，产出 PLAN、ARCHITECTURE、TODO 
 
 ## Step 3 — 写 PLAN.md
 
-- 写 `docs/PLAN.md`：调研结论、技术选型、MVP 范围、明确什么不做、阶段划分
+- 内容见上表
 - 写入后停下，请用户 review；按反馈改到批准为止
 
 **完成标准**：docs/PLAN.md 已写入并获用户批准。
 
 ## Step 4 — 写 ARCHITECTURE.md
 
-- 写 `docs/ARCHITECTURE.md`：模块清单（模块名 + 一句话职责）与模块间依赖方向
-- 不写模块内部契约，函数签名、数据结构字段、异常类型留给各模块 README
+- 内容见上表；内部契约留给各模块 README
 - 自查：PLAN 里每条 MVP 内容都有模块承接
 
 **完成标准**：docs/ARCHITECTURE.md 已写入，MVP 到模块无遗漏。
 
 ## Step 5 — 写 TODO.md
 
-- 把 PLAN 的阶段拆成按开发顺序排列的任务；PLAN 只留阶段名，具体顺序以本文件为准
+- 按开发顺序把 PLAN 的阶段拆成任务；PLAN 只留阶段名，具体顺序以本文件为准
 - 每条格式：
 
 ```

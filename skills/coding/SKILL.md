@@ -4,7 +4,7 @@ disable-model-invocation: true
 description: 开发流程：领 TODO 任务，测试先行，收工跑 lint、类型检查与测试。
 ---
 
-# Coding
+# 开发
 
 通用约束（工程原则、需要确认才能做的操作）见 agent 的 `AGENTS.md`；这里写开发流程与 Python 代码风格。前提：`docs/TODO.md` 存在；没有就先跑 plan。
 
@@ -34,7 +34,7 @@ description: 开发流程：领 TODO 任务，测试先行，收工跑 lint、�
 
 ## 代码风格
 
-### python
+### Python
 - 函数体 ≤ 50 行、嵌套 ≤ 3 层、单文件 ≤ 300 行
 - 位置参数 ≤ 3 个，超出改对象/数据类传参
 - 魔法数字用命名常量（0、1、-1 等公认语义除外）

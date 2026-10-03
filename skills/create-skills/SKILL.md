@@ -6,7 +6,7 @@ description: 创建或优化 agent skill。
 
 # 创建 Skill
 
-按以下流程引导用户完成 skill 的创建或优化，每步完成后等用户确认。
+按以下流程引导用户完成 skill 的创建或优化，每步完成后等用户确认；优化已有 skill 时跳过第一、二节，从第三节点到第六节，重点是第五节修剪。
 
 ## 概念速查
 
@@ -17,14 +17,8 @@ description: 创建或优化 agent skill。
 - **completion criterion**：判断某一步做完的条件，要可检查并覆盖边界。
 - **progressive disclosure**：只有部分 branch 需要的 reference 推到独立文件（放 `references/` 子目录，SKILL.md 用相对路径引用），全 branch 都需要的留在 SKILL.md。
 - **leading word**：用模型预训练里的紧凑概念（「克制」「边界」）代替长句描述。
-- **single source of truth**：每条规则只定义一次；重复出现即 Duplication。
-- **Negation**：说「不要 X」会激活 X，改写为正面表述。
-- **No-op**：去掉这条规则行为会变吗？不变就删——模型默认会做的、已知的常识都算。
-- **Sediment**：过时内容堆积，每次修改顺手清理。
 
 ## 流程
-
-优化已有 skill 时跳过第一、二节，从第三节点到第六节，重点是第五节修剪。
 
 ### 一、判断载体
 
@@ -37,14 +31,12 @@ description: 创建或优化 agent skill。
 
 ### 三、写 description（必填）
 
-缺失 description 的 skill 不会加载。
-
 - model-invoked：第一句说清 skill 是什么；每个 branch 一个触发词（同义词不算两个，如「提交」「commit」），句式 `当用户要求…、提到…时使用。`
 - user-invoked：一句话概括 skill 做什么，不写触发词。
 
 ### 四、组织内容
 
-1. 只写模型猜不到的信息：口味偏好（禁 emoji、署名格式）、硬事实（API 参数、路径）、特定流程。通用最佳实践与模型已知的常识不写。
+1. 只写模型猜不到的信息：口味偏好（禁 emoji、署名格式）、硬事实（API 参数、路径）、特定流程。
 2. 有操作顺序的写成 step，查阅性的写成 reference；step 在上。
 3. 每个 step 给出可检查的 completion criterion。
 4. 只在部分 branch 需要的 reference 用 progressive disclosure 推出 SKILL.md。
@@ -62,9 +54,8 @@ description: 创建或优化 agent skill。
 
 静态检查：
 
-- 触发方式正确：model-invoked 的 description 含触发词，user-invoked 的为简短概括，两者均必填
-- 触发词覆盖所有 branch
-- step 的 completion criterion 能判断 done/not-done
+- description 非空，触发方式与定位相符（见第三、四节）
+- 每个 step 的 completion criterion 能判断 done/not-done
 - 无断裂指针：引用的文件与路径都存在
 
 动态检查（新开会话，避免模型知道自己在被测）：
