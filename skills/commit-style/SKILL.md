@@ -17,11 +17,11 @@ description: 当用户要求提交代码、写提交信息，或提到「提交�
 [footer]
 ```
 
-- `type` —— 必填，只能取：feat、fix、refactor、perf、test、docs、chore、build、ci、revert
+- `type` —— 必填，controlled vocabulary，只能取：feat、fix、refactor、perf、test、docs、chore、build、ci、revert
 - `scope` —— 模块/组件名，可选，没有不强加
-- `description` —— 动词开头、≤ 30 字、不加句号
+- `description` —— imperative mood、≤ 30 字、不加句号
 - `body` —— 空行后，说明变更动机与上下文
-- `footer` —— 空行后，`BREAKING CHANGE:` 等元数据；每次提交必带署名：
+- `footer` —— 空行后，`BREAKING CHANGE:` 等元数据；每次提交必带署名（attribution）：
 
 ```
 Co-Authored-By: pi <noreply@pi.dev>
@@ -29,14 +29,14 @@ Co-Authored-By: pi <noreply@pi.dev>
 
 BREAKING CHANGE 二选一：标题加 `!`（`feat(api)!: 移除 /v1/users 接口`），或 footer 写 `BREAKING CHANGE: <说明与迁移方式>`。
 
-## 流程
+## 流程（atomic commits）
 
-1. `git status --short` 盘点改动；要提交的文件按用户点名逐个 `git add`，禁止 `git add -A`、`git add .`
-2. `git diff --cached --stat` 看暂存区，判断主力 type；混合多种变更就拆成多个 commit，用 `git add -p` 分次暂存
+1. `git status --short` 盘点改动；要提交的文件按用户点名逐个 `git add`，禁止 `git add -A`、`git add .`（避免无关改动混入提交）
+2. `git diff --cached --stat` 看暂存区，判断主力 type；混合多种变更就拆成多个 atomic commit，用 `git add -p` 分次暂存（hunk staging）
 3. 提炼摘要；有 breaking change 加 `!` 或 footer
-4. 用户确认后 `git commit`
+4. 用户确认后 `git commit`（approval gate）
 
-**完成标准**：提交信息按格式生成、含署名，用户确认后再执行提交。
+**Completion criterion**：提交信息按格式生成、含署名，用户确认后再执行提交。
 
 ## 示例
 

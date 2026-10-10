@@ -6,7 +6,7 @@ description: 搜索 Hacker News 帖子与热门。
 
 # Hacker News 搜索
 
-两条路径：查询走 `web_fetch` 调 Algolia API；Feed 与正文摘要走 Python 脚本（本 skill 目录下 `scripts/hackernews-search.py`，下称 `<脚本路径>`）。
+dispatch：查询走 `web_fetch` 调 Algolia API；Feed 与正文摘要走 Python 脚本（本 skill 目录下 `scripts/hackernews-search.py`，下称 `<脚本路径>`）。
 
 ## 查询：`web_fetch` 调 Algolia API
 
@@ -30,12 +30,12 @@ uv run python "<脚本路径>" '{"mode":"best","count":10}'  # 最高分
 
 `mode` 必填（top / new / best），`count` 可选（1–30，默认 10）。输出 JSON 的 `items[]` 含 `title`、`url`、`hn_url`、`points`、`num_comments`、`author`、`created_at`。
 
-## 失败回退
+## failover
 
-- 搜索网络错误：重试一次，仍失败改用 `web_search` 搜 `site:news.ycombinator.com <关键词>`
-- Feed 脚本不可用或路径解析不了：`web_fetch` 调 Firebase 端点（`topstories` / `newstories` / `beststories`）拿 ID 列表 → 并行取 `item/<id>.json` → 提取字段
+- 搜索网络错误（transient failure）：retry 一次；仍失败改用 `web_search` 搜 `site:news.ycombinator.com <关键词>`（degraded fallback）
+- Feed 脚本不可用或路径解析不了：`web_fetch` 调 Firebase 端点（`topstories` / `newstories` / `beststories`）拿 ID 列表 → 并行取 `item/<id>.json` → 提取字段（contingency path）
 
-## 展示
+## output contract
 
 | # | 标题 | 分数 | 评论 | 日期 | HN 链接 |
 |---|------|------|------|------|---------|
