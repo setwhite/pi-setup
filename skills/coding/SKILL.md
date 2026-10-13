@@ -1,37 +1,43 @@
 ---
 name: coding
 disable-model-invocation: true
-description: 开发流程：领取 TODO 任务，TDD 测试先行，收工运行 quality gate（ruff、basedpyright、pytest）。
+description: 开发流程：领取 TODO 任务，TDD 先行，收工跑 quality gate 并交付待审。
 ---
 
 # 开发流程
 
-Entry criteria：`docs/TODO.md` 必须存在。严格遵循 `AGENTS.md` 的 toolchain（`uv`、`ruff`、`basedpyright`）与 approval gate 规则（严禁擅自 commit/push）。
+用法：`/skill:coding`（自动领取）或 `/skill:coding <任务ID>`（指定任务）。
+
+入口条件：`docs/TODO.md` 存在且已获批。遵守 AGENTS.md 的 Tooling、Confirmation、Engineering。
 
 ## Step 1 — 领取任务
 
-1. 定位 `docs/TODO.md` 首个 `- [ ]` 且前置已打勾的任务。
-2. **state ownership**：任务状态仅由用户在确认勾选时更改，agent 严禁自动修改。遇不明确点立即中断提问（requirements elicitation），拒绝猜测。
+1. 取首个 `- [ ]` 且前置已勾选的任务。指定 ID 时，前置未勾选则停止并报告。
+2. 若该任务的「验收证据」已非空，即为待审：停止并提示用户审查。仅当用户明确要求返工时继续。
+3. 无可领取任务：停止并报告。
+4. 任务状态（`[ ]` ↔ `[x]`）只由用户修改，agent 不得改动。
+5. 目标、AC、接口契约（模块 README 或代码 docstring）不明确，或实现需偏离 PLAN / ARCHITECTURE：立即停止，用 `ask_user_question` 提问，不猜测。
 
-**Completion criterion**：任务目标与 interface contract 明确。
+**完成标准**：目标、AC、接口契约明确。
 
-## Step 2 — task decomposition + TDD（Red-Green）
+## Step 2 — TDD 循环
 
-1. **baby steps**：每次仅限 1 步开发 + 单测。
-2. **Red**：先写失败的单元测试，只针对公开接口（black-box testing）。
-3. **Green**：写最少实现让测试通过（强制 `uv run pytest` 等命令，禁用 `pip`/直接 `python`）。
-4. 遇到 Bug 必须先用 instrumentation（Log/Print/堆栈）取得证据（hypothesis-driven debugging），严禁 shotgun debugging；连续失败 3 次触发 circuit breaker。
+任务 ≥3 步时，先用 todo 工具列出步骤，完成后清空。每轮只做 1 步开发 + 1 组单测。
 
-**Completion criterion**：当前步骤的实现与测试全部通过。
+1. **Red**：针对公开接口（黑盒）写单测，运行 `uv run pytest <路径>`，确认失败原因是断言，而非导入错误。
+2. **Green**：写最少实现，使测试通过。
+3. **Refactor**：全绿后消除重复。同一逻辑 ≥3 次才抽象；重复源于架构时，停止并走 RFC。
+4. **Bug**：按 AGENTS.md「Engineering」的 Debugging 与 Circuit breaker 处理。
 
-## Step 3 — 收工交付
+**完成标准**：本轮测试全绿。
 
-1. 运行 quality gate（强制命令）：
-   - Lint: `uv run ruff check`
-   - 类型检查: `uv run basedpyright`
-   - 测试: `uv run pytest`
-2. 将验收证据（测试输出/commit）的指针填入 `docs/TODO.md` 对应任务（traceability）。
-3. 按 Rule of Three 实施 refactoring，更新对应模块 README。
-4. **保持任务状态不变**（仅用户确认勾选时更改），挂起等待用户 review（approval gate）。
+## Step 3 — 收工
 
-**Completion criterion**：quality gate 全绿、每条 acceptance criterion 均有证据指针（traceability），等待用户审查。
+1. Quality gate 全部通过：`uv run ruff check`、`uv run basedpyright`、`uv run pytest`。未通过则回到 Step 2。
+2. 在 `docs/TODO.md` 填写「验收证据」：每条 AC 对应 `测试文件::用例` 与执行命令；另列改动文件（用 `git status --porcelain` 核对）。
+3. 若模块的用法或取舍有变，更新其 README（不复制签名）。
+4. 停止，并给出下一步：
+
+   > 下一步：`/new` 后运行 `/skill:audit <任务ID>`。审计通过后，由你勾选 `- [x] <任务ID>`，再运行 `/skill:coding` 领取下一个任务。
+
+**完成标准**：quality gate 全绿，每条 AC 有证据，等待用户审查。

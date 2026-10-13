@@ -1,64 +1,71 @@
 ---
 name: plan
 disable-model-invocation: true
-description: requirements elicitation 与 alignment，产出 PLAN、ARCHITECTURE、TODO 三份核心文档。
+description: 需求对齐与规划，产出 PLAN、ARCHITECTURE、TODO 三份文档，每份获批后进入下一份。
 ---
 
 # 规划流程
 
-按顺序产出：`docs/PLAN.md`（decision log）、`docs/ARCHITECTURE.md`、`docs/TODO.md`（backlog）。
+用法：`/skill:plan <需求描述>`。
 
-## 硬约束
+## 原则
 
-- **design-only**
-- **package by feature, not by layer**
-- **single source of truth**：每条事实仅在一处维护。`PLAN` 仅保留 decisions 与一句话理由（ADR 精神），契约、字段、签名与取舍归入模块 README。
-- **progressive summarization**：阶段完成后，该阶段条目压缩回一行并附带指针。
+- **design-only**：只产出文档，不写实现代码，不建源码目录。
+- **package by feature**：按功能（feature）组织包，不按层（layer）组织。
+- **single source of truth**：每条事实只存一处。决策与理由存 PLAN；签名、异常、字段以代码 docstring 为准；模块 README 只写用法与取舍。
+- **progressive summarization**：阶段全部 `[x]` 后，由用户要求压缩为一行并附指针。
 
-| 文档 | single responsibility |
+| 文档 | 职责 |
 | --- | --- |
-| `docs/PLAN.md` | 为什么做、技术选型、不做项、阶段划分（decision log） |
-| `docs/ARCHITECTURE.md` | 模块清单（名 + 职责）、依赖方向、目录与测试约定 |
-| `docs/TODO.md` | 任务清单（`- [ ]` / `- [x]`）、acceptance criteria、验收证据指针、前置依赖 |
-| 模块 README | interface contract（签名, 异常, 字段）、用法与取舍 |
+| `docs/PLAN.md` | 目标、决策（decision log）、不做项、阶段划分（标注 MVP） |
+| `docs/ARCHITECTURE.md` | 模块表（名 + 职责）、依赖方向（无循环）、代码放置、模块 README 位置、测试约定 |
+| `docs/TODO.md` | 原子任务清单，含验收标准（AC）与证据指针 |
+| 模块 README | 用法与取舍 |
 
----
+## Step 1 — 需求对齐
 
-## Step 1 — 联网调研
+- 需求具体则直接进入 Step 2。不具体则先提问，不猜测。提问覆盖：目标与用户、MVP 范围、不做项、技术约束、验收标准、外部依赖。
+- 用 `ask_user_question` 提问：单次 ≤4 题，每题 2–4 个选项，推荐项置顶并标注 `(Recommended)`。
 
-1. 检索一手来源（primary sources：官方文档、源码、Release Notes），用 `rg`/`fd` 或搜索工具辅助。
-2. 聚焦：核心痛点、架构与依赖、活跃度、取舍。
+**完成标准**：需求无歧义，或用户明确表示无需追问。
 
-**Completion criterion**：结论附带可验证链接，收敛至影响选型的关键问题。
+## Step 2 — 调研
 
-## Step 2 — requirements elicitation & alignment
+- 用 `web_search`、`web_fetch` 查一手来源：官方文档、源码、Release Notes。本地参考代码用 `rg`、`fd`。
+- GitHub 项目用 `gh` 查最近 push、最近 release、open issues 数量，量化活跃度。
 
-- 就这个计划的方方面面不断盘问用户，直到达成 alignment。
-- 遇模糊需求直接截断提问，不盲目猜测。
-- 每个问题提供推荐选项及理由（opinionated options），单轮聚合同类前提（batched clarification）。
+**完成标准**：每个结论附可验证链接。
 
-**Completion criterion**：用户回复确认，达成 alignment。
+## Step 3 — 写 PLAN.md
 
-## Step 3 — 编写 PLAN.md
+- 决策用表格：`决策 | 一句话理由 | 出处`。仅有取舍争议的决策展开段落。
+- 必须包含不做项与阶段划分（标注 MVP）。
+- 选型提问的推荐项，依据 Step 2 的调研结果给出。
 
-- 每条 decision 一行：`decision | 一句话理由 | 详细出处指针`（ADR 结构）。仅分歧点展开段落。
+**完成标准**：用户批准（approval gate）。
 
-**Completion criterion**：`docs/PLAN.md` 写入完毕并获批（approval gate）。
+## Step 4 — 写 ARCHITECTURE.md
 
-## Step 4 — 编写 ARCHITECTURE.md
+- 声明模块表、依赖方向、代码放置规则、模块 README 位置、测试约定。
+- Coverage check：PLAN 的每个 MVP 都有模块承接。
 
-- 声明模块表、依赖方向、代码放置规则。coverage check：`PLAN` 中 MVP 均有模块承接（traceability）。
+**完成标准**：用户批准。
 
-**Completion criterion**：`docs/ARCHITECTURE.md` 写入完毕。
+## Step 5 — 写 TODO.md
 
-## Step 5 — 编写 TODO.md
+- 按开发顺序，把 PLAN 的阶段拆为原子任务（单次会话可完成）。
+- 格式：
 
-- work breakdown：按开发顺序将 `PLAN` 的阶段拆分为 atomic tasks（单次会话可完成的单步任务）。
-- 任务格式：
   ```markdown
   - [ ] T1 任务标题
     - 交付物：…
-    - 验收：…
-    - 验收证据：（测试文件 / 命令输出 / commit）
-    - 前置：无
+    - 验收：
+      - AC1 …
+      - AC2 …
+    - 验收证据：
+    - 前置：无（或填 T0）
   ```
+
+- 「验收证据」保持留空，由 coding 填写：每条 AC 对应 `测试文件::用例` 与执行命令，另列改动文件。
+
+**完成标准**：用户批准。TODO 获批后才能进入 coding。
