@@ -7,19 +7,18 @@
   "hideThinkingBlock": false,
   "defaultProjectTrust": "ask",
   "packages": [
-    "npm:pi-chrome",
     "npm:pi-jingle",
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-usage",
     "npm:pi-context-view",
     "npm:@ssk_dev/rpiv-ask-user-question-lean",
-    "npm:pi-web-search-lite",
     "npm:@ssk_dev/rpiv-todo-lean",
-    "npm:pi-blackhole"
+    "npm:pi-blackhole",
+    "npm:pi-chrome",
+    "npm:pi-web-search-lite"
   ],
   "showHardwareCursor": false,
   "enabledModels": [],
-  "modelThinkingLevels": {},
   "doubleEscapeAction": "tree",
   "treeFilterMode": "default",
   "sounds": {
@@ -29,9 +28,21 @@
     "mermaid": "streaming"
   },
   "tuiMode": "fullscreen",
+  "editorPaddingX": 0,
+  "modelThinkingLevels": {},
+  "cacheWarming": "streaming",
+  "compaction": {
+    "enabled": true
+  },
+  "autocompleteMaxVisible": 5,
+  "fullscreenExitOutput": "transcript",
   "fullscreenScrollbar": "hidden",
   "fullscreenCopyOnSelect": false,
-  "editorPaddingX": 0,
-  "cacheWarming": "streaming",
-  "defaultTools": ["+codemode"]
+  "fullscreenWheelScrollLines": "auto",
+  "extensions": [
+    "+builtin:codemode"
+  ],
+  "defaultTools": [
+    "+codemode"
+  ]
 }

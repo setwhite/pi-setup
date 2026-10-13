@@ -1,10 +1,14 @@
 {
-  "compactAfterTokens": "<your-compact-after-tokens>",
-  "model": {
-    "provider": "<your-cheap-model-provider>",
-    "id": "<your-cheap-model-id>",
-    "thinking": "low",
-    "cooldownHours": 0
-  },
+  "compactAfterTokens": 100000,
+
+  "observerModel":  { "provider": "<your-observer-provider>",  "id": "<your-observer-model>",  "thinking": "low", "cooldownHours": 0 },
+  "reflectorModel": { "provider": "<your-reflector-provider>", "id": "<your-reflector-model>", "thinking": "low", "cooldownHours": 0 },
+  "dropperModel":   { "provider": "<your-dropper-provider>",   "id": "<your-dropper-model>",   "thinking": "off", "cooldownHours": 0 },
+
+  "model": { "provider": "<your-fallback-provider>", "id": "<your-fallback-model>", "thinking": "low", "cooldownHours": 0 },
+
+  "sessionFallback": false,
+  "workerAttemptTimeoutMs": 120000,
+
   "statusBar": false
 }
