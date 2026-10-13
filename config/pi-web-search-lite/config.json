@@ -1,16 +1,13 @@
 {
   "provider": "exa",
+  "proxy": "",
   "apiKeys": {
     "exa": "<your-exa-api-key>",
     "jina": "<your-jina-api-key>",
     "tavily": "<your-tavily-api-key>",
     "firecrawl": "<your-firecrawl-api-key>"
   },
-  "interceptors": {
-    "github": {
-      "maxRepoSizeMB": 100,
-      "cloneTimeoutSeconds": 240,
-      "clonePath": ".pi-github-repos"
-    }
+  "fetch": {
+    "extractors": ["html", "exa", "firecrawl", "jina"]
   }
 }

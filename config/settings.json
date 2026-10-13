@@ -1,4 +1,5 @@
 {
+  "$schema": "https://pi.dev/schemas/settings.schema.json",
   "theme": "dark",
   "defaultProvider": "<your-provider>",
   "defaultModel": "<your-default-model>",
@@ -12,7 +13,7 @@
     "npm:@narumitw/pi-usage",
     "npm:pi-context-view",
     "npm:@ssk_dev/rpiv-ask-user-question-lean",
-    "npm:@juicesharp/rpiv-web-tools",
+    "npm:pi-web-search-lite",
     "npm:@ssk_dev/rpiv-todo-lean",
     "npm:pi-blackhole"
   ],

@@ -104,7 +104,7 @@ pi install npm:pi-chrome
 pi install npm:pi-jingle
 pi install npm:@narumitw/pi-btw
 pi install npm:@narumitw/pi-usage
-pi install npm:@juicesharp/rpiv-web-tools
+pi install npm:pi-web-search-lite
 pi install npm:@ssk_dev/rpiv-ask-user-question-lean
 pi install npm:@ssk_dev/rpiv-todo-lean
 ```
@@ -119,7 +119,7 @@ pi install npm:@ssk_dev/rpiv-todo-lean
 | [`pi-jingle`](https://www.npmjs.com/package/pi-jingle) | agent 完成工作时播放提示音 |
 | [`@narumitw/pi-btw`](https://www.npmjs.com/package/@narumitw/pi-btw) | agent 等待期间显示动画 |
 | [`@narumitw/pi-usage`](https://www.npmjs.com/package/@narumitw/pi-usage) | `/usage` 查看当前账号用量与 DeepSeek API 余额，`/fast` 切换 Codex Fast 模式 |
-| [`@juicesharp/rpiv-web-tools`](https://www.npmjs.com/package/@juicesharp/rpiv-web-tools) | 提供 `web_search` 和 `web_fetch` 工具 |
+| [`pi-web-search-lite`](https://www.npmjs.com/package/pi-web-search-lite) | 提供 `web_search` 和 `web_fetch` 工具，所有出站请求走同一个代理；GitHub 链接交给 `gh` CLI、Reddit 链接换域名后抓取 |
 | [`@ssk_dev/rpiv-ask-user-question-lean`](https://www.npmjs.com/package/@ssk_dev/rpiv-ask-user-question-lean) | 提供 `ask_user_question` 工具，向用户提问。原版 `@juicesharp/rpiv-ask-user-question` 的精简版，初始化 token 减少 83% |
 | [`@ssk_dev/rpiv-todo-lean`](https://www.npmjs.com/package/@ssk_dev/rpiv-todo-lean) | 提供 `todo` 任务追踪工具。原版 `@juicesharp/rpiv-todo` 的精简版，初始化 token 减少 72% |
 
@@ -164,16 +164,18 @@ cp config/pi-blackhole/pi-blackhole-config.json ~/.pi/agent/pi-blackhole/pi-blac
 pi uninstall npm:pi-observational-memory
 ```
 
-### 5.2 rpiv-web-tools
+### 5.2 pi-web-search-lite
 
-配置文件复制到 `~/.config/rpiv-web-tools/config.json`：
+配置文件复制到 `~/.pi/agent/pi-web-search-lite/config.json`：
 
 ```bash
-mkdir -p ~/.config/rpiv-web-tools
-cp config/rpiv-web-tools/config.json ~/.config/rpiv-web-tools/config.json
+mkdir -p ~/.pi/agent/pi-web-search-lite
+cp config/pi-web-search-lite/config.json ~/.pi/agent/pi-web-search-lite/config.json
 ```
 
-此文件中的 `apiKeys` 字段为占位符。`web_search` 支持多个搜索 provider（exa、jina、tavily、firecrawl 等），至少填一个 key 即可使用，推荐 exa；`provider` 字段指定当前激活的搜索后端。注册地址：https://exa.ai、https://jina.ai、https://tavily.com、https://firecrawl.dev
+此文件中的 `apiKeys` 字段为占位符。`web_search` 支持多个搜索 provider（tavily、brave、exa、firecrawl、perplexity），至少填一个 key 即可使用，推荐 exa；`provider` 字段指定当前激活的搜索后端。注册地址：https://exa.ai、https://jina.ai、https://tavily.com、https://firecrawl.dev、https://brave.com/search/api、https://perplexity.ai
+
+其余字段按需调整：`proxy` 为空串时直连，填 `http://127.0.0.1:<端口>` 让所有出站请求走本地代理；`fetch.extractors` 是正文提取的 fallback 链，按顺序试到能用的为止（`html` 和 `jina` 都不需要 key）。GitHub 链接默认交给 `gh` CLI 抓取，用前先 `gh auth login`；不需要时把 `handlers.github.enabled` 设为 `false`。
 
 ---
 
@@ -272,7 +274,7 @@ pi
 
 | # | 配置项 | 位置 | 参见 |
 |---|--------|------|------|
-| 1 | 搜索 API Key | `~/.config/rpiv-web-tools/config.json` | 5.2 |
+| 1 | 搜索 API Key | `~/.pi/agent/pi-web-search-lite/config.json` | 5.2 |
 | 2 | Provider 认证、默认模型 | `/login` 或环境变量；`settings.json` | 8、2.1 |
 
 ### 推荐处理
