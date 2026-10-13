@@ -49,13 +49,19 @@ cp config/settings.json ~/.pi/agent/settings.json
 | `defaultProvider` / `defaultModel` / `defaultThinkingLevel` | 占位符（必填） | 默认模型配置。安装后必须填写实际 provider / 模型 / 思考等级，否则删除这三个字段，让 pi 首次启动引导选择 |
 | `modelThinkingLevels` | 无 | 按模型固定启动思考等级，key 为 `provider/modelId`，value 为 `off`/`minimal`/`low`/`medium`/`high`/`xhigh`/`max`。在 `/settings` → Default thinking level per model 中设置，或手写进 `settings.json` |
 | `enabledModels` | 空数组 | Ctrl+P 切换模型的候选列表，格式 `provider/model`（可加 `:thinking` 后缀指定该模型的思考等级，如 `opencode-go/model:high`），按用户可用模型填写 |
+| `hideThinkingBlock` | `false` | 是否在对话记录中显示思考块；`true` 隐藏，只看最终输出 |
 | `cacheWarming` | `streaming` | 提示缓存保温：`off` 关闭、`streaming` 仅运行中保温、`idle` 空闲时也保温；仅当模型声明缓存有效期且预估节省成本超过 $0.05 时生效。全局设置 |
+| `compaction.enabled` | `true` | 自动压缩总开关；同对象还可用 `reserveTokens`（预留回复 token，默认 16384）、`keepRecentTokens`（保留最近 token，默认 20000）、`modelOverrides`（按模型覆盖） |
 | `sounds.agent_end` | `~/.pi/agent/sounds/hey_listen_navi.wav` | 音效文件路径；如果不需要音效，注释掉整个 `sounds` 块 |
 | `markdown.mermaid` | `streaming` | Mermaid 图表渲染模式：`off` 不渲染、`final` 完成后一次性渲染、`streaming` 边生成边渲染 |
 | `tuiMode` | `fullscreen` | TUI 模式：`fullscreen` 全屏（pi 1.0 起为默认），或 `regular` 常规滚动；`/settings` 中修改立即生效 |
 | `fullscreenScrollbar` | `hidden` | 全屏模式滚动条：`auto` / `always` / `hidden` |
 | `fullscreenCopyOnSelect` | `false` | 全屏模式选中文本后是否自动复制；`false` 时用 Ctrl+X 复制选中内容 |
+| `fullscreenWheelScrollLines` | `auto` | 全屏滚轮每格滚动行数：`auto` 自适应（本地 macOS 终端一格一行），或 1-100 |
+| `fullscreenExitOutput` | `transcript` | 退出全屏时打印的内容：`transcript` 完整记录 / `resume-hint` 恢复提示 |
+| `autocompleteMaxVisible` | `5` | 自动补全下拉的可见条数（3-20） |
 | `editorPaddingX` | `0` | 输入编辑器水平内边距（0-3），数值越大输入框左右留白越多 |
+| `extensions` | `["+builtin:codemode"]` | 显式启用内置 codemode 扩展，与 `defaultTools` 的 `+codemode` 配套，`pi config` 的 Built-in 中可见。内置扩展（mcp / llama.cpp / codemode / tool-search）默认加载，用 `-builtin:<name>` 关闭 |
 | `defaultTools` | `["+codemode"]` | 启动时启用的工具，`+name` / `-name` 在默认工具（`read`、`bash`、`edit`、`write`）基础上增减；`+codemode` 启用 codemode，让 agent 写 JS 脚本并行调用工具、过滤大结果后再送入模型 |
 
 ### 2.2 音效文件（可选）
@@ -156,7 +162,18 @@ mkdir -p ~/.pi/agent/pi-blackhole
 cp config/pi-blackhole/pi-blackhole-config.json ~/.pi/agent/pi-blackhole/pi-blackhole-config.json
 ```
 
-然后替换模板占位符：`<your-compact-after-tokens>` 为自动压缩触发阈值（token 数，按模型上下文窗口估算）；`<your-cheap-model-provider>` / `<your-cheap-model-id>` 为 observer / reflector / dropper 共用的便宜模型。不需要指定时，删掉模板里的 `compactAfterTokens` 和 `model` 键：阈值用扩展默认值，worker 复用会话模型。
+模板各项：
+
+| 键 | 作用 |
+|----|------|
+| `compactAfterTokens` | 固定压缩阈值（token 数）。删除该键则用内置曲线，按模型上下文窗口自动缩放（0.90 @32k → 0.40 @1M） |
+| `observerModel` / `reflectorModel` / `dropperModel` | 三个后台 worker 各自的模型与 `thinking` 等级；替换 `<your-*-provider>` / `<your-*-model>` 占位符 |
+| `model` | worker 全部失败时的兜底模型，最后才轮到会话模型 |
+| `sessionFallback` | `false` 时不回退会话模型；删掉或 `true` 保留回退 |
+| `workerAttemptTimeoutMs` | 每次 worker 尝试的硬超时（毫秒），超时即换下一个 fallback |
+| `statusBar` | 状态栏 token 计量（O/P/X）与 worker 进度 |
+
+不需要的键直接删除，缺省即用扩展默认值。
 
 `pi-blackhole` 与独立的 `pi-observational-memory`、`pi-vcc` 冲突，需先卸载：
 
@@ -187,7 +204,7 @@ AGENTS.md 是 pi 启动时加载的全局项目指令。复制到全局位置：
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-**内容概要**：中文编程规范，六节——Communication（自然地道的中文、先结果后解释、引用原文并给出处、收尾给 2 分钟内可完成的下一步、注释与文档用中文）、Execution（7 条优先级：先提问、不新增文件、复用、原生、最小改动、新抽象、优化架构）、Engineering（组件内封装复杂度、超过 5 步用 todo、测试范围、三次失败即停）、Output（直接给最终版；文档只写索引与事实）、Confirmation（未经同意禁止：git 写操作、新增生产依赖、改 schema / migration / CI、删除或覆盖非本会话文件）、Tooling（bash、uv、ruff、basedpyright、pnpm、rg/fd、gh、date）。开发流程与 Python 代码风格由第 7 节的 `coding` skill 提供。
+**内容概要**：中文编程规范，六节——Communication（自然地道的中文、先结果后解释、引用原文并附路径、收尾给 2 分钟内可完成的下一步、注释与文档用中文）、决策优先级（需求澄清 → 配置优先 → 复用优先 → 标准库优先 → 最小改动 → Rule of Three → 重构，编号小者优先）、Engineering（Deep module、≥3 步用 todo、证据驱动调试、同一报错连续 3 次即停机）、Output（直接给最终版；代码库是唯一事实来源；按需读取，单次不超过 500 行）、Confirmation（未经同意禁止：危险 Git、基建变更、破坏性写）、Tooling（uv + ruff / basedpyright / pytest、pnpm、bash、rg / fd、gh、date）。开发流程由第 7 节的 `coding` skill 提供。
 
 不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 
@@ -212,9 +229,9 @@ cp -r skills/<skill-name> ~/.pi/agent/skills/
 
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
-| `plan` | user-invoked | 调研需求、追问到共识，产出 `docs/PLAN.md`、`docs/ARCHITECTURE.md`、`docs/TODO.md` |
-| `coding` | user-invoked | 开发流程：领 TODO 任务、测试先行、收工跑 lint / 类型检查 / 测试，含 Python 代码风格 |
-| `audit` | user-invoked | 独立审计「待审」任务：逐条核对验收标准与代码质量，只报告不改代码 |
+| `plan` | user-invoked | 需求对齐与规划，按顺序产出 `docs/PLAN.md`、`docs/ARCHITECTURE.md`、`docs/TODO.md`，每份获批后进入下一份 |
+| `coding` | user-invoked | 开发流程：领取 TODO 任务、TDD 先行、收工跑 quality gate（ruff / basedpyright / pytest）并交付待审 |
+| `audit` | user-invoked | 在独立会话中审计「待审」任务：逐条核对验收标准与代码质量，只出意见不改文件 |
 | `commit-style` | model-invoked | 生成 Conventional Commits 格式的提交信息 |
 | `create-skills` | user-invoked | 创建或优化 agent skill 的向导 |
 
