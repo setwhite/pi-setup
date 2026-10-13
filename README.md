@@ -123,7 +123,7 @@ pi install npm:@ssk_dev/rpiv-todo-lean
 | [`pi-context-view`](https://www.npmjs.com/package/pi-context-view) | `/context usage` 查看上下文占用分布（工具、技能、消息等分类），`/context injections` 查看初始系统提示词、工具定义、各扩展注入的内容 |
 | [`pi-chrome`](https://www.npmjs.com/package/pi-chrome) | Chrome 浏览器集成，用于网页测试和自动化 |
 | [`pi-jingle`](https://www.npmjs.com/package/pi-jingle) | agent 完成工作时播放提示音 |
-| [`@narumitw/pi-btw`](https://www.npmjs.com/package/@narumitw/pi-btw) | agent 等待期间显示动画 |
+| [`@narumitw/pi-btw`](https://www.npmjs.com/package/@narumitw/pi-btw) | `/btw` 开启临时侧边对话提问，问答默认不写入主会话；只有显式带回的内容才加载到主编辑区（不自动发送），支持全屏或左右分栏布局，分栏时实时展示主线程 |
 | [`@narumitw/pi-usage`](https://www.npmjs.com/package/@narumitw/pi-usage) | `/usage` 查看当前账号用量与 DeepSeek API 余额，`/fast` 切换 Codex Fast 模式 |
 | [`pi-web-search-lite`](https://www.npmjs.com/package/pi-web-search-lite) | 提供 `web_search` 和 `web_fetch` 工具，所有出站请求走同一个代理；GitHub 链接交给 `gh` CLI、Reddit 链接换域名后抓取 |
 | [`@ssk_dev/rpiv-ask-user-question-lean`](https://www.npmjs.com/package/@ssk_dev/rpiv-ask-user-question-lean) | 提供 `ask_user_question` 工具，向用户提问。原版 `@juicesharp/rpiv-ask-user-question` 的精简版，初始化 token 减少 83% |
