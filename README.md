@@ -75,7 +75,7 @@ cp config/settings.json ~/.pi/agent/settings.json
 | `fullscreenExitOutput` | `transcript` | 退出全屏时打印的内容：`transcript` 完整记录 / `resume-hint` 恢复提示 |
 | `autocompleteMaxVisible` | `5` | 自动补全下拉的可见条数（3-20） |
 | `editorPaddingX` | `0` | 输入编辑器水平内边距（0-3），数值越大输入框左右留白越多 |
-| `extensions` | `["+builtin:codemode"]` | 显式启用内置 codemode 扩展，与 `defaultTools` 的 `+codemode` 配套，`pi config` 的 Built-in 中可见。内置扩展（mcp / llama.cpp / codemode / tool-search）默认加载，用 `-builtin:<name>` 关闭 |
+| `codemode.mode` | `on` | `codemode` 工具的呈现方式：`on` 时其他工具照常声明，描述里附加「可从脚本调用」的提示；`only` 时内置与扩展工具全部对模型隐藏，只在 `codemode` 描述中列出，模型一律经脚本调用，`codemode.inlineBudget` 控制声明预算（默认 3000）。内置扩展（mcp / llama.cpp / codemode / tool-search）默认加载，可用 `-builtin:<name>` 关闭 |
 | `defaultTools` | `["+codemode"]` | 启动时启用的工具，`+name` / `-name` 在默认工具（`read`、`bash`、`edit`、`write`）基础上增减；`+codemode` 启用 codemode，让 agent 写 JS 脚本并行调用工具、过滤大结果后再送入模型 |
 
 ### 2.2 音效文件（可选）

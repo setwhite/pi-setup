@@ -39,9 +39,9 @@
   "fullscreenScrollbar": "hidden",
   "fullscreenCopyOnSelect": false,
   "fullscreenWheelScrollLines": "auto",
-  "extensions": [
-    "+builtin:codemode"
-  ],
+  "codemode": {
+    "mode": "on"
+  },
   "defaultTools": [
     "+codemode"
   ]
