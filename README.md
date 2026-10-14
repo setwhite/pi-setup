@@ -17,7 +17,7 @@
 | Git | `git --version` | ≥ 2.30 |
 | Bash | `bash --version` | 任意（Windows 需 Git Bash 或 WSL） |
 
-**Windows**：pi 需要 Git Bash 或 WSL，不支持 PowerShell 和 CMD。安装完成后可直接向 pi 询问 Windows 环境配置。
+**Windows**：pi 需要 Git Bash 或 WSL，不支持 PowerShell 和 CMD。安装完成后可直接向 pi 询问 Windows 环境配置，建议的 5 条 Git Bash 配置见 1.1。
 
 > **bash 查找顺序与异常处理**：pi 按以下顺序查找 bash：
 > 1. `~/.pi/agent/settings.json` 中 `shellPath` 指定的路径
@@ -28,6 +28,20 @@
 > - 检查 `where bash` 的输出，确认排在第一位的 bash 路径
 > - 如果 Git Bash 不在 PATH 最前面，编辑系统环境变量，把 `C:\Program Files\Git\bin` 移到最前面
 > - 或者直接在 `~/.pi/agent/settings.json` 中设置 `"shellPath": "C:\\Program Files\\Git\\bin\\bash.exe"` 强制指定
+
+### 1.1 Windows Git Bash 配置（按需）
+
+Git Bash 在 Windows 上的默认行为与 Linux 不一致（换行符、文件名编码、符号链接），建议在安装 pi 前一次性配好：
+
+```bash
+git config --global core.autocrlf input    # 仓库统一存 LF，防上 Linux 报 bad interpreter
+git config --global core.quotepath false   # 中文文件名正常显示
+git config --global core.symlinks true     # 认识符号链接
+mkdir -p ~/.config/git && printf '*.bat text eol=crlf\n*.cmd text eol=crlf\n*.ps1 text eol=crlf\n' > ~/.config/git/attributes
+echo 'export MSYS="winsymlinks:nativestrict${MSYS:+,$MSYS}"' >> ~/.bashrc   # 修 ln -s：MSYS 变量只认第一个选项
+```
+
+重开 Git Bash 生效；老仓库需逐仓 `git config core.symlinks true`。
 
 ---
 
@@ -308,3 +322,4 @@ pi
 | 5 | `shellPath` | `settings.json` | 1 |
 | 6 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 6 |
 | 7 | 音效 | `settings.json` → `sounds` | 2.2 |
+| 8 | Git Bash Windows 配置 | `~/.gitconfig`、`~/.config/git/attributes`、`~/.bashrc` | 1.1 |
