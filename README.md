@@ -218,7 +218,7 @@ AGENTS.md 是 pi 启动时加载的全局项目指令。复制到全局位置：
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-**内容概要**：中文编程规范，六节——Communication（自然地道的中文、先结果后解释、引用原文并附路径、收尾给 2 分钟内可完成的下一步、注释与文档用中文）、决策优先级（需求澄清 → 配置优先 → 复用优先 → 标准库优先 → 最小改动 → Rule of Three → 重构，编号小者优先）、Engineering（Deep module、≥3 步用 todo、证据驱动调试、同一报错连续 3 次即停机）、Output（直接给最终版；代码库是唯一事实来源；按需读取，单次不超过 500 行）、Confirmation（未经同意禁止：危险 Git、基建变更、破坏性写）、Tooling（uv + ruff / basedpyright / pytest、pnpm、bash、rg / fd、gh、date）。开发流程由第 7 节的 `coding` skill 提供。
+**内容概要**：中文编程规范，覆盖沟通与输出、决策优先级、Engineering、Confirmation、Tooling 等条款（节名与细则以 `config/AGENTS.md` 为准，本处只作速览）。开发流程由第 7 节的 `coding` skill 提供。
 
 不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 
@@ -226,7 +226,9 @@ cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 
 ## 7. 安装 Skills（按需选择）
 
-Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 发现。写作类 skill（`article-writing`、`systematic-learning`）的文风规则由第 6 节 AGENTS.md 的 Communication 提供。
+Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 发现。写作类 skill（`article-writing`、`systematic-learning`）的文风规则由第 6 节的 AGENTS.md 提供。
+
+> 下表只作速览；触发条件与流程细节以各 `skills/<name>/SKILL.md` 为准。
 
 ### 7.1 安装方法
 
@@ -243,9 +245,9 @@ cp -r skills/<skill-name> ~/.pi/agent/skills/
 
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
-| `plan` | user-invoked | 需求对齐与规划，按顺序产出 `docs/PLAN.md`、`docs/ARCHITECTURE.md`、`docs/TODO.md`，每份获批后进入下一份 |
-| `coding` | user-invoked | 开发流程：领取 TODO 任务、TDD 先行、收工跑 quality gate（ruff / basedpyright / pytest）并交付待审 |
-| `audit` | user-invoked | 在独立会话中审计「待审」任务：逐条核对验收标准与代码质量，只出意见不改文件 |
+| `plan` | user-invoked | 规划：从需求对齐到产出 `docs/PLAN.md`、`docs/ARCHITECTURE.md`、`docs/TODO.md` |
+| `coding` | user-invoked | 按 `docs/TODO.md` 开发：TDD 循环、跑 QA、交付待审 |
+| `audit` | user-invoked | 在独立会话中审计待审任务，只出意见、不改文件 |
 | `commit-style` | model-invoked | 生成 Conventional Commits 格式的提交信息 |
 | `create-skills` | user-invoked | 创建或优化 agent skill 的向导 |
 
