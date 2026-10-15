@@ -33,7 +33,6 @@
 - Python QA：`uv run ruff check`（lint）、`uv run basedpyright`（类型）、`uv run pytest`（测试）。
 - Node：`pnpm`。禁用 npm、yarn。
 - Shell：`bash`。禁用 powershell、cmd。
-- 搜索：内容用 `grep` 工具（rg 封装）；文件名用 `fd`。禁用 bash 的 grep / find 命令。
+- 搜索：内容用 `rg`；文件名用 `fd`。禁用 bash 的 grep / find 命令。
 - GitHub：PR、Issue 操作一律用 `gh`。
 - 精确时间：先运行 `date`。
-- 按需读取：大文件先用 `grep` 工具定位，再按行号局部读取；禁止无关地一次读取 >300 行。
