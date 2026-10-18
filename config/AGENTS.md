@@ -26,9 +26,10 @@
 
 # Tooling Rules
 - Python：`uv`（`uv add`、`uv run`）。禁用 `pip` 与直接运行 `python`。
-- Python QA：`uv run ruff check`（lint）、`uv run basedpyright`（类型）、`uv run pytest`（测试）。
+- Python QA：`uv run ruff check`（lint）、`uv run ruff format`（format）、`uv run basedpyright`（typecheck）、`uv run pytest`（test）。
 - Node：`pnpm`。禁用 npm、yarn。
+- TS QA：`biome check`（lint + format）、`tsc --noEmit`（typecheck）、`vitest run`（test）。
 - Shell：`bash`。禁用 powershell、cmd。
-- 搜索：内容用 `rg`；文件名用 `fd`。禁用 bash 的 grep / find 命令。
+- 搜索：内容用 `rg`；文件名用 `fd`。禁用 bash 的 grep / find。
 - GitHub：PR、Issue 操作一律用 `gh`。
 - 精确时间：先运行 `date`。
