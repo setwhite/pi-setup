@@ -182,6 +182,7 @@ cp config/pi-blackhole/pi-blackhole-config.json ~/.pi/agent/pi-blackhole/pi-blac
 |----|------|
 | `compactAfterTokens` | 固定压缩阈值（token 数）。删除该键则用内置曲线，按模型上下文窗口自动缩放（0.90 @32k → 0.40 @1M） |
 | `observerModel` / `reflectorModel` / `dropperModel` | 三个后台 worker 各自的模型与 `thinking` 等级；替换 `<your-*-provider>` / `<your-*-model>` 占位符 |
+| `observerFallbackModels` / `reflectorFallbackModels` / `dropperFallbackModels` | 三个 worker 各自的 fallback 数组，元素字段与对应主模型相同，按顺序尝试；主模型报错、冷却或超时就轮到下一个。不需要 fallback 就删掉 |
 | `model` | worker 全部失败时的兜底模型，最后才轮到会话模型 |
 | `sessionFallback` | `false` 时不回退会话模型；删掉或 `true` 保留回退 |
 | `workerAttemptTimeoutMs` | 每次 worker 尝试的硬超时（毫秒），超时即换下一个 fallback |
@@ -226,7 +227,7 @@ cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 
 ## 7. 安装 Skills（按需选择）
 
-Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 发现。写作类 skill（`article-writing`、`systematic-learning`）的文风规则由第 6 节的 AGENTS.md 提供。
+Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 发现。写作类 skill（`docs-article`）的文风规则由第 6 节的 AGENTS.md 提供。
 
 > 下表只作速览；触发条件与流程细节以各 `skills/<name>/SKILL.md` 为准。
 
@@ -237,33 +238,49 @@ Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 
 ```bash
 mkdir -p ~/.pi/agent/skills
 cp -r skills/<skill-name> ~/.pi/agent/skills/
+cp -r skills/_shared ~/.pi/agent/skills/    # plan/coding/audit 与各 docs-* 用 ../_shared/*.md 相对引用，必须一起复制
 ```
+
+`_shared/` 没有 `SKILL.md`，不是 skill 本身，只是被上述 skill 引用的规则文件。
 
 ### 7.2 Skills 分类
 
-#### 编程通用
+`触发方式` 一列：user-invoked 指 `SKILL.md` 里写了 `disable-model-invocation: true`，只能由用户显式调用；model-invoked 指模型按需求自行加载。
+
+#### 开发流程
 
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
-| `plan` | user-invoked | 规划：从需求对齐到产出 `docs/PLAN.md`、`docs/ARCHITECTURE.md`、`docs/TODO.md` |
-| `coding` | user-invoked | 按 `docs/TODO.md` 开发：TDD 循环、跑 QA、交付待审 |
-| `audit` | user-invoked | 在独立会话中审计待审任务，只出意见、不改文件 |
-| `commit-style` | model-invoked | 生成 Conventional Commits 格式的提交信息 |
-| `create-skills` | user-invoked | 创建或优化 agent skill 的向导 |
+| `plan` | user-invoked | 需求对齐、调研、规格、ARCHITECTURE、TODO |
+| `coding` | user-invoked | 开发流程：领取 TODO 任务，TDD，跑 QA |
+| `audit` | user-invoked | 独立审计，核对验收，检查代码质量 |
+| `debug` | user-invoked | 难 Bug 的诊断循环：先造出能变红的回路，再谈假设 |
+
+#### 文档写作
+
+| Skill | 触发方式 | 用途 |
+|-------|----------|------|
+| `docs-spec` | user-invoked | 把已有讨论综合成 spec，写入 `docs/specs/` |
+| `docs-article` | user-invoked | 长文写作：先散收碎片（explore），再逐段成形（exploit） |
+| `docs-research` | user-invoked | 调研成文：只认一手来源，逐条引用 |
+| `docs-pr` | user-invoked | PR 描述：Summary / Evidence / Merge Danger 三段 |
+| `docs-handoff` | user-invoked | 把当前会话压缩成交接文档，写入 `docs/handoff/` |
+| `docs-adr` | model-invoked | 记录技术决定与取舍 |
+| `docs-commit` | model-invoked | 生成 Conventional Commits 格式的提交信息 |
+| `docs-docstring` | model-invoked | 注释讲 why，Docstring 给契约 |
+| `docs-glossary` | model-invoked | 术语当场定、淘汰同义词 |
 
 #### 学习与研究
 
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
-| `systematic-learning` | user-invoked | 费曼式体系化学习，输出 HTML 知识卡片 |
 | `hackernews-search` | user-invoked | 搜索 HN 帖子、评论与热门 |
 
-#### 内容创作
+#### 元技能
 
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
-| `article-writing` | user-invoked | 结构化技术文章写作 |
-| `html-card` | user-invoked | 生成自包含 HTML 卡片（被其他 skill 引用） |
+| `create-skills` | user-invoked | 创建或优化 agent skill 的向导 |
 
 ### 7.3 选择策略
 
