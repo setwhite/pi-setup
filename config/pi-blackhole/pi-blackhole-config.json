@@ -5,6 +5,10 @@
   "reflectorModel": { "provider": "<your-reflector-provider>", "id": "<your-reflector-model>", "thinking": "low", "cooldownHours": 0 },
   "dropperModel":   { "provider": "<your-dropper-provider>",   "id": "<your-dropper-model>",   "thinking": "off", "cooldownHours": 0 },
 
+  "observerFallbackModels":  [ { "provider": "<your-observer-fallback-provider>",  "id": "<your-observer-fallback-model>",  "thinking": "low", "cooldownHours": 0 } ],
+  "reflectorFallbackModels": [ { "provider": "<your-reflector-fallback-provider>", "id": "<your-reflector-fallback-model>", "thinking": "low", "cooldownHours": 0 } ],
+  "dropperFallbackModels":   [ { "provider": "<your-dropper-fallback-provider>",   "id": "<your-dropper-fallback-model>",   "thinking": "off", "cooldownHours": 0 } ],
+
   "model": { "provider": "<your-fallback-provider>", "id": "<your-fallback-model>", "thinking": "low", "cooldownHours": 0 },
 
   "sessionFallback": false,
