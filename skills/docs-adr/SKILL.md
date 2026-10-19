@@ -17,7 +17,9 @@ description: 当用户要记录技术决定、写下为什么这么设计，或�
 
 正文是一行标题加一到三句话：背景、决定了什么、为什么——价值就是记下这个决定与原因。
 
-可选段落（多数用不上）：Status（proposed | accepted | deprecated | superseded by ADR-NNNN）、Considered Options（被否方案值得记住时）、Consequences（下游影响不明显时）。
+可选段落（多数用不上）：Considered Options（被否方案值得记住时）、Consequences（下游影响不明显时）。
+
+不写状态。被取代时在新 ADR 里写「取代 ADR-NNNN」，旧的那份不动；反查用 `rg 'ADR-NNNN'`。有问题就改 ADR 正文，不留历史版本。
 
 值得记录：带 lock-in 的选型、context 间集成方式、边界与范围（明确的 no 和 yes 一样值钱）、故意偏离显而易见的做法、代码里看不见的约束。
 
