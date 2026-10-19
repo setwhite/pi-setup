@@ -219,7 +219,7 @@ AGENTS.md 是 pi 启动时加载的全局项目指令。复制到全局位置：
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-**内容概要**：中文编程规范，覆盖沟通与输出、决策优先级、Engineering、Confirmation、Tooling 等条款（节名与细则以 `config/AGENTS.md` 为准，本处只作速览）。开发流程由第 7 节的 `plan` → `arch` → `slice` → `coding` → `audit` 提供。
+**内容概要**：中文编程规范，覆盖 Artifact（输出与交付）、决策降级链、Engineering、授权边界、Tooling Rules 等条款（节名与细则以 `config/AGENTS.md` 为准，本处只作速览）。开发流程由第 7 节的 `plan` → `arch` → `slice` → `coding` → `audit` 提供。
 
 不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 
@@ -276,7 +276,7 @@ cp -r skills/_shared ~/.pi/agent/skills/    # arch/slice/coding/audit 与各 doc
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
 | `hackernews-search` | user-invoked | 搜索 HN 帖子、评论与热门 |
-| `systematic-learning` | user-invoked | 体系化学习：Feynman technique 搭知识树，输出 HTML 卡片 |
+| `systematic-learning` | user-invoked | 体系化学习：Feynman technique 搭知识树，输出 HTML 卡片。成页依赖第三方 skill `answer-me-with-html`，需自行安装 |
 
 #### 元技能
 
