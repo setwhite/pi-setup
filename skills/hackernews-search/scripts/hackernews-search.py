@@ -252,8 +252,8 @@ def main() -> None:
     payload = parse_payload(sys.argv[1])
 
     # 判断模式
-    mode = (payload.get("mode") or payload.get("Mode") or "").strip().lower()
-    query = (payload.get("query") or payload.get("Query") or "").strip()
+    mode = str(payload.get("mode") or payload.get("Mode") or "").strip().lower()
+    query = str(payload.get("query") or payload.get("Query") or "").strip()
 
     if mode:
         # Feed 模式
