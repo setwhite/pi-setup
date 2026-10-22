@@ -252,10 +252,10 @@ cp -r skills/_shared ~/.pi/agent/skills/    # arch/slice/coding/audit 与各 doc
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
 | `plan` | user-invoked | 需求对齐：调研、追问到共识，派发 spec 与 ADR |
-| `arch` | user-invoked | 系统结构与测试接缝：维护 ARCHITECTURE.md 与模块 README |
+| `arch` | user-invoked | 系统结构与测试 seam：维护 ARCHITECTURE.md 与模块 README |
 | `slice` | user-invoked | 把当前阶段拆成原子任务，写入 `docs/todos/` |
 | `coding` | user-invoked | 开发流程：领取 `docs/todos/` 任务，TDD，跑 QA |
-| `audit` | user-invoked | 独立审计，核对验收，检查代码质量 |
+| `audit` | user-invoked | 独立审计：只判 AC，质量问题只记录 |
 | `debug` | user-invoked | 难 Bug 的诊断循环：先造出能变红的回路，再谈假设 |
 
 #### 文档写作
@@ -265,10 +265,9 @@ cp -r skills/_shared ~/.pi/agent/skills/    # arch/slice/coding/audit 与各 doc
 | `docs-spec` | user-invoked | 把已有讨论综合成 spec，写入 `docs/specs/` |
 | `docs-article` | user-invoked | 长文写作：先散收碎片（explore），再逐段成形（exploit） |
 | `docs-pr` | user-invoked | PR 描述：Summary / Evidence / Merge Danger 三段 |
-| `docs-handoff` | user-invoked | 把当前会话压缩成交接文档，写入 `docs/handoff/` |
 | `docs-adr` | model-invoked | 记录技术决定与取舍 |
 | `docs-commit` | model-invoked | 生成 Conventional Commits 格式的提交信息 |
-| `docs-docstring` | model-invoked | 注释讲 why，Docstring 给契约 |
+| `docs-docstring` | model-invoked | 默认不写注释，注释只写代码说不出的 |
 | `docs-glossary` | model-invoked | 术语当场定、淘汰同义词 |
 
 #### 学习与研究
@@ -276,7 +275,7 @@ cp -r skills/_shared ~/.pi/agent/skills/    # arch/slice/coding/audit 与各 doc
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
 | `hackernews-search` | user-invoked | 搜索 HN 帖子、评论与热门 |
-| `systematic-learning` | user-invoked | 体系化学习：Feynman technique 搭知识树，输出 HTML 卡片。成页依赖第三方 skill `answer-me-with-html`，需自行安装 |
+| `systematic-learning` | user-invoked | 体系化学习：Feynman technique 搭知识树，输出 Markdown 卡片 |
 
 #### 元技能
 

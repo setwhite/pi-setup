@@ -1,7 +1,7 @@
 ---
 name: systematic-learning
 disable-model-invocation: true
-description: 体系化学习：用 Feynman technique 构建知识体系，输出 HTML 卡片。
+description: 体系化学习：用 Feynman technique 构建知识体系，输出 Markdown 卡片。
 ---
 
 # 体系化学习
@@ -44,8 +44,8 @@ Feynman 式讲解给外行听，回答三个问题：它是什么（一句话）
 
 **Completion criterion**：每条关键结论都有信源，或已标注 `[单一信源]`／分歧。
 
-### Step 3 — 生成 HTML 卡片
+### Step 3 — 生成 Markdown 卡片
 
-按五段结构输出，卡片顶部标注检索日期（YYYY-MM-DD），关键信息标注来源。成页走 `/skill:answer-me-with-html`（手打 skill，提示用户跑一次，五段结构就是它的面板）。
+按五段结构输出 Markdown，卡片顶部标注检索日期（YYYY-MM-DD），关键信息标注来源。
 
-**Completion criterion**：五段齐备、日期与来源已标注，已提示用户成页。
+**Completion criterion**：五段齐备，日期与来源已标注。

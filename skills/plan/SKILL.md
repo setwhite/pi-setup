@@ -34,6 +34,6 @@ description: 需求对齐：调研、追问到共识，派发 spec 与 ADR。
 
 - 每个功能一份 spec，交 `/skill:docs-spec` 落盘——手打，plan 不代写。
 - 难以逆转的选型调 `/skill:docs-adr`。
-- 结构会变（新模块、依赖方向变化、新接缝）→ 提示跑 `/skill:arch`；不变直接 `/skill:slice`。
+- 结构会变（新模块、依赖方向变化、新 seam）→ 提示跑 `/skill:arch`；不变直接 `/skill:slice`。
 
 完成标准：spec 齐备；够门槛的决策有 ADR，其余明确不建；下一步跑哪个 skill 已点名。

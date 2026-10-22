@@ -6,14 +6,14 @@ description: 创建或优化 agent skill。
 
 # 创建 Skill
 
-每步完成后等用户确认。优化已有 skill 时跳过前两节，从第三节做到第六节，重点是第五节的修剪。
+每步完成后等用户确认。优化已有 skill 时跳过一、二节，做三到六节，重点是第五节修剪。
 
 ## 术语速查
 
 - **model-invoked**：靠 description 自动触发；代价是 description 常驻上下文（context load）。
 - **user-invoked**：设 `disable-model-invocation: true`，只能人手触发；description 仍必填（缺失则不加载），但不进系统提示词，零常驻成本。
 - **branch**：触发场景，一个场景一个 branch。
-- **step / reference**：有序操作指令 / 查阅性定义、规则、示例。step 在前。
+- **step / reference**：有序操作指令 / 查阅性定义、规则、示例；step 在前。
 - **completion criterion**：判断某一步做完的条件，要可检查、覆盖边界。
 - **progressive disclosure**：只在部分 branch 需要的 reference 放 `references/`（相对路径引用）；全 branch 都要的留 SKILL.md。
 
@@ -30,7 +30,7 @@ description: 创建或优化 agent skill。
 
 ### 三、写 description（必填）
 
-- model-invoked：一句概念（3–8 字，如「决策记录」，用预训练里的紧凑概念代替长句）+ 触发分支，一个 branch 一个触发词（同义词不算两个，如「提交」「commit」），句式 `当用户要求…、提到…时使用。`。落点与正文清单不进 description；没有独特方法的直接写触发条件。
+- model-invoked：一句概念（3–8 字，如「决策记录」，用预训练里的紧凑概念代替长句）+ 触发分支，一个 branch 一个触发词（同义词不算两个，如「提交」「commit」），句式 `当用户要求…、提到…时使用。` 落点与正文清单不进 description；没有独特方法的直接写触发条件。
 - user-invoked：一句话概括 skill 做什么，不写触发词。
 
 ### 四、组织内容
@@ -42,7 +42,7 @@ description: 创建或优化 agent skill。
 ### 五、修剪（pruning）
 
 - **duplication**：同规则只在唯一位置定义；跨文件引用写相对路径；与 AGENTS.md 等常驻规则重叠的直接删。
-- **清单与示例**：自检清单逐条复述正文规则时删；同类示例只留一个。
+- **清单与示例**：逐条复述正文规则的自检清单删；同类示例只留一个。
 - **negation**：规则用正面表述；反模式节删掉，要强调的例外并进规则；口味类禁列表（禁 emoji、禁句号）保留精确否定。
 - **no-op**：模型默认会做的、已知的常识都删。
 - **sediment**：删不再 relevant 的旧内容。
@@ -56,7 +56,7 @@ description: 创建或优化 agent skill。
 - 每个 step 的 completion criterion 能判断 done/not-done
 - 无断裂指针：引用的文件与路径都存在
 
-动态检查：新开会话做盲测，模型不知道自己在被测。
+动态检查：新开会话盲测，模型不知道自己在被测。
 
 - model-invoked：真实触发语试一遍，再用一句近似但不该触发的话确认不误触发
 - user-invoked：用 `/skill:name` 实跑一遍
