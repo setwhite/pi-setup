@@ -15,7 +15,7 @@
 
 # Engineering
 - Deep module：复杂度封装在模块内部，只暴露必要的 API 与 lifecycle。
-- Circuit breaker：同一错误连续失败 3 次即停；汇报状态、原因、关键日志、可疑假设。
+- Circuit breaker：连续失败 3 次即停；汇报状态、原因、关键日志、可疑假设。
 
 # 未经用户明确授权，禁止执行
 1. git：commit、push、checkout、amend/rebase/reset、restore/clean/stash drop
