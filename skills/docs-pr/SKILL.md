@@ -32,6 +32,6 @@ description: PR 描述：Summary / Evidence / Merge Danger 三段。
 - 伪代码 —— 逻辑与算法
 - 调用树 —— 运行时控制流
 - 组件树 —— UI 结构，带重要的 state 与模块边界
-- 浅层文件树 —— 文件职责、大重构
 - Mermaid —— 组件交互、数据流
-- `diff` —— 变的是什么，且周围形状已存在
+
+代码与 diff 不抄进描述，要指就写 `路径:行号`。其余规则见 `../_shared/docs-rules.md`。

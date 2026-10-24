@@ -1,7 +1,7 @@
 ---
 name: audit
 disable-model-invocation: true
-description: 独立审计：只判 AC，质量问题只记录
+description: 独立审计：只判 AC，质量问题只记录。
 ---
 
 # 审计流程
@@ -10,13 +10,13 @@ description: 独立审计：只判 AC，质量问题只记录
 
 - 独立会话：在未参与编写的新会话中运行。
 - 只读：不改代码与 `docs/todos/`，唯一写入是本次报告（`docs/audit/`）。
-- 不执行修复，不调 coding 或 slice，只在报告里点名下一步。
+- 不执行修复，不调其他 skill，只在报告里点名下一步。
 
 ## Step 1 — 准备材料
 
-在 `docs/todos/` 找 `[~]` 的任务（`rg -l '^- \[~\]' docs/todos/`），多个时让用户指定一个；检查 Git 状态，确认改动范围。
+在 `docs/todos/` 找 `[~]` 的任务（查法见 `../_shared/docs-rules.md`），多个时让用户指定一个；检查 Git 状态，确认改动范围。
 
-完成标准：明确改动范围与验收标准。
+**Completion criterion**：明确改动范围与验收标准。
 
 ## Step 2 — 逐条核对 AC
 
@@ -25,23 +25,23 @@ description: 独立审计：只判 AC，质量问题只记录
 3. 只判 AC：不新增 AC，不评 spec 完整性，不把 AC 之外的改进算作失败。
 4. 不跑全套 E2E，全套测试留在收工。
 
-完成标准：每条 AC 都有结论和证据。
+**Completion criterion**：每条 AC 都有结论和证据。
 
 ## Step 3 — 检查代码质量（不参与判定）
 
-1. 对照 `AGENTS.md` 与仓库里的规范文件；工具已能查的（lint、类型、格式）不重复报。
+1. 对照 `AGENTS.md` 与仓库里的规范文件；工具已能查的（lint、类型、格式）不重复报。文档与代码冲突，或同一件事写在两处，也算 finding，依据写 `../_shared/docs-rules.md` 的「归属」。
 2. 仓库没写规范处用文末「Smell 清单」兜底：只是判断线索，不是违规认定；冲突时以仓库为准。
 3. 每条 finding 写 `文件:行号 — 观察 — 依据`；没有明显问题写「无」，不凑数。
 
-质量 finding 不影响 VERDICT，不要求本轮修复，也不自动开任务；要处理就在下一阶段经 `/skill:slice` 拆成 prefactor 任务，或另开任务。
+质量 finding 不影响 VERDICT，不要求本轮修复，也不自动开任务；要处理就在下一阶段经 `/skill:plan` 拆成 prefactor 任务，或另开任务。
 
-完成标准：每条 finding 都能指到依据（AGENTS 条款或 smell 名）。
+**Completion criterion**：每条 finding 都能指到依据（AGENTS 条款、`../_shared/docs-rules.md` 的「归属」，或 smell 名）。
 
 ## Step 4 — 输出
 
 按文末「报告格式」落盘 `docs/audit/T<NN>-YYYY-MM-DD.md`，并在会话里重述同一份内容。报告是本次验收记录，不是代码质量清零证明；只给意见，不给实现方案。
 
-完成标准：判定与质量线索已落盘，未修改代码与 `docs/todos/`。
+**Completion criterion**：判定与质量线索已落盘，未修改代码与 `docs/todos/`。
 
 ## 报告格式
 
@@ -67,9 +67,9 @@ VERDICT: re-coding
 
 - `pass`：每条 AC 达成（含用户明确豁免）。下一步由 coding 会话在用户批准后改 `[x]`，再走 `/skill:docs-commit`。
 - `re-coding`：至少一条 AC 未达成。写明失败命令与期望 vs 实际，原始输出不落盘。回 `/skill:coding`，只修失败的 AC。
-- `re-slice`：至少一条 AC 无法判定。点名哪条及原因；回 `/skill:slice`，只改任务与 AC，不写代码。
+- `re-plan`：至少一条 AC 无法判定。点名哪条及原因；回 `/skill:plan`，只改任务与 AC，不写代码。
 
-同时出现 `re-coding` 与 `re-slice` 先判 `re-coding`；修完复审仍无法判定才判 `re-slice`。`## 验收` 每条 AC 一行：结论、检查命令、未达成时的实际与期望。`## 质量` 每条一行 `文件:行号 — 观察 — 依据`，不影响 VERDICT，`pass` 也可带 finding，没有写「无」。命令输出不落盘，下次现场重跑。
+同时出现 `re-coding` 与 `re-plan` 先判 `re-coding`；修完复审仍无法判定才判 `re-plan`。`## 验收` 每条 AC 一行：结论、检查命令、未达成时的实际与期望。`## 质量` 每条一行 `文件:行号 — 观察 — 依据`，不影响 VERDICT，`pass` 也可带 finding，没有写「无」。命令输出不落盘，下次现场重跑。
 
 ## Smell 清单
 

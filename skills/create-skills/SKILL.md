@@ -6,7 +6,7 @@ description: 创建或优化 agent skill。
 
 # 创建 Skill
 
-每步完成后等用户确认。优化已有 skill 时跳过一、二节，做三到六节，重点是第五节修剪。
+每步完成后等用户确认。优化已有 skill 时跳过 Step 1–2，做 Step 3–6，重点是 Step 5。
 
 ## 术语速查
 
@@ -19,27 +19,27 @@ description: 创建或优化 agent skill。
 
 ## 流程
 
-### 一、判断载体
+### Step 1 — 判断载体
 
 三条都满足才值得建 skill：模型默认做不到、有固定流程、会跨会话复用。不满足就用一行 AGENTS.md 规则解决。
 
-### 二、确定定位（invocation model）
+### Step 2 — 确定定位（invocation model）
 
 1. 谁触发？agent 自动或其他 skill 调用 → model-invoked；只有人手输入 → user-invoked。
 2. 有哪些触发场景？
 
-### 三、写 description（必填）
+### Step 3 — 写 description（必填）
 
 - model-invoked：一句概念（3–8 字，如「决策记录」，用预训练里的紧凑概念代替长句）+ 触发分支，一个 branch 一个触发词（同义词不算两个，如「提交」「commit」），句式 `当用户要求…、提到…时使用。` 落点与正文清单不进 description；没有独特方法的直接写触发条件。
 - user-invoked：一句话概括 skill 做什么，不写触发词。
 
-### 四、组织内容
+### Step 4 — 组织内容
 
 1. 只写模型猜不到的：口味偏好（禁 emoji、署名格式）、硬事实（API 参数、路径）、特定流程。
 2. 有操作顺序的写 step，查阅性的写 reference。
 3. 每个 step 给出可检查的 completion criterion。
 
-### 五、修剪（pruning）
+### Step 5 — 修剪（pruning）
 
 - **duplication**：同规则只在唯一位置定义；跨文件引用写相对路径；与 AGENTS.md 等常驻规则重叠的直接删。
 - **清单与示例**：逐条复述正文规则的自检清单删；同类示例只留一个。
@@ -48,7 +48,7 @@ description: 创建或优化 agent skill。
 - **sediment**：删不再 relevant 的旧内容。
 - **长度**：SKILL.md 超 200 行考虑 progressive disclosure。
 
-### 六、verification & validation
+### Step 6 — verification & validation
 
 静态检查逐条过：
 

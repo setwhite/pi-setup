@@ -14,11 +14,11 @@ description: 搜索 Hacker News 帖子与热门。
 
 `https://hn.algolia.com/api/v1/search?query=<关键词>&tags=<类型>&hitsPerPage=<条数>&page=<页码>`
 
-- `query` 必填；`tags` 取 `story`（默认）/ `comment` / `(story,comment)`；`hitsPerPage` 1–30，默认 20；`page` 0 起始
+- `query` 必填；`tags` 取 `story`（默认）/ `comment` / `(story,comment)`；`hitsPerPage` 1–1000，默认 20；`page` 0 起始
 - 例：`web_fetch "https://hn.algolia.com/api/v1/search?query=deepseek&tags=story&hitsPerPage=15"`
 - 响应 `hits[]` 每条含 `title`、`url`、`objectID`（拼 HN 链接用）、`points`、`num_comments`、`author`、`created_at`；顶层 `nbHits`、`nbPages`、`page`
 
-要正文摘要（自动去 HTML、截断 300 字）改用脚本：`uv run python "<脚本路径>" '{"query":"deepseek","count":5,"type":"story"}'`，`type` 取 `story` / `comment` / `all`。
+要正文摘要（自动去 HTML、截断 300 字）改用脚本：`uv run python "<脚本路径>" '{"query":"deepseek","count":5,"type":"story"}'`，脚本的 `count` 取 1–30（默认 10），`type` 取 `story` / `comment` / `all`（默认 `story`）。
 
 ## Feed
 
@@ -28,7 +28,7 @@ uv run python "<脚本路径>" '{"mode":"new","count":10}'   # 最新
 uv run python "<脚本路径>" '{"mode":"best","count":10}'  # 最高分
 ```
 
-`mode` 必填（top / new / best），`count` 可选（1–30，默认 10）。输出 `items[]` 含 `title`、`url`、`hn_url`、`points`、`num_comments`、`author`、`created_at`。
+`mode` 必填（top / new / best）。输出 `items[]` 含 `title`、`url`、`hn_url`、`points`、`num_comments`、`author`、`created_at`。
 
 ## failover
 
