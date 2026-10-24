@@ -219,7 +219,7 @@ AGENTS.md 是 pi 启动时加载的全局项目指令。复制到全局位置：
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-**内容概要**：中文编程规范，覆盖 Artifact（输出与交付）、决策降级链、Engineering、授权边界、Tooling Rules 等条款（节名与细则以 `config/AGENTS.md` 为准，本处只作速览）。开发流程由第 7 节的 `plan` → `arch` → `slice` → `coding` → `audit` 提供。
+**内容概要**：中文编程规范，覆盖回复与文档文风、决策顺序、工程、授权边界、工具等条款（节名与细则以 `config/AGENTS.md` 为准，本处只作速览）。开发流程由第 7 节的 `plan` → `arch` → `coding` → `audit` 提供。
 
 不需要中文规范的项目可跳过此步骤，或在项目目录下另行创建 `.pi/AGENTS.md`。
 
@@ -238,7 +238,7 @@ Skills 是 pi 的按需能力包，放在 `~/.pi/agent/skills/` 下即可被 pi 
 ```bash
 mkdir -p ~/.pi/agent/skills
 cp -r skills/<skill-name> ~/.pi/agent/skills/
-cp -r skills/_shared ~/.pi/agent/skills/    # arch/slice/coding/audit 与各 docs-* 用 ../_shared/*.md 相对引用，必须一起复制
+cp -r skills/_shared ~/.pi/agent/skills/    # arch、audit、coding、plan 与各 docs-* 用 ../_shared/*.md 相对引用，必须一起复制
 ```
 
 `_shared/` 没有 `SKILL.md`，不是 skill 本身，只是被上述 skill 引用的规则文件。
@@ -251,9 +251,8 @@ cp -r skills/_shared ~/.pi/agent/skills/    # arch/slice/coding/audit 与各 doc
 
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
-| `plan` | user-invoked | 需求对齐：调研、追问到共识，派发 spec 与 ADR |
-| `arch` | user-invoked | 系统结构与测试 seam：维护 ARCHITECTURE.md 与模块 README |
-| `slice` | user-invoked | 把当前阶段拆成原子任务，写入 `docs/todos/` |
+| `plan` | user-invoked | 规划一个阶段：调研、追问到共识，写 spec 与 `docs/todos/` 任务 |
+| `arch` | user-invoked | 系统结构与测试 seam：维护 ARCHITECTURE.md 与模块文档 |
 | `coding` | user-invoked | 开发流程：领取 `docs/todos/` 任务，TDD，跑 QA |
 | `audit` | user-invoked | 独立审计：只判 AC，质量问题只记录 |
 | `debug` | user-invoked | 难 Bug 的诊断循环：先造出能变红的回路，再谈假设 |
@@ -262,7 +261,7 @@ cp -r skills/_shared ~/.pi/agent/skills/    # arch/slice/coding/audit 与各 doc
 
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
-| `docs-spec` | user-invoked | 把已有讨论综合成 spec，写入 `docs/specs/` |
+| `docs-maintain` | user-invoked | 核查并修复项目文档：格式、链接、重复、过时内容 |
 | `docs-article` | user-invoked | 长文写作：先散收碎片（explore），再逐段成形（exploit） |
 | `docs-pr` | user-invoked | PR 描述：Summary / Evidence / Merge Danger 三段 |
 | `docs-adr` | model-invoked | 记录技术决定与取舍 |
