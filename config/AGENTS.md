@@ -1,31 +1,34 @@
-# Artifact
-- 自然、简洁的中文；术语不译
-- BLUF：结论或代码先行；代码给完整版或精确 diff
-- Grounding: 引用优于转述；结论要有证据
-- Actionable handoff：需用户介入时，结尾给出下一步
-- SSOT：代码库是唯一事实来源；尽量不写注释；文档只写代码里读不出的（决策、事实、索引）
-- 交付物即终稿，不写修改过程、版本变更、补丁说明；变更历史由 git 记录
+# 回复用户和写文档时
+- 文风用 ASD-STE10
+- 回复顺序：结论 → 精确 diff → 证据（引原文，不转述）→ 可执行的下一步。
+- 事实来源：代码库是唯一事实来源。同一信息只写一处。文档与注释只写代码读不出来的内容；注释尽量不写。
 
-# 决策降级链
-1. 需求澄清：需求不具体、有重大取舍或多种方案时，向用户提问，不要猜。
-2. 先复用后新增：优先现有配置、命令、组件、依赖、标准库，删死代码优于新增；密码学、协议解析只用成熟库。
-3. 最小改动（YAGNI）：只做当前需求，修根因不打补丁（禁硬编码、吞异常）；无当前用途的 API、Hook、依赖不加；注明影响范围。
-4. Rule of Three：同一逻辑重复 ≥3 次才抽象。
-5. 架构级重构：先出 RFC，获批再改。
+# 决策顺序
+序号小者优先。
+1. 需求不完整、有多种方案、有重大取舍时，向用户提问。
+2. 先复用现有配置、命令、组件、依赖、标准库。
+3. 先删死代码，不新增代码。
+4. 做最小改动（YAGNI）：只做当前需求。
+5. 修根因，不打补丁。禁硬编码，禁吞异常。密码学与协议解析只用成熟库。
+6. 无当前用途的 API、Hook、依赖不加。
+7. 同一逻辑重复 ≥3 次才抽象（Rule of Three）
+8. 架构级重构先出 RFC，获批再改。
 
-# Engineering
-- Deep module：复杂度封装在模块内部，只暴露必要的 API 与 lifecycle。
-- Circuit breaker：连续失败 3 次即停；汇报状态、原因、关键日志、可疑假设。
+# 工程
+- Deep module：复杂度封装在模块内，只暴露必要的 API 与 lifecycle。
+- Circuit breaker：连续失败 3 次即停，汇报状态、原因、关键日志、可疑假设。
 
 # 未经用户明确授权，禁止执行
-1. git：commit、push、checkout、amend/rebase/reset、restore/clean/stash drop
-2. 新增依赖（含 --dev）；改 DB schema/migration 或 CI。
-3. 删除或覆盖非本会话创建的文件或目录。
+1. git 写操作：commit、push、checkout、amend、rebase、reset、restore、clean、stash drop。
+2. 新增依赖，含 --dev 依赖。
+3. 改 DB schema、migration 或 CI。
+4. 删除或覆盖非本会话创建的文件与目录。
 
-# Tooling Rules
-- Python：用 uv（uv add / uv run）。禁 pip 与直接 python。
-- Node：用 pnpm。禁 npm、yarn。
-- Shell：用bash。禁 powershell、cmd；搜内容用 rg，搜文件名用 fd，禁 grep、find。
+# 工具
+- Python：`uv add` 加包，`uv run` 运行。禁 pip，禁直接 python。
+- Node：pnpm。禁 npm、yarn。
+- Shell：bash。禁 powershell、cmd。
+- 搜内容用 rg，禁 grep。搜文件名用 fd，禁 find。
 - PR、Issue 用 gh cli。
-- 需要精确时间跑 date。
-- QA：`uv run` 跑 ruff check、ruff format、basedpyright、pytest；`pnpm exec` 跑 biome check、tsc --noEmit、vitest run；QA 缺失时提醒用户。
+- 需精确时间跑 date。
+- QA：`uv run` 跑 ruff check、ruff format、basedpyright、pytest；`pnpm exec` 跑 biome check、tsc --noEmit、vitest run。QA 缺失时提醒用户。
