@@ -262,6 +262,7 @@ cp -r skills/_shared ~/.pi/agent/skills/    # arch、audit、coding、plan 与�
 | Skill | 触发方式 | 用途 |
 |-------|----------|------|
 | `docs-maintain` | user-invoked | 维护全部文档的格式、链接、重复与过时内容，含 README 与代码注释 |
+| `docs-readme` | user-invoked | 写或改仓库根 README：安装、配置、文档索引、开发 |
 | `docs-article` | user-invoked | 长文写作：先散收碎片（explore），再逐段成形（exploit） |
 | `docs-pr` | user-invoked | PR 描述：Summary / Evidence / Merge Danger 三段 |
 | `docs-adr` | model-invoked | 记录技术决定与取舍 |
