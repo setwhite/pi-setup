@@ -53,7 +53,7 @@ description: 创建或优化 agent skill。
 静态检查逐条过：
 
 - description 非空，触发方式与定位相符
-- 每个 step 的 completion criterion 能判断 done/not-done
+- 每个 step 的 completion criterion 能判断 done/not-done（无 step 的 skill 不要求）
 - 无断裂指针：引用的文件与路径都存在
 
 动态检查：新开会话盲测，模型不知道自己在被测。

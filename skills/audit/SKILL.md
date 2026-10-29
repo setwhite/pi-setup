@@ -63,7 +63,7 @@ VERDICT: re-coding
 - src/checkout/cart.ts:12 — 参数 7 个 — AGENTS：函数参数不超过 5 个
 ````
 
-第一行固定是判定：
+第二行固定是判定：
 
 - `pass`：每条 AC 达成（含用户明确豁免）。下一步由 coding 会话在用户批准后改 `[x]`，再走 `/skill:docs-commit`。
 - `re-coding`：至少一条 AC 未达成。写明失败命令与期望 vs 实际，原始输出不落盘。回 `/skill:coding`，只修失败的 AC。

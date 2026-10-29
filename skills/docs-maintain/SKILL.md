@@ -15,7 +15,7 @@ description: 维护项目全部文档的格式、链接、重复与过时内容�
 1. `fd -e md . docs` 列 `docs/`；缺失就跳过这一部分，不中止。
 2. `fd -e md -d 1 .` 列仓库根 Markdown。`README.md`、`AGENTS.md` 是入口，不搬，只在原地核。
 3. `rg -n 'TODO|FIXME|XXX|HACK'` 起步找注释；再核带 `--help` 与配置默认值的模块。
-4. 分类：specs、adr、decisions、research、modules、todos、audit、`GLOSSARY.md`、`ARCHITECTURE.md`、根入口、注释所在模块。认不出的列出来，不猜用途。
+4. 分类按 `../_shared/docs-rules.md` 的「位置」，根入口与注释所在模块单列。认不出的列出来，不猜用途。
 
 **Completion criterion**：每份文档、每处待核注释都有类别；编号现状与索引缺口清楚。
 
@@ -40,7 +40,7 @@ description: 维护项目全部文档的格式、链接、重复与过时内容�
 再逐条对照代码，每条具体声明都要能打开：
 
 - 路径、符号、命令、默认值：存在且相符。
-- 根 `README.md`：安装、用法、命令与代码和 `--help` 一致；不复制 `docs/` 的内容，重复的删一处，留指针。
+- 根 `README.md`：按 `../docs-readme/SKILL.md` 的四节与配置写法核；命令与代码、`--help` 一致；不复制 `docs/` 的内容。
 - 术语：与 `docs/GLOSSARY.md` 一致。
 - 状态：todos 复选框、阶段表区间、audit 报告三者对得上。
 - 未决：已解决的已删。

@@ -4,11 +4,24 @@
 
 ## 位置
 
-- 文档进 `docs/`：`specs/`、`adr/`、`decisions/`、`research/`、`modules/` 各一个子目录，术语表 `docs/GLOSSARY.md`，架构 `docs/ARCHITECTURE.md`，任务 `docs/todos/`。
-- 一个条目一份文件，不拼成一份大文件：spec `NNNN-slug.md`、ADR `NNNN-slug.md`、决策 `D<NN>-slug.md`、任务 `T<NN>.md`、模块 `docs/modules/<module>.md`。
+- 文档进 `docs/`：`specs/`、`adr/`、`decisions/`、`research/`、`modules/`、`todos/`、`audit/` 各一个子目录。
+
+文件名按四类：
+
+| 类 | 制式 | 例 |
+|---|---|---|
+| 单例 | `UPPER_SNAKE.md` | `docs/ARCHITECTURE.md`、`docs/GLOSSARY.md`、`docs/GLOSSARY-MAP.md`、`docs/todos/README.md` |
+| 有序条目 | `NNNN-slug.md`，编号 4 位补零，取目录最大号加一 | `specs/0001-checkout.md`、`adr/0003-pg-vs-mysql.md`、`decisions/0007-refund-window.md`、`research/0002-stripe-api.md` |
+| 任务与验收 | `T<NN>.md`、`T<NN>-YYYY-MM-DD.md`，任务号补零两位、全局连续 | `todos/T01.md`、`audit/T01-2025-01-14.md` |
+| 模块 | `<module>.md` | `modules/checkout.md` |
+
+- 一个条目一份文件，不拼成一份大文件；第一次用就建目录。
+- 有序条目首行是 H1：`# <NNNN> <标题>`。
+- 引用写 `ADR-NNNN`、`DEC-NNNN`。`adr/` 与 `decisions/` 各自编号，同号可并存。多 context 术语表布局见 `/skill:docs-glossary`。
+- 报告落盘看消费方：跨会话消费（audit → coding）落盘 `docs/audit/`；当次会话消费（maintain、debug、docs-pr）不落盘。
 - 任务格式见 `/skill:plan`；阶段表在 `docs/todos/README.md`。
 - 一个文件只写一类事实；内容长到要滚动找，就拆成目录，目录内 `README.md` 当索引。
-- 每份文档在 `README.md`「文档」小节占一行：是什么、什么时候看。`docs/decisions/`、`docs/audit/`、`docs/todos/` 是流水，模块文档由 `docs/ARCHITECTURE.md` 的模块表索引，都不进 README。
+- 根 `README.md` 的结构与写法见 `/skill:docs-readme`。README「文档」小节只收四类：架构、术语、模块、ADR；`specs/`、`research/`、`decisions/`、`todos/`、`audit/` 不进。
 - 仓库根的 `README.md`、`AGENTS.md` 是入口，不算文档，不搬。有内容才建目录。
 
 ## 写什么

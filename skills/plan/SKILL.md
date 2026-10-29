@@ -19,7 +19,7 @@ description: 规划一个阶段：调研、追问到共识，写 spec 与 docs/t
 
 - 只认 primary source：官方文档、源码、规范、一手 API，每条结论追到拥有它的源头，二手转述不算。
 - 每条声明后面跟来源：链接，或 `路径:行号`。
-- 结论、依据、未决问题三段，落盘 `docs/research/主题.md`；之后只引路径，不复述。
+- 结论、依据、未决问题三段，落盘 `docs/research/NNNN-slug.md`（编号取最大号加一，第一次用就建目录）；之后只引路径，不复述。
 
 **Completion criterion**：每个结论附可验证链接；不该搜的时候没有搜。
 
@@ -27,7 +27,7 @@ description: 规划一个阶段：调研、追问到共识，写 spec 与 docs/t
 
 涵盖：目标与用户、MVP 范围、不做项、技术约束、验收标准、外部依赖。
 
-每个用户决策当场落盘 `docs/decisions/D<NN>-slug.md`，一条一文件：问题、选项、选了、理由。编号取目录最大号加一，第一次用就建目录。满足 `/skill:docs-adr` 三条门槛的只写 ADR，不写 D 文件。
+每个用户决策当场落盘 `docs/decisions/NNNN-slug.md`，一条一文件：问题、选项、选了、理由。编号 4 位补零，取目录最大号加一，第一次用就建目录。满足 `/skill:docs-adr` 三条门槛的只写 ADR，不写这里。
 
 **Completion criterion**：需求无歧义，或用户明确表示无需追问；每条决策已落盘。
 
@@ -35,12 +35,14 @@ description: 规划一个阶段：调研、追问到共识，写 spec 与 docs/t
 
 1. 探索仓库：相关模块怎么组织、有没有相关 ADR。全程用 `docs/GLOSSARY.md` 的规范词。
 2. 写「测试决定」：从 `docs/ARCHITECTURE.md` 的 seam 清单里挑本 spec 用的。没有这份文件或清单里没有，就留空，写完 spec 跑 `/skill:arch` 补这一节。
-3. 按下面的模板写，落盘 `docs/specs/NNNN-slug.md`（编号取最大号加一，第一次用就建目录），补上 README 文档小节那一行。
+3. 按下面的模板写，落盘 `docs/specs/NNNN-slug.md`（编号取最大号加一，第一次用就建目录）。
 4. 难以逆转的选型调 `/skill:docs-adr`。
 
 ### Spec 模板
 
 ```md
+# <NNNN> <标题>
+
 ## 问题
 用户视角要解决的问题。
 
@@ -67,7 +69,7 @@ description: 规划一个阶段：调研、追问到共识，写 spec 与 docs/t
 ## 其他
 ```
 
-**Completion criterion**：spec 落盘并进 README 索引；够门槛的决策有 ADR，其余明确不建。
+**Completion criterion**：spec 落盘；够门槛的决策有 ADR，其余明确不建。
 
 ## Step 4 — 定范围
 
