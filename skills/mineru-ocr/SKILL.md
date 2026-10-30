@@ -1,6 +1,6 @@
 ---
 name: mineru-ocr
-description: 文档 OCR 解析。当用户要求把 PDF、Office 文档或图片转成 Markdown，或提到「OCR」「MinerU」时使用。
+description: 文档转 Markdown。当用户要读 PDF、Office 文档（docx/xlsx/pptx），或明确要求对图片做 OCR，或提到「OCR」「MinerU」时使用。
 ---
 
 # MinerU 解析
