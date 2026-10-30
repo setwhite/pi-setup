@@ -243,6 +243,8 @@ cp -r skills/_shared ~/.pi/agent/skills/    # arch、audit、coding、plan 与�
 
 `_shared/` 没有 `SKILL.md`，不是 skill，只是被上述 skill 引用的规则文件。
 
+`mineru-ocr` 需要 token：把 MinerU API token 写入 `~/.pi/agent/skills/mineru-ocr/token.txt`。token 在 https://mineru.net 申请。
+
 ### 7.2 Skills 分类
 
 `触发方式` 一列有两种取值。user-invoked：`SKILL.md` 写了 `disable-model-invocation: true`，只能由用户显式调用。model-invoked：模型按需求自行加载。
@@ -276,6 +278,7 @@ cp -r skills/_shared ~/.pi/agent/skills/    # arch、audit、coding、plan 与�
 |-------|----------|------|
 | `hackernews-search` | user-invoked | 搜索 HN 帖子、评论与热门 |
 | `systematic-learning` | user-invoked | 体系化学习：Feynman technique 搭知识树，输出 Markdown 卡片 |
+| `mineru-ocr` | model-invoked | 文档 OCR：把 PDF、Office 文档与图片转成 Markdown |
 
 #### 元技能
 
@@ -328,19 +331,20 @@ pi
 |---|--------|------|------|
 | 1 | 搜索 API Key | `~/.pi/agent/pi-web-search-lite/config.json` | 5.2 |
 | 2 | Provider 认证、默认模型 | `/login` 或环境变量；`settings.json` | 8、2.1 |
+| 3 | MinerU API token（装 `mineru-ocr` 时） | `~/.pi/agent/skills/mineru-ocr/token.txt` | 7.1 |
 
 ### 推荐处理
 
 | # | 配置项 | 位置 | 参见 |
 |---|--------|------|------|
-| 3 | pi-blackhole 压缩阈值、worker 模型 | `~/.pi/agent/pi-blackhole/pi-blackhole-config.json` | 5.1 |
-| 4 | 每模型思考等级 | `settings.json` → `modelThinkingLevels` | 2.1 |
+| 4 | pi-blackhole 压缩阈值、worker 模型 | `~/.pi/agent/pi-blackhole/pi-blackhole-config.json` | 5.1 |
+| 5 | 每模型思考等级 | `settings.json` → `modelThinkingLevels` | 2.1 |
 
 ### 按需处理
 
 | # | 配置项 | 位置 | 参见 |
 |---|--------|------|------|
-| 5 | `shellPath` | `settings.json` | 1 |
-| 6 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 6 |
-| 7 | 音效 | `settings.json` → `sounds` | 2.2 |
-| 8 | Git Bash Windows 配置 | `~/.gitconfig`、`~/.config/git/attributes`、`~/.bashrc` | 1.1 |
+| 6 | `shellPath` | `settings.json` | 1 |
+| 7 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 6 |
+| 8 | 音效 | `settings.json` → `sounds` | 2.2 |
+| 9 | Git Bash Windows 配置 | `~/.gitconfig`、`~/.config/git/attributes`、`~/.bashrc` | 1.1 |
