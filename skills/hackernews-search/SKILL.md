@@ -6,7 +6,7 @@ description: 搜索 Hacker News 帖子与热门。
 
 # Hacker News 搜索
 
-查询走 `web_fetch` 调 Algolia API；Feed 与正文摘要走 `scripts/hackernews-search.py`（本 skill 目录下，下称 `<脚本路径>`）。
+查询用 `web_fetch` 调 Algolia API。Feed 与正文摘要用 `scripts/hackernews-search.py`（在本 skill 目录下，下称 `<脚本路径>`）。
 
 ## 查询
 
@@ -14,11 +14,11 @@ description: 搜索 Hacker News 帖子与热门。
 
 `https://hn.algolia.com/api/v1/search?query=<关键词>&tags=<类型>&hitsPerPage=<条数>&page=<页码>`
 
-- `query` 必填；`tags` 取 `story`（默认）/ `comment` / `(story,comment)`；`hitsPerPage` 1–1000，默认 20；`page` 0 起始
+- `query` 必填。`tags` 取 `story`（默认）/ `comment` / `(story,comment)`。`hitsPerPage` 取 1–1000，默认 20。`page` 从 0 起。
 - 例：`web_fetch "https://hn.algolia.com/api/v1/search?query=deepseek&tags=story&hitsPerPage=15"`
-- 响应 `hits[]` 每条含 `title`、`url`、`objectID`（拼 HN 链接用）、`points`、`num_comments`、`author`、`created_at`；顶层 `nbHits`、`nbPages`、`page`
+- 响应 `hits[]` 每条含 `title`、`url`、`objectID`（拼 HN 链接用）、`points`、`num_comments`、`author`、`created_at`。顶层含 `nbHits`、`nbPages`、`page`。
 
-要正文摘要（自动去 HTML、截断 300 字）改用脚本：`uv run python "<脚本路径>" '{"query":"deepseek","count":5,"type":"story"}'`，脚本的 `count` 取 1–30（默认 10），`type` 取 `story` / `comment` / `all`（默认 `story`）。
+要正文摘要（自动去 HTML、截断 300 字）就用脚本：`uv run python "<脚本路径>" '{"query":"deepseek","count":5,"type":"story"}'`。脚本的 `count` 取 1–30（默认 10）。`type` 取 `story` / `comment` / `all`（默认 `story`）。
 
 ## Feed
 
@@ -32,8 +32,8 @@ uv run python "<脚本路径>" '{"mode":"best","count":10}'  # 最高分
 
 ## failover
 
-- 搜索网络错误：retry 一次；仍失败改用 `web_search` 搜 `site:news.ycombinator.com <关键词>`
-- Feed 脚本不可用或路径解析不了：`web_fetch` 调 Firebase 端点（`topstories` / `newstories` / `beststories`）拿 ID 列表 → 并行取 `item/<id>.json` → 提取字段
+- 搜索网络错误：retry 一次。仍失败就改用 `web_search` 搜 `site:news.ycombinator.com <关键词>`。
+- Feed 脚本不可用或路径解析不了：用 `web_fetch` 调 Firebase 端点（`topstories` / `newstories` / `beststories`）拿 ID 列表。再并行取 `item/<id>.json`。最后提取字段。
 
 ## output contract
 
@@ -41,4 +41,4 @@ uv run python "<脚本路径>" '{"mode":"best","count":10}'  # 最高分
 |---|------|------|------|------|---------|
 | 1 | <title> | <points> | <num_comments> | <YYYY-MM-DD> | [HN](<hn_url>) |
 
-标题写「HN 上关于 <query> 的讨论」，表后附「共 <total> 条结果」。
+标题写「HN 上关于 <query> 的讨论」。表后附「共 <total> 条结果」。

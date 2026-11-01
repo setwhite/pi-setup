@@ -6,7 +6,7 @@ description: PR 描述：Summary / Evidence / Merge Danger 三段。
 
 # PR 描述
 
-不寒暄，散文尽量短，术语用 `docs/GLOSSARY.md` 的规范词。
+不寒暄。散文尽量短。术语用 `docs/GLOSSARY.md` 的规范词。
 
 ```markdown
 ## Summary
@@ -29,9 +29,9 @@ description: PR 描述：Summary / Evidence / Merge Danger 三段。
 
 ## Summary 挑最小的视图
 
-- 伪代码 —— 逻辑与算法
-- 调用树 —— 运行时控制流
-- 组件树 —— UI 结构，带重要的 state 与模块边界
-- Mermaid —— 组件交互、数据流
+- 伪代码：逻辑与算法
+- 调用树：运行时控制流
+- 组件树：UI 结构，带重要的 state 与模块边界
+- Mermaid：组件交互、数据流
 
-代码与 diff 不抄进描述，要指就写 `路径:行号`。其余规则见 `../_shared/docs-rules.md`。
+代码与 diff 不抄进描述。要指就写 `路径:行号`。其余规则见 `../_shared/docs-rules.md`。
