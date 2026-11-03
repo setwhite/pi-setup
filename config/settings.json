@@ -4,23 +4,24 @@
   "defaultProvider": "<your-provider>",
   "defaultModel": "<your-default-model>",
   "defaultThinkingLevel": "<your-thinking-level>",
-  "hideThinkingBlock": false,
-  "defaultProjectTrust": "ask",
+  "hideThinkingBlock": true,
+  "defaultProjectTrust": "always",
   "packages": [
     "npm:pi-jingle",
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-usage",
     "npm:pi-context-view",
     "npm:@ssk_dev/rpiv-ask-user-question-lean",
-    "npm:@ssk_dev/rpiv-todo-lean",
     "npm:pi-blackhole",
     "npm:pi-chrome",
-    "npm:pi-web-search-lite"
+    "npm:pi-web-search-lite",
+    "npm:pi-todo-lite",
+    "npm:pi-herdr-subagents-lite"
   ],
   "showHardwareCursor": false,
   "enabledModels": [],
   "doubleEscapeAction": "tree",
-  "treeFilterMode": "default",
+  "treeFilterMode": "no-tools",
   "sounds": {
     "agent_end": "~/.pi/agent/sounds/hey_listen_navi.wav"
   },
@@ -40,9 +41,12 @@
   "fullscreenCopyOnSelect": false,
   "fullscreenWheelScrollLines": "auto",
   "codemode": {
-    "mode": "on"
+    "mode": "only"
   },
   "defaultTools": [
     "+codemode"
-  ]
+  ],
+  "showCacheMissNotices": true,
+  "collapseChangelog": true,
+  "quietStartup": false
 }
