@@ -32,7 +32,6 @@
   "tuiMode": "fullscreen",
   "editorPaddingX": 0,
   "modelThinkingLevels": {},
-  "cacheWarming": "streaming",
   "compaction": {
     "enabled": true
   },

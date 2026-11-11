@@ -198,10 +198,6 @@ pi remove npm:pi-observational-memory
   // 按模型设启动思考等级，键为 provider/modelId。也能在 /settings 改。
   "modelThinkingLevels": {},
 
-  // 提示缓存保温。off 关闭；streaming 只在运行时保温；idle 空闲也保温。
-  // 仅当模型声明了缓存有效期、且预估省下 $0.05 以上才生效。全局生效。
-  "cacheWarming": "streaming",
-
   // 自动压缩。enabled 是总开关；reserveTokens 预留回复 token（16384）；keepRecentTokens 保留最近 token（20000）；modelOverrides 按模型覆盖。
   "compaction": {
     "enabled": true
