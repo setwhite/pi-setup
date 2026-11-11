@@ -103,7 +103,8 @@ pi
 |--------|------|
 | [`pi-blackhole`](https://www.npmjs.com/package/pi-blackhole) | 压缩上下文。`/blackhole` 用算法生成摘要代替 `/compact`，不调 LLM。三个后台 worker 沉淀 observation 与 reflection，压缩后 `recall` 取回原文 |
 | [`pi-context-view`](https://www.npmjs.com/package/pi-context-view) | `/context usage` 看上下文占用，`/context injections` 看系统提示与各扩展注入了什么 |
-| [`pi-chrome`](https://www.npmjs.com/package/pi-chrome) | Chrome 集成。用于网页测试与自动化 |
+| [`pi-browser-use-lite`](https://www.npmjs.com/package/pi-browser-use-lite) | 经由配套浏览器扩展驱动你自己的 Chrome。用于网页测试与自动化 |
+| [`pi-copy-button`](https://www.npmjs.com/package/pi-copy-button) | 全屏记录里代码块与引用块右侧加 copy 按钮 |
 | [`pi-herdr-subagents-lite`](https://www.npmjs.com/package/pi-herdr-subagents-lite) | subagent 跑在 herdr pane 的独立 pi 进程里。`run` 启动，`send` 续跑，结果异步回传 |
 | [`pi-jingle`](https://www.npmjs.com/package/pi-jingle) | 任务完成放提示音 |
 | [`@narumitw/pi-btw`](https://www.npmjs.com/package/@narumitw/pi-btw) | `/btw` 临时侧问。默认不写入主会话 |
@@ -112,7 +113,7 @@ pi
 | [`pi-todo-lite`](https://www.npmjs.com/package/pi-todo-lite) | `todo` 任务表。显示在输入框上方 |
 | [`@ssk_dev/rpiv-ask-user-question-lean`](https://www.npmjs.com/package/@ssk_dev/rpiv-ask-user-question-lean) | `ask_user_question` 提问工具。原版的 lean 版，初始化 token 少 83% |
 
-不要的包删掉 `packages` 里那一行：不装音效删 `pi-jingle`，不装浏览器删 `pi-chrome`，不在 herdr 里跑删 `pi-herdr-subagents-lite`。
+不要的包删掉 `packages` 里那一行：不装音效删 `pi-jingle`，不装浏览器删 `pi-browser-use-lite` 与 `pi-copy-button`，不在 herdr 里跑删 `pi-herdr-subagents-lite`。
 
 lean 版依赖原版包，原版代码随 lean 版自动装。机器上已有原版 `@juicesharp/rpiv-ask-user-question` 时先卸载，两个版本同时加载会重复注册工具：
 
@@ -158,11 +159,12 @@ pi remove npm:pi-observational-memory
     "npm:@narumitw/pi-usage",
     "npm:pi-context-view",
     "npm:@ssk_dev/rpiv-ask-user-question-lean",
-    "npm:pi-blackhole",
-    "npm:pi-chrome",
     "npm:pi-web-search-lite",
     "npm:pi-todo-lite",
-    "npm:pi-herdr-subagents-lite"
+    "npm:pi-herdr-subagents-lite",
+    "npm:pi-copy-button",
+    "npm:pi-browser-use-lite",
+    "npm:pi-blackhole"
   ],
 
   // 用终端光标代替 pi 自绘光标。

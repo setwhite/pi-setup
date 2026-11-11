@@ -12,11 +12,12 @@
     "npm:@narumitw/pi-usage",
     "npm:pi-context-view",
     "npm:@ssk_dev/rpiv-ask-user-question-lean",
-    "npm:pi-blackhole",
-    "npm:pi-chrome",
     "npm:pi-web-search-lite",
     "npm:pi-todo-lite",
-    "npm:pi-herdr-subagents-lite"
+    "npm:pi-herdr-subagents-lite",
+    "npm:pi-copy-button",
+    "npm:pi-browser-use-lite",
+    "npm:pi-blackhole"
   ],
   "showHardwareCursor": false,
   "enabledModels": [],
