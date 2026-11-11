@@ -1,33 +1,36 @@
-# 回复用户和写文档时
-- 文风用 ASD-STE100。用短句。一句只写一件事。用主动语态。指令用祈使句。一个概念只用一个词。不用同义词。
-- 按此顺序回复：结论 → 精确 diff → 证据（引原文，不转述）→ 可执行的下一步。
-- 代码库是唯一事实来源。同一信息只写一处。文档和注释只写代码读不出来的内容。
+# 回复与文档
+- 短句，主动语态。指令用祈使句。一句只写一件事。一个概念只用一个词。
+- 回复顺序：结论 → 改动（unified diff）→ 证据（引原文）→ 下一步。
+- 文档与注释只补代码说不出的。代码即设计，D.R.Y.。
 
-# 决策顺序
-序号小者优先。
-1. 需求不完整、有多种方案或有重大取舍时，向用户提问。
-2. 先复用现有的配置、命令、组件、依赖和标准库。
-3. 先删死代码。不加新代码。
-4. 做最小改动（YAGNI）。只做当前需求。
-5. 修根因。不打补丁。禁用硬编码。禁止吞异常。密码学与协议解析只用成熟库。
-6. 不加当前没有用途的 API、Hook 和依赖。
-7. 同一逻辑重复 ≥3 次才抽象（Rule of Three）。
-8. 架构级重构先出 RFC。获批后再改。
+# 决策优先级
+1. 获取信息：联网找成熟方案与踩坑；需求不全、方案不唯一、取舍重大时先提问；跨模块重构先出 RFC
+2. 找元问题：不打补丁，不硬编码，不吞异常。
+3. 优先复用：现有配置、命令、组件、依赖、标准库；密码学与协议解析用成熟库。
+4. 最小改动（YAGNI）：无调用方的 API、Hook、依赖不加；死代码提醒删；重复到第 3 次才抽象。
 
-# 工程
-- 用 Deep module：把复杂度封装在模块内。只暴露必要的 API 和 lifecycle。
+# 架构
+- 按功能分层，不按技术分层。
+- Deep module：复杂度封在内部，只对外暴露必要 API 与 lifecycle。
 
-# 未经用户明确授权，禁止执行
-1. git 写操作：commit、push、checkout、amend、rebase、reset、restore、clean、stash drop。
-2. 新增依赖，含 --dev 依赖。
-3. 改 DB schema、migration 或 CI。
-4. 删除或覆盖非本会话创建的文件和目录。
+# 控制范围
+- 信息足够就回答，不做多余验证
+- 不要翻看被问对象无关的目录
+
+# 需授权才能做
+- git 写操作：commit、push、checkout、amend、rebase、reset、restore、clean、stash drop。
+- 新增依赖，含 dev。
+- 改 DB schema、migration、CI。
+- 删除或覆盖本会话外创建的文件。
 
 # 工具
-- Python：用 `uv add` 加包。用 `uv run` 运行。禁用 pip。禁止直接运行 python。
-- Node：用 pnpm。禁用 npm 和 yarn。
-- Shell：用 bash。禁用 powershell 和 cmd。
-- 搜内容用 rg。禁用 grep。搜文件名用 fd。禁用 find。
-- PR 和 Issue 用 gh cli。
-- 需要精确时间时，运行 date。
-- QA：用 `uv run` 运行 ruff check、ruff format、basedpyright 和 pytest。用 `pnpm exec` 运行 biome check、tsc --noEmit 和 vitest run。QA 缺失时提醒用户。
+- Python 用 uv（`uv add` / `uv run`），禁 pip 与直接运行 python。
+- Node 用 pnpm，禁 npm 与 yarn。
+- Shell 用 bash，禁 powershell 与 cmd。
+- 搜内容用 rg，搜文件名用 fd，禁 grep 与 find。
+- PR 与 Issue 用 gh。
+- 时间用 date。
+- QA
+  - `uv run` 跑 ruff check、ruff format、basedpyright、pytest。
+  - `pnpm exec` 跑 biome check、tsc --noEmit、vitest run。
+  - QA 缺失时提醒用户。
