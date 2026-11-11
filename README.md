@@ -246,6 +246,8 @@ pi remove npm:pi-observational-memory
 
 字段没有合适的值就删掉，pi 用内置默认值。三个模型字段不填，首次启动会引导选择。
 
+字段全表与取值见 pi 文档：<https://pi.dev/docs>。
+
 ### 3.2 音效（可选）
 
 ```bash
@@ -266,37 +268,7 @@ mkdir -p ~/.pi/agent/pi-blackhole
 cp config/pi-blackhole/pi-blackhole-config.json ~/.pi/agent/pi-blackhole/
 ```
 
-```jsonc
-{
-  // 固定压缩阈值，单位 token。删掉这行改用内置曲线：按上下文窗口自动缩放（0.90 @32k → 0.40 @1M）。
-  "compactAfterTokens": 100000,
-
-  // 三个后台 worker 的模型。占位符换成实际 provider 与模型 id。
-  // thinking 取 off、minimal、low、medium、high、xhigh、max；cooldownHours 是出错后的冷却小时数，0 关闭。
-  "observerModel":  { "provider": "<your-observer-provider>",  "id": "<your-observer-model>",  "thinking": "low", "cooldownHours": 0 },
-  "reflectorModel": { "provider": "<your-reflector-provider>", "id": "<your-reflector-model>", "thinking": "low", "cooldownHours": 0 },
-  "dropperModel":   { "provider": "<your-dropper-provider>",   "id": "<your-dropper-model>",   "thinking": "off", "cooldownHours": 0 },
-
-  // 各 worker 的 fallback，按顺序尝试。主模型报错、冷却或超时后换下一个，元素字段与主模型相同。
-  "observerFallbackModels":  [ { "provider": "<your-observer-fallback-provider>",  "id": "<your-observer-fallback-model>",  "thinking": "low", "cooldownHours": 0 } ],
-  "reflectorFallbackModels": [ { "provider": "<your-reflector-fallback-provider>", "id": "<your-reflector-fallback-model>", "thinking": "low", "cooldownHours": 0 } ],
-  "dropperFallbackModels":   [ { "provider": "<your-dropper-fallback-provider>",   "id": "<your-dropper-fallback-model>",   "thinking": "off", "cooldownHours": 0 } ],
-
-  // worker 全失败时的兜底模型。最后才轮到会话模型。
-  "model": { "provider": "<your-fallback-provider>", "id": "<your-fallback-model>", "thinking": "low", "cooldownHours": 0 },
-
-  // false 不回退会话模型。删掉这行或设 true 则回退。
-  "sessionFallback": false,
-
-  // 每次 worker 尝试的硬超时，单位毫秒。超时换下一个 fallback。
-  "workerAttemptTimeoutMs": 120000,
-
-  // 状态栏显示 token 计量（O/P/X）与 worker 进度。
-  "statusBar": false
-}
-```
-
-删掉用不到的字段即可，缺省值由扩展补。worker 用一个便宜的小模型就够。
+模板里的 provider 与模型 id 都是占位符，换成你自己的。worker 用一个便宜的小模型就够。字段含义与默认值见 [`pi-blackhole`](https://www.npmjs.com/package/pi-blackhole)。
 
 ### 3.4 pi-web-search-lite
 
@@ -305,28 +277,7 @@ mkdir -p ~/.pi/agent/pi-web-search-lite
 cp config/pi-web-search-lite/config.json ~/.pi/agent/pi-web-search-lite/
 ```
 
-```jsonc
-{
-  // 搜索源：exa、tavily、brave、firecrawl、perplexity、parallel、keenable、deepseek。推荐 exa。
-  "provider": "exa",
-
-  // 代理。所有出站请求走这里，空串是直连。
-  "proxy": "",
-
-  // 各搜索源的 API key。只填选中的源。模板没列的源加同名 key，或改用环境变量。
-  "apiKeys": {
-    "exa": "<your-exa-api-key>",
-    "jina": "<your-jina-api-key>",
-    "tavily": "<your-tavily-api-key>",
-    "firecrawl": "<your-firecrawl-api-key>"
-  },
-
-  // 正文提取的 fallback 链，按顺序试到成功。html 与 jina 不需要 key。
-  "fetch": {
-    "extractors": ["html", "exa", "firecrawl", "jina"]
-  }
-}
-```
+模板里的 API key 全换成占位符。字段含义见 [`pi-web-search-lite`](https://www.npmjs.com/package/pi-web-search-lite)。
 
 API key 在 exa.ai、jina.ai、tavily.com、firecrawl.dev、brave.com/search/api、perplexity.ai 申请。也可以用环境变量，形如 `EXA_API_KEY`，环境变量优先。
 
