@@ -317,26 +317,25 @@ cp -r skills/plan ~/.pi/agent/skills/
 cp -r skills/_shared ~/.pi/agent/skills/   # 多数 skill 会读 ../_shared/*.md
 ```
 
-`_shared/` 没有 `SKILL.md`，不是 skill。里面放共用规则文件，`arch`、`audit`、`coding`、`plan`、`docs-adr`、`docs-glossary`、`docs-maintain`、`docs-pr`、`docs-readme` 都引用。漏复制就读不到。
+`_shared/` 没有 `SKILL.md`，不是 skill。里面放共用规则文件，`arch`、`audit`、`plan`、`docs-maintain` 都引用。漏复制就读不到。
 
 `mineru-ocr` 还要 API token：在 mineru.net 申请，写进 `~/.pi/agent/skills/mineru-ocr/token.txt`。
 
 | 分类 | skill | 触发 | 用途 |
 |------|-------|------|------|
-| 开发流程 | `plan` | 手动 | 规划一个阶段：调研到共识，写 spec 与 `docs/todos/` 任务 |
+| 开发流程 | `plan` | 手动 | 问清需求，把选型与取舍写成决策记录 |
+| 开发流程 | `research` | 手动 | 找外部事实、比较选型，写 `docs/research/` |
+| 开发流程 | `spec` | 手动 | 写本轮 spec：契约与可证伪的验收标准 |
+| 开发流程 | `todo` | 手动 | 把 spec 拆成单次会话能做完的任务 |
 | 开发流程 | `arch` | 手动 | 维护 ARCHITECTURE.md 与模块边界 |
-| 开发流程 | `coding` | 手动 | 领任务，TDD 实现，跑 QA |
-| 开发流程 | `audit` | 手动 | 独立审计：只判 AC，问题只记录 |
-| 开发流程 | `debug` | 手动 | 查难 Bug：先造能变红的复现，再谈假设 |
+| 开发流程 | `coding` | 手动 | 领任务，红绿 TDD，收工前跑 QA。含难 Bug 的复现 |
+| 开发流程 | `audit` | 手动 | 独立审计：只判 AC，质量问题只记录 |
 | 文档写作 | `docs-maintain` | 手动 | 维护全部文档：格式、链接、重复、过时 |
 | 文档写作 | `docs-readme` | 手动 | 写仓库根 README：安装、配置、索引 |
 | 文档写作 | `docs-article` | 手动 | 写长文：先散收素材，再逐段成形 |
 | 文档写作 | `docs-pr` | 手动 | PR 描述：Summary / Evidence / Merge Danger |
-| 文档写作 | `docs-adr` | 模型 | 记录技术决定与取舍 |
 | 文档写作 | `docs-commit` | 模型 | 写 Conventional Commits 提交信息 |
-| 文档写作 | `docs-docstring` | 模型 | 只写代码说不出的注释 |
 | 文档写作 | `docs-glossary` | 模型 | 当场定术语，淘汰同义词 |
-| 学习研究 | `hackernews-search` | 手动 | 搜 HN 帖子、评论、热门 |
 | 学习研究 | `systematic-learning` | 手动 | 体系化学习，输出 Markdown 知识卡片 |
 | 学习研究 | `mineru-ocr` | 模型 | PDF、Office 文档、图片转 Markdown |
 | 元技能 | `create-skills` | 手动 | 创建或优化 skill 的向导 |

@@ -23,8 +23,6 @@ description: PR 描述：Summary / Evidence / Merge Danger 三段。
 **Door:** <改得回来（two-way）还是改不回来（one-way）>
 
 **Blast Radius:** <一个词说清影响范围>
-
-<可选：合并后的影响>
 ```
 
 ## Summary 挑最小的视图
@@ -34,4 +32,4 @@ description: PR 描述：Summary / Evidence / Merge Danger 三段。
 - 组件树：UI 结构，带重要的 state 与模块边界
 - Mermaid：组件交互、数据流
 
-代码与 diff 不抄进描述。要指就写 `路径:行号`。其余规则见 `../_shared/docs-rules.md`。
+证据写 `路径:行号`。diff 不抄进描述。
