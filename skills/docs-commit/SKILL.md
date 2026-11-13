@@ -36,4 +36,10 @@ git diff --cached --stat  # 看暂存区，判断主力 type
 
 ## 示例
 
-`feat(parser): 支持 Markdown 表格解析` + body「重构解析入口，支持嵌套表格。」+ 署名。
+```
+feat(parser): 支持 Markdown 表格解析
+
+重构解析入口，支持嵌套表格。
+
+Co-Authored-By: pi <noreply@pi.dev>
+```
