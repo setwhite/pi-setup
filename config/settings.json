@@ -48,5 +48,8 @@
   ],
   "showCacheMissNotices": true,
   "collapseChangelog": true,
-  "quietStartup": false
+  "quietStartup": false,
+  "terminal": {
+    "showImages": false
+  }
 }
