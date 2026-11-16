@@ -1,0 +1,29 @@
+gui:
+  nerdFontsVersion: "3"
+  border: rounded
+  sidePanelWidth: 0.25
+  showRandomTip: false
+  showFileTree: true
+  splitDiff: auto
+  ignoreWhitespaceInDiffView: true
+  timeFormat: "01-02 15:04"
+os:
+  editCommand: '<your-editor>'
+  editCommandTemplate: '{{editor}} --wait {{filename}}'
+  openCommand: 'explorer {{filename}}'
+  copyToClipboardCommand: 'clip'
+git:
+  autoFetch: true
+  diffContextSize: 5
+  parseEmoji: true
+  diffRenderers:
+    - colorArg: always
+      useConfig: true
+      type: rawGit
+  log:
+    showGraph: always
+refresher:
+  refreshInterval: 5
+  fetchInterval: 90
+confirmOnQuit: false
+disableStartupPopups: true

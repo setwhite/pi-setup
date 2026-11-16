@@ -1,0 +1,5 @@
+# 预览栏最大化 / 还原（75% ↔ 100%）
+[[mgr.prepend_keymap]]
+on = "T"
+run = "plugin toggle-pane max-preview"
+desc = "Maximize or restore the preview pane"

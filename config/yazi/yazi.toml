@@ -1,0 +1,24 @@
+[mgr]
+ratio = [ 1, 2, 9 ]   # 父栏:当前栏:预览栏，预览占 75%
+linemode = "size"
+sort_dir_first = true
+scrolloff = 5
+
+[preview]
+wrap = "yes"         # 长行自动换行，窄预览也能读全
+tab_size = 4
+max_width = 1200
+
+# Markdown 走 faster-piper + glow 渲染（内置 code 预览器只做语法高亮）
+[[plugin.prepend_previewers]]
+url = "*.md"
+# faster-piper = 带缓存的 piper：首次跑 glow，之后滚动读缓存切片
+run = 'faster-piper -- CLICOLOR_FORCE=1 glow -w=$w -s=$t -- "$1"'
+
+# 默认的 windows opener 调 code。这里换成自己的编辑器，保留 <your-editor>
+# 占位符不换，yazi 打开文件时会报错。
+[opener]
+edit = [
+	{ run = '<your-editor> %s', desc = "Editor", for = "windows", orphan = true },
+	{ run = "${EDITOR:-vi} %s", desc = "$EDITOR", for = "unix", block = true },
+]

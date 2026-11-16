@@ -1,0 +1,43 @@
+onboarding = false
+
+[terminal]
+new_cwd = "follow"
+
+[theme]
+name = "one-dark"
+auto_switch = false
+
+[ui]
+status_indicators = "dots"
+# 原生光标：Windows 上中文输入法的候选框/预编辑文字才定位得对。
+host_cursor = "native"
+
+[ui.toast]
+delivery = "system"
+
+[ui.sound]
+enabled = false
+
+[[keys.command]]
+key = "alt+f"
+type = "popup"
+command = "yazi"
+description = "yazi"
+
+[[keys.command]]
+key = "alt+d"
+type = "popup"
+command = "lazygit"
+description = "lazygit"
+
+[[keys.command]]
+key = "alt+shift+f"
+type = "pane"
+command = "yazi"
+description = "yazi pane"
+
+[[keys.command]]
+key = "alt+shift+d"
+type = "pane"
+command = "lazygit"
+description = "lazygit pane"

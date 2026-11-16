@@ -1,0 +1,14 @@
+[[plugin.deps]]
+use = "alberti42/faster-piper"
+rev = "bb90261"
+hash = "12b5e342d54db42b5b023faa1a11f28e"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:toggle-pane"
+rev = "1ef5fe0"
+hash = "5b2fbef7d1513ce38ff72623a071a5e"
+
+[[flavor.deps]]
+use = "damjee/onedark"
+rev = "3735edb"
+hash = "271fb4c548cebe08a557802d7dc89316"

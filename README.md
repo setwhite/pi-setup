@@ -1,6 +1,6 @@
 # pi-setup
 
-[pi](https://github.com/earendil-works/pi) 的安装与配置模板。仓库含全局设置、扩展包配置、AGENTS.md 与可选 skill。
+[pi](https://github.com/earendil-works/pi) 的安装与配置模板。仓库含全局设置、扩展包配置、AGENTS.md、可选 skill，以及 herdr、yazi、lazygit 的配置。
 
 顺序不能颠倒：先放好 `settings.json`，再装 pi。pi 首次启动时按 `settings.json` 的 `packages` 字段自动安装扩展包。
 
@@ -281,7 +281,7 @@ GitHub 链接默认交给 `gh`，先 `gh auth login`。不想走 gh 就把 `hand
 
 ### 3.5 pi-herdr-subagents-lite
 
-把 subagent 放到 herdr pane 里跑，每个 subagent 是独立 pi 进程。需要本机装好 herdr，且 pi 本身在 herdr pane 内运行，否则调用报 `not_in_herdr`。测试过 herdr 0.9.5 与 pi 1.4.0。
+把 subagent 放到 herdr pane 里跑，每个 subagent 是独立 pi 进程。需要本机装好 herdr，且 pi 本身在 herdr pane 内运行，否则调用报 `not_in_herdr`。测试过 herdr 0.9.5 与 pi 1.4.0。herdr 自身配置见 5.1。
 
 安装时不能加 `-l`。`-l` 只写项目级设置，子进程换个工作区就读不到这个包：
 
@@ -342,7 +342,62 @@ cp -r skills/_shared ~/.pi/agent/skills/   # 多数 skill 会读 ../_shared/*.md
 
 触发方式：手动是 `SKILL.md` 写了 `disable-model-invocation: true`，只能显式调用；模型是对话中自动加载。
 
-## 5. 校验、升级、卸载
+## 5. 配套工具配置（可选）
+
+herdr、yazi、lazygit 的配置与 pi 无关，用哪个复制哪个。模板里的 `<your-editor>` 换成自己的编辑器路径，留着不换会在打开文件时报错。
+
+### 5.1 herdr
+
+路径：Windows 是 `%APPDATA%\herdr\config.toml`，macOS 与 Linux 是 `~/.config/herdr/config.toml`。
+
+```bash
+mkdir -p ~/AppData/Roaming/herdr            # macOS 与 Linux 换成 ~/.config/herdr
+cp config/herdr/config.toml ~/AppData/Roaming/herdr/
+```
+
+模板设了主题 one-dark、system 通知、关提示音，并把 yazi 与 lazygit 绑到 `alt+f`、`alt+d` 开 popup，加 `shift` 开 pane，不经过 `ctrl+b` 前缀。没装 yazi 或 lazygit 就删掉对应的 `[[keys.command]]` 块。
+
+`host_cursor = "native"` 用原生光标，Windows 上中文输入法的候选框才定位得对；其他平台删掉这行。
+
+改完用 `herdr config check` 校验。
+
+### 5.2 yazi
+
+路径：Windows 是 `%APPDATA%\yazi\config\`，macOS 与 Linux 是 `~/.config/yazi/`。
+
+```bash
+mkdir -p ~/AppData/Roaming/yazi/config      # macOS 与 Linux 换成 ~/.config/yazi
+cp config/yazi/*.toml ~/AppData/Roaming/yazi/config/
+```
+
+`yazi.toml` 调栏宽比与行模式，`keymap.toml` 把 `T` 绑到预览栏最大化，`theme.toml` 指定 One Dark 配色，`package.toml` 锁插件与配色版本。
+
+插件与配色都不进仓库，按 `package.toml` 装：
+
+```bash
+cd ~/AppData/Roaming/yazi/config && ya pkg install
+```
+
+加包用 `ya pkg add owner/name`，`name` 别带 `.yazi` 后缀，带了报 `must be in kebab-case`。
+
+`*.md` 预览走 faster-piper 调 `glow`，两者都要在 PATH 上，faster-piper 还要求 Yazi 26.8.15+。Windows 上 faster-piper 经 POSIX shell 跑命令，需要 Git for Windows 的 `usr\bin` 在 PATH 里。不要 markdown 预览就删掉 `yazi.toml` 的 `[[plugin.prepend_previewers]]` 块与 `package.toml` 的 faster-piper 依赖。
+
+模板只改 windows 那条 opener，unix 那条仍走 `$EDITOR`。
+
+### 5.3 lazygit
+
+路径：Windows 读 `%LOCALAPPDATA%\lazygit\config.yml`，也认 `%APPDATA%\lazygit\config.yml`；Linux 是 `~/.config/lazygit/config.yml`，macOS 是 `~/Library/Application Support/lazygit/config.yml`。
+
+```bash
+mkdir -p ~/AppData/Roaming/lazygit
+cp config/lazygit/config.yml ~/AppData/Roaming/lazygit/
+```
+
+模板改了圆角边框、侧栏宽度、diff 换行与时间格式，关了启动弹窗与退出确认，自动拉取间隔设为 90 秒。`nerdFontsVersion: "3"` 要求终端装 Nerd Font v3，没有就删掉这行。
+
+`os.editCommand` 换成自己的编辑器。`os.openCommand` 的 `explorer` 与 `os.copyToClipboardCommand` 的 `clip` 是 Windows 专用，其他平台删掉这两行。`editCommandTemplate` 带 `--wait`，只对 Zed、Code 这类阻塞到关闭才返回的编辑器成立。
+
+## 6. 校验、升级、卸载
 
 装完先在系统 shell 里核对：
 
@@ -370,7 +425,7 @@ pi remove <source>       # 卸载，同时清掉 settings.json 里的条目
 
 `pi uninstall` 是 `pi remove` 的别名，`pi update --self` 是 `pi update` 的别名。
 
-## 6. 装完之后还要自己做
+## 7. 装完之后还要自己做
 
 下列事项脚本搞不定，装完逐条处理：
 
@@ -384,3 +439,4 @@ pi remove <source>       # 卸载，同时清掉 settings.json 里的条目
 | 可选 | `shellPath` | `~/.pi/agent/settings.json` | 1 |
 | 可选 | AGENTS.md | `~/.pi/agent/AGENTS.md` | 4.1 |
 | 可选 | 提示音 | `~/.pi/agent/settings.json` 的 `sounds` 字段 | 3.2 |
+| 可选 | 复制 herdr、yazi、lazygit 配置，替换 `<your-editor>` | `config/herdr/`、`config/yazi/`、`config/lazygit/` | 5 |
