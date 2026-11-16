@@ -25,7 +25,7 @@ command = "yazi"
 description = "yazi"
 
 [[keys.command]]
-key = "alt+d"
+key = "alt+g"
 type = "popup"
 command = "lazygit"
 description = "lazygit"
@@ -37,7 +37,7 @@ command = "yazi"
 description = "yazi pane"
 
 [[keys.command]]
-key = "alt+shift+d"
+key = "alt+shift+g"
 type = "pane"
 command = "lazygit"
 description = "lazygit pane"

@@ -355,7 +355,7 @@ mkdir -p ~/AppData/Roaming/herdr            # macOS 与 Linux 换成 ~/.config/h
 cp config/herdr/config.toml ~/AppData/Roaming/herdr/
 ```
 
-模板设了主题 one-dark、system 通知、关提示音，并把 yazi 与 lazygit 绑到 `alt+f`、`alt+d` 开 popup，加 `shift` 开 pane，不经过 `ctrl+b` 前缀。没装 yazi 或 lazygit 就删掉对应的 `[[keys.command]]` 块。
+模板设了主题 one-dark、system 通知、关提示音，并把 yazi 与 lazygit 绑到 `alt+f`、`alt+g` 开 popup，加 `shift` 开 pane，不经过 `ctrl+b` 前缀。没装 yazi 或 lazygit 就删掉对应的 `[[keys.command]]` 块。
 
 `host_cursor = "native"` 用原生光标，Windows 上中文输入法的候选框才定位得对；其他平台删掉这行。
 
