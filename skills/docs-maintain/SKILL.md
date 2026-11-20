@@ -1,39 +1,35 @@
 ---
 name: docs-maintain
 disable-model-invocation: true
-description: 维护全部项目文档：格式、链接、重复与过时内容。含 README 与代码注释。
+description: 巡检并维护项目文档、根 README 与代码注释。
 ---
 
-# 文档维护
+# 文档与 README 维护
 
-范围是项目里全部文档：`docs/**`、仓库根 `README.md` 等入口文件、代码注释。规则按 `../_shared/docs-rules.md`。
+范围：`docs/**`、根 Markdown（`README.md`、`AGENTS.md` 原地检查）、代码注释；只改文档与注释，代码逻辑问题记进报告。
 
-只改文档与注释。代码逻辑不对就记进报告。
+## 1. 机械巡检
 
-## 盘点
+```bash
+uv run python scripts/check_docs.py .
+```
 
-1. `fd -e md . docs` 列 `docs/`，没有就跳过这一部分。
-2. `fd -e md -d 1 .` 列仓库根 Markdown。`README.md`、`AGENTS.md` 是入口，原地检查，不搬。
-3. `rg -n 'TODO|FIXME|XXX|HACK'` 找注释。再查带 `--help` 与配置默认值的模块。
+## 2. 语义对账
 
-## 直接修
+- Drift Check：核实路径、符号、命令、`--help` 与配置默认值是否与代码一致。
+- Cleanup：术语对齐 `docs/GLOSSARY.md`，删已解决未决项，删多余或过时代码注释。
+- Fitness Opportunity：文档里仍在手写可程序化校验的规则时，建议下沉为脚本或测试。
 
-- 放错目录或命名不符的，移到正确位置。
-- 链接能打开：相对路径、skill 名、`路径:行号`。
-- 移动或合并后，去掉重复的一级标题，补齐跳过的层级。
-- 索引和文件双向对得上：不漏文档，不指死文件。
-- 注释格式随该语言的既有风格。
+## 3. 根 README 准则
 
-## 对代码
+按需保留四节：
+- Quickstart：照抄即跑的最小命令。
+- Configuration：先最小可运行配置，再带逐项注释的完整配置（用途、何时改、联动影响），顺序不可反。
+- Docs Index：只链长期 SSOT（`ARCHITECTURE.md`、`GLOSSARY.md`、`docs/modules/`、`docs/adr/`），不链 `specs/`、`todos/`、`audit/`。
+- Verify：逐条实跑 README 命令，确保输出与链接有效。
 
-每条具体声明都要能打开：路径、符号、命令、默认值存在且相符。术语与 `docs/GLOSSARY.md` 一致。已解决的未决项删掉。
+## 4. 修复与收口
 
-`README.md` 按 `/skill:docs-readme` 的判据检查，命令与代码、`--help` 一致。注释按 `/skill:coding` 的判据检查。
-
-## 先批准
-
-删除、合并、补写、改范围都列清单等用户批准，含整份文档、README 章节、注释块。
-
-## 收口
-
-报告写改了什么、删了什么、没动的和原因。文档与注释分开列。不写入文件。
+- 直接修：归位错放文件、修断链、补标题层级。
+- 先批准：删除、合并、重写章节或改范围前，列清单等确认。
+- 收口：直接输出报告（不落盘），分「文档」「注释」「代码疑点」列已改、已删与保留原因。

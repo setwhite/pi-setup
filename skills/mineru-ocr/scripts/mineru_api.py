@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 import time
 import zipfile
@@ -21,11 +22,14 @@ RETRY_ATTEMPTS = 3
 
 
 def read_token() -> str:
-    """读同目录 token.txt；缺失或为空时终止并说明缺什么。"""
+    """优先读环境变量 MINERU_API_TOKEN，否则回退同目录 token.txt。"""
+    env_token = os.environ.get("MINERU_API_TOKEN", "").strip()
+    if env_token:
+        return env_token
     try:
         token = TOKEN_PATH.read_text(encoding="utf-8").strip()
     except FileNotFoundError:
-        raise SystemExit(f"缺少 token 文件：{TOKEN_PATH}") from None
+        raise SystemExit(f"未设置 MINERU_API_TOKEN 且缺少 token 文件：{TOKEN_PATH}") from None
     except OSError as err:
         raise SystemExit(f"读不到 token 文件 {TOKEN_PATH}：{err}") from err
     if not token:

@@ -1,37 +1,23 @@
 ---
 name: research
 disable-model-invocation: true
-description: 当要给一个明确问题找外部事实、比较选型，或确认第三方库的真实行为时使用。
+description: 收集一手外部事实、对比选型或核实第三方库行为，沉淀至 docs/research/。
 ---
 
-# 调研
+# 技术调研
 
-写进 `docs/research/NNNN-slug.md`。只在选型未定、或结论依赖外部事实时跑。
+仅在选型未定或结论依赖外部事实时运行，写入 `docs/research/`。
 
-## 交给子代理
+- Discovery First：问题模糊时先搜 1 到 2 轮收敛成一句话；收敛后按子代理隔离方式执行。
+- Primary Sources：官方文档、源码、标准规范与实测 API 响应优先，每条结论附链接或 `路径:行号`。
+- Community Experience：真实踩坑查 Reddit、`linux.do`（带域名）与 Hacker News（见 `references/hackernews.md`）；二手博客只作线索。
 
-一个问题一个子代理，整块上下文隔在那边。给它三样：
+```md
+## 结论
 
-- 问题。一句话问得清才交。
-- 约束：版本、运行时、你要的形态。
-- 输出路径与三段结构。
+## 依据
 
-它只回路径加三行摘要。搜索过程留在它那边。
+## 未决
+```
 
-## 自己跑
-
-问题还没成形，先搜两轮把它写成一句话。
-
-## 源头
-
-一手源优先：官方文档、源码、规范、API 响应。二手转述只作参考。每条结论跟链接或 `路径:行号`。
-
-## 社区
-
-要真实使用经验时看三处。Reddit 与 linux.do 走联网搜索，词里带上各自域名。HN 见本 skill 的 `references/hackernews.md`。
-
-## 文档
-
-三段：结论、依据、未决。别处只引路径，不复述。
-
-写完提示用户运行 `/skill:plan`。
+下游只引路径，不复述正文；完成后按需提示运行 `/skill:plan`。

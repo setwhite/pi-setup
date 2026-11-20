@@ -305,7 +305,7 @@ cd ~/.pi/agent/pi-herdr-subagents-lite/profiles && cp examples/worker.md worker.
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-内容是中文编程规范：回复文风、文档文风、决策顺序、工程要求、授权边界、工具约定。细则看 `config/AGENTS.md`，本节不重复。不要就跳过。只给单个项目写指令时，把 `AGENTS.md` 放在项目根，pi 从工作目录向上逐级读。
+内容是中文编程规范：回复与文档、决策优先级、架构与设计、控熵与验证、需授权才能做、工具。细则看 `config/AGENTS.md`，本节不重复。不要就跳过。只给单个项目写指令时，把 `AGENTS.md` 放在项目根，pi 从工作目录向上逐级读。
 
 ### 4.2 skill
 
@@ -314,24 +314,21 @@ cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```bash
 mkdir -p ~/.pi/agent/skills
 cp -r skills/plan ~/.pi/agent/skills/
-cp -r skills/_shared ~/.pi/agent/skills/   # 多数 skill 会读 ../_shared/*.md
+cp -r skills/_shared ~/.pi/agent/skills/   # plan 读 ../_shared/docs-rules.md
 ```
 
-`_shared/` 没有 `SKILL.md`，不是 skill。里面放共用规则文件，`arch`、`audit`、`plan`、`docs-maintain` 都引用。漏复制就读不到。
+`_shared/` 没有 `SKILL.md`，不是 skill。里面放共用规则文件，`plan` 引用 `docs-rules.md`。漏复制就读不到。
 
-`mineru-ocr` 还要 API token：在 mineru.net 申请，写进 `~/.pi/agent/skills/mineru-ocr/token.txt`。
+`mineru-ocr` 还要 API token：优先读环境变量 `MINERU_API_TOKEN`，未设置时读 `~/.pi/agent/skills/mineru-ocr/token.txt`。token 在 mineru.net 申请。
 
 | 分类 | skill | 触发 | 用途 |
 |------|-------|------|------|
-| 开发流程 | `plan` | 手动 | 问清需求，把选型与取舍写成决策记录 |
-| 开发流程 | `research` | 手动 | 找外部事实、比较选型，写 `docs/research/` |
-| 开发流程 | `spec` | 手动 | 写本轮 spec：契约与可证伪的验收标准 |
-| 开发流程 | `todo` | 手动 | 把 spec 拆成单次会话能做完的任务 |
-| 开发流程 | `arch` | 手动 | 维护 ARCHITECTURE.md 与模块边界 |
-| 开发流程 | `coding` | 手动 | 领任务，红绿 TDD，收工前跑 QA。含难 Bug 的复现 |
+| 开发流程 | `plan` | 手动 | 前置规划：澄清、ADR、架构 seam、spec 与 AC、todo 拆解 |
+| 开发流程 | `research` | 手动 | 找一手外部事实、比较选型，写 `docs/research/` |
+| 开发流程 | `coding` | 手动 | 领 todo，垂直切片 TDD，收工前跑 QA |
+| 开发流程 | `debug` | 手动 | 难 Bug：复现、二分隔离、根因修复与回归测试 |
 | 开发流程 | `audit` | 手动 | 独立审计：只判 AC，质量问题只记录 |
-| 文档写作 | `docs-maintain` | 手动 | 维护全部文档：格式、链接、重复、过时 |
-| 文档写作 | `docs-readme` | 手动 | 写仓库根 README：安装、配置、索引 |
+| 文档写作 | `docs-maintain` | 手动 | 巡检文档、根 README 与代码注释 |
 | 文档写作 | `docs-article` | 手动 | 写长文：先散收素材，再逐段成形 |
 | 文档写作 | `docs-pr` | 手动 | PR 描述：Summary / Evidence / Merge Danger |
 | 文档写作 | `docs-commit` | 模型 | 写 Conventional Commits 提交信息 |

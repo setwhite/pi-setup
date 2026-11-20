@@ -1,52 +1,36 @@
 ---
 name: coding
 disable-model-invocation: true
-description: 按 docs/todos/ 的任务小步开发，红绿 TDD，收工前跑 QA。
+description: 按 docs/todos/ 或轻量改动执行垂直切片 TDD 开发，收工前跑 QA。
 ---
 
 # 开发
 
-## 领任务
+## 1. 起步
 
-1. 先结算 `[~] 待审` 的任务。读 `docs/audit/` 里它最新一份报告：
-   - 可交付：告知用户。用户批准后改 `[x]`，再提示用户运行 `/skill:docs-commit`。
-   - 未达成：本次只修报告里失败的那几条 AC，回「红绿」。
-   - 无法判定：停下，提示用户运行 `/skill:spec` 改 AC。
-2. 取第一个 `[ ]` 且前置全为 `[x]` 的任务。
-3. 任务没写验收，或要碰的 seam 没写进 `docs/ARCHITECTURE.md`：停下提问，不猜。
+- 有 `docs/todos/` 时：
+  - 先结算 `[~]` 待审 todo，读最新 `docs/audit/` 报告：可交付则经用户批准改 `[x]` 并提示 `/skill:docs-commit`；回 coding 只修失败 AC；回 spec 停下提示 `/skill:plan`。
+  - 领首个 `[ ]` 且前置全 `[x]` 的 todo，读绑定的 spec 与 `docs/ARCHITECTURE.md` seam；缺验收或未登记 seam 时先提问。
+- Fast-Path：无 todo 的轻量改动直接进入测试与开发循环。
 
-## 写测试
+## 2. 测试纪律
 
-- 只在 `docs/ARCHITECTURE.md` 列出的 seam 上测，从公开接口看行为。
-- 一条测试一个断言，读起来像一条规格。
-- 期望值来自独立来源：已知字面量、手算结果、规格原文。
+- Seam-Only Black-Box：只在登记的 seam 上经公开接口测行为。
+- One Behavior Per Test：一条测试验证一个行为契约，期望值取字面量、手算或规格原文。
+- Characterization Test：重构无测试覆盖的旧代码前，先补锁死现有行为的测试，全绿后再动结构。
+- Banned Tests：
+  - Implementation-Coupled：mock 内部协作者、测私有方法、绕过 seam 查数据库或日志。
+  - Tautological：用被测代码同款算法重算期望值。
+  - Horizontal Slicing：批量预写全部测试再写实现，焊死想象接口。
 
-三种测试不算数：
+## 3. 红绿循环
 
-- 实现耦合：mock 内部协作者、测私有方法、绕过接口查数据库或日志。
-- 同义反复：期望值按代码的同款算法再算一遍。
-- 横切：先写测试再写实现，测的是想象的形状。
+- Vertical Slice TDD：一次一个 seam、一条失败测试、刚好通过的最小实现，不预支后续测试。
+- Local Micro-Refactor：绿灯后可改命名或抽模块内私有函数，不改 seam 与公开契约；跨模块重构单开 prefactor todo。
+- Unexpected Red：非刚写的测试变红且原因不明时，停下排查或转 `/skill:debug`。
 
-## 红绿
+## 4. 收工
 
-- 先写失败的测试，再写刚好够通过的实现。
-- 一次一个切片：一个 seam、一条测试、一个最小实现。不预支后续测试。
-- 重构不在循环里。验收通过后，重构当独立任务。
-
-意外红，也就是不是刚写的那条：一眼能定位是改动打断了别的断言，就在循环里修。看两遍仍解释不通，停下问用户。
-
-## 注释
-
-代码说清 what，注释只说 why。删除它下一个人会踩坑或猜错，才写。值得写的三种：
-
-- 不变量：必须保持的顺序、幂等、不可重入、并发假设。
-- 绕坑的原因：外部系统的怪癖、某版本的行为、看着多余却删不掉的那行。
-- 类型写不出的契约：前提条件、副作用、会抛的异常、生命周期。
-
-公开入口写清异常、边界、单位、取值范围、null 的含义。参数与返回值交给类型标注。格式随仓库既有风格。
-
-## 收工
-
-1. 跑 QA：Lint、类型检查、受影响的测试。影响面说不准就跑全套。红了不交付。
-2. 模块用法或取舍有变，更新 `docs/modules/<module>.md`。
-3. 把任务改成 `[~] 待审`，提示用户运行 `/skill:audit`。
+- Self-Review Diff：跑 QA 前先扫 `git diff --stat` 与核心改动，清掉无关变更与调试残留。
+- QA：跑全套受影响检查（影响面说不准就跑全套）；模块用法或取舍有变时同步 `docs/modules/<module>.md`。
+- Handoff：有 todo 时改 `[~]` 并提示 `/skill:audit`；轻量改动直接汇报结果。

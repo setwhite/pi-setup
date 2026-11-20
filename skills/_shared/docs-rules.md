@@ -1,44 +1,22 @@
-# 项目文档通用规则
+# 项目文档规则
 
-## 位置
+## 目录与归属（SSOT）
 
-文档放 `docs/`，一个子目录一类：`specs/`、`decisions/`、`research/`、`modules/`、`todos/`、`audit/`。
+文档放 `docs/`；同一事实只存一处；发现重复删冗余留指针；代码与文档冲突改文档。
 
-| 类 | 制式 | 例 |
-|---|---|---|
-| 单例 | `UPPER_SNAKE.md` | `docs/ARCHITECTURE.md`、`docs/GLOSSARY.md`、`docs/GLOSSARY-MAP.md` |
-| 条目 | `NNNN-slug.md`，4 位补零，取目录最大号加一 | `specs/0001-checkout.md` |
-| 模块 | `<module>.md` | `modules/checkout.md` |
+- 代码与可执行检查：行为、签名、默认值、错误、目录布局、模块依赖约束。
+- `docs/ARCHITECTURE.md`：模块职责、不变量与 seam 清单。
+- `docs/modules/<module>.md`：模块用法与非显而易见的取舍。
+- `docs/GLOSSARY.md`：领域术语。
+- `docs/adr/`：不可逆选型与取舍（ADR）。
+- `docs/specs/`：本轮契约与 AC。
+- `docs/todos/`：当前切片 todo 与进度。
+- `docs/audit/`：独立验收结论与质量线索。
+- `docs/research/`：外部事实与调研结论。
 
-- 一个条目一个文件。第一次使用就建目录。
-- 任务与验收报告同号：`todos/0001-add-cart.md`、`audit/0001-2025-01-14.md`。
-- 引用写 `DEC-NNNN`。
-- 目录里的 `README.md` 当索引，一条一行，索引与文件双向对得上。
+## 约定
 
-## 归属
-
-一个事实只有一个载体。
-
-| 事实 | 载体 |
-|---|---|
-| 行为、契约、默认值、错误、目录布局、类型签名 | 代码与测试 |
-| 选型与取舍 | `docs/decisions/` |
-| 模块职责、依赖方向、seam | `docs/ARCHITECTURE.md` |
-| 模块用法 | `docs/modules/<module>.md` |
-| 术语 | `docs/GLOSSARY.md` |
-| 本轮的契约与验收 | `docs/specs/` |
-| 任务与进度 | `docs/todos/` |
-| 验收结论 | `docs/audit/` |
-| 外部世界的现状 | `docs/research/` |
-
-只写代码读不出来的：不变量、绕开某个坑的原因、必须保持的顺序、口头约定。
-
-同一句话搜第二处。有就删一处，留指针。
-
-代码与文档冲突，改文档。
-
-## 进度
-
-`rg -l '^- \[~\]' docs/todos/`
-
-spec、决策、架构、模块文档不写状态。它们只描述现状。
+- 按需建目录与文件，不维护子目录 `README.md` 索引。
+- todo 必须绑定对应 spec 路径。
+- `ARCHITECTURE.md`、`modules/`、`adr/` 与 `specs/` 只写现状，不写进度。
+- 查待审 todo：`rg -l '^- \[~\]' docs/todos/`。
