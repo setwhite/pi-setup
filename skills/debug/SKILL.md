@@ -1,15 +1,18 @@
 ---
 name: debug
 disable-model-invocation: true
-description: 根因调试协议：复现、二分隔离、只读验证假设、最小修复与回归测试。
+description: 根因调试协议：先复现失败、缩小条件、排序验证假设，再最小修复并补回归测试。
 ---
 
 # 根因调试
 
-1. Reproduce：先复现为最小命令或失败回归测试；未复现前不改业务代码。
-2. Isolate / Bisect：查 `git log` 与 `git diff`，缩小输入，在 seam 处二分定位归属。
-3. Hypothesize & Verify：提出明确根因假设，用只读观测证伪或证实；一次只验一个。
-4. Root-Cause Fix：针对已证实根因做最小修复，回归测试转绿。
-5. Prevent Recurrence：排查同类缺陷模式，跑受影响范围的 QA。
+展示命令、日志或抓包前，先把密钥和鉴权头脱敏为 `<REDACTED>`。
 
-汇报：根因（`文件:行号` + 证据）、改动摘要、回归测试输出、是否需补 prefactor todo。
+1. Red-Capable Loop：先构造秒级、稳定、精准复现用户症状的失败命令或测试；没拿到前不看代码瞎猜；偶发问题先循环压测拉高复现率；实在构造不出立刻停手，列已试方法请用户提供环境或脱敏抓包。
+2. Minimize & Isolate：逐项删掉无关输入、配置与步骤，只留触发问题的最小条件；结合 `git log`、`git diff` 与模块边界二分定位归属。
+3. Ranked Hypotheses：验证前列 3 到 5 个按可能性排序的可证伪假设（如果原因是 X，改 Y 就会出现 Z），避免死盯首个念头；复杂问题可先请用户帮重排。
+4. Single-Variable Probe：每次只改一个变量验单个假设；优先断点或 REPL，其次加带唯一前缀的定向日志（如 `[DEBUG-xxxx]`）；性能回退先测基线耗时或跑 profile 再二分。
+5. Root-Cause Fix & Regression：针对已证实根因做最小修复，先在覆盖真实调用链的公开边界补失败回归测试再修绿；缺少合适测试边界时不写浅层单测，直接记进结论留给后续重构。
+6. Cleanup & Prevent：重跑初始完整复现命令确认消失，用 `rg` 清零 `[DEBUG-` 残留，排查同类隐患并跑受影响 QA。
+
+汇报：根因（`文件:行号` + 证据）、改动摘要、回归测试结果、是否需补前置重构 todo。

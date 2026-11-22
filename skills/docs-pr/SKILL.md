@@ -6,7 +6,7 @@ description: 生成高信噪比 PR 描述：Summary、Evidence、Merge Danger。
 
 # PR 描述
 
-短句直给，术语用 `docs/GLOSSARY.md` 规范词，不抄原始 diff。
+短句直说，术语用 `docs/GLOSSARY.md` 规范词，不抄原始 diff。
 
 ```markdown
 ## Summary
@@ -21,5 +21,5 @@ description: 生成高信噪比 PR 描述：Summary、Evidence、Merge Danger。
 ## Merge Danger
 
 - Reversibility: Two-way door（可回滚） / One-way door（不可逆，附原因）
-- Blast Radius: <一词界定影响面>
+- Blast Radius: <一句话说明影响范围>
 ```
