@@ -6,7 +6,7 @@ description: 统一前置规划：按复杂度推进澄清与 ADR、架构与测
 
 # 前置规划
 
-按复杂度跳步：单模块功能从「Spec」开始；架构不变跳过「架构与 Seam」。文档归属见 `../_shared/docs-rules.md`。
+按复杂度跳步：单模块功能从「Spec」开始；架构不变跳过「架构与 Seam」。文档归属见 `../_shared/docs-rules.md`，架构规则见 `../_shared/design-rules.md`。
 
 ## 1. 澄清与 ADR
 

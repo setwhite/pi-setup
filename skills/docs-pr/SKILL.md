@@ -21,5 +21,5 @@ description: 生成高信噪比 PR 描述：Summary、Evidence、Merge Danger。
 ## Merge Danger
 
 - Reversibility: Two-way door（可回滚） / One-way door（不可逆，附原因）
-- Blast Radius: <一句话说明影响范围>
+- Blast Radius: <影响范围；非局部改动写明安全依赖的核心事实与实跑证明，未实跑标 unproven>
 ```

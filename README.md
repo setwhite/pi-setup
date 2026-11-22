@@ -305,7 +305,7 @@ cd ~/.pi/agent/pi-herdr-subagents-lite/profiles && cp examples/worker.md worker.
 cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```
 
-内容是中文编程规范：回复与文档、决策优先级、架构与设计、控熵与验证、需授权才能做、工具。细则看 `config/AGENTS.md`，本节不重复。不要就跳过。只给单个项目写指令时，把 `AGENTS.md` 放在项目根，pi 从工作目录向上逐级读。
+内容是中文编程规范：回复与文档、决策优先级、改动边界与验证、需授权才能做、工具。细则看 `config/AGENTS.md`，本节不重复。不要就跳过。只给单个项目写指令时，把 `AGENTS.md` 放在项目根，pi 从工作目录向上逐级读。
 
 ### 4.2 skill
 
@@ -314,20 +314,21 @@ cp config/AGENTS.md ~/.pi/agent/AGENTS.md
 ```bash
 mkdir -p ~/.pi/agent/skills
 cp -r skills/plan ~/.pi/agent/skills/
-cp -r skills/_shared ~/.pi/agent/skills/   # plan 读 ../_shared/docs-rules.md
+cp -r skills/_shared ~/.pi/agent/skills/   # 共用规则，plan 等 skill 读
 ```
 
-`_shared/` 没有 `SKILL.md`，不是 skill。里面放共用规则文件，`plan` 引用 `docs-rules.md`。漏复制就读不到。
+`_shared/` 没有 `SKILL.md`，不是 skill。里面放共用规则：`docs-rules.md` 管文档归属，`design-rules.md` 管架构与设计。`plan`、`coding`、`audit` 都读，漏复制就读不到。
 
 `mineru-ocr` 还要 API token：优先读环境变量 `MINERU_API_TOKEN`，未设置时读 `~/.pi/agent/skills/mineru-ocr/token.txt`。token 在 mineru.net 申请。
 
 | 分类 | skill | 触发 | 用途 |
 |------|-------|------|------|
-| 开发流程 | `plan` | 手动 | 前置规划：澄清、ADR、架构 seam、spec 与 AC、todo 拆解 |
+| 开发流程 | `plan` | 手动 | 前置规划：澄清、ADR、架构与测试边界、规格与验收、任务拆解 |
 | 开发流程 | `research` | 手动 | 找一手外部事实、比较选型，写 `docs/research/` |
-| 开发流程 | `coding` | 手动 | 领 todo，垂直切片 TDD，收工前跑 QA |
+| 开发流程 | `coding` | 手动 | 领 todo，垂直切片 TDD，收尾前跑 QA |
 | 开发流程 | `debug` | 手动 | 难 Bug：复现、二分隔离、根因修复与回归测试 |
-| 开发流程 | `audit` | 手动 | 独立审计：只判 AC，质量问题只记录 |
+| 开发流程 | `benchmark` | 手动 | 核验基准测试与性能数字：瓶颈、物理上限、复现性 |
+| 开发流程 | `audit` | 手动 | 独立验收或对抗审查 diff：实跑判 AC、证明安全前提 |
 | 文档写作 | `docs-maintain` | 手动 | 巡检文档、根 README 与代码注释 |
 | 文档写作 | `docs-article` | 手动 | 写长文：先散收素材，再逐段成形 |
 | 文档写作 | `docs-pr` | 手动 | PR 描述：Summary / Evidence / Merge Danger |
@@ -336,6 +337,7 @@ cp -r skills/_shared ~/.pi/agent/skills/   # plan 读 ../_shared/docs-rules.md
 | 学习研究 | `systematic-learning` | 手动 | 体系化学习，输出 Markdown 知识卡片 |
 | 学习研究 | `mineru-ocr` | 模型 | PDF、Office 文档、图片转 Markdown |
 | 元技能 | `create-skills` | 手动 | 创建或优化 skill 的向导 |
+| 元技能 | `correct` | 手动 | 把反复失误固化成架构、类型、lint 或测试约束 |
 
 触发方式：手动是 `SKILL.md` 写了 `disable-model-invocation: true`，只能显式调用；模型是对话中自动加载。
 

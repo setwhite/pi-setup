@@ -6,6 +6,8 @@ description: 按 docs/todos/ 或轻量改动执行垂直切片 TDD 开发，收�
 
 # 开发
 
+涉及模块结构、公开接口或并发共享状态改动前，先读 `../_shared/design-rules.md`。
+
 ## 1. 起步
 
 - 有 `docs/todos/` 时：
