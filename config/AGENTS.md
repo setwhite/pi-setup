@@ -11,22 +11,16 @@
    - 外部方案、成熟开源实现与踩坑先联网查一手源。
    - 需求不全、方案不唯一或取舍重大时，先向用户提问并给候选方案。
    - 跨模块重构先出 RFC，批准后再动结构。
-   - Chesterton's Fence：删改旧代码前，先查 git log 或 git blame 确认原意图。
+   - Chesterton's Fence：删改旧代码或追问设计原因前，先查 git log、git blame 或 PR 记录；引用原记录，标明推断与记录未回答之处。
 2. Root-Cause & Fail Fast：修根因，不打补丁，不硬编码，不吞异常。
 3. Reuse Over Reinvent：优先复用现有配置、命令、组件、依赖与标准库；密码学、鉴权与协议解析用成熟库。
 4. YAGNI & Rule of Three：无调用方的 API、hook、依赖不加；发现死代码提醒删除；同类逻辑重复到第 3 次再抽象。
 
-# 架构与设计
-
-- Vertical Slice：按领域功能分目录，不按技术层水平切分；不用 utils、common、helpers、misc 命名模块。
-- Deep Module：把复杂度封在内部，只暴露最小公开接口与生命周期；跨模块禁止直接引用内部文件（deep import）。
-- Functional Core, Imperative Shell：核心逻辑写纯函数，IO、时钟与随机推到外层。
-- Failure Modes：显式处理空值、超时、部分失败、幂等与并发竞争，不只写主路径。
-
 # 改动边界与验证
 
+- Design Rules：新增模块、改动公开接口、处理并发或共享状态、大改结构前，先读 `~/.pi/agent/skills/_shared/design-rules.md`。
 - Minimal Footprint：信息够用就停；改动只碰本次目标；小改只跑受影响检查。
-- Stop-Loss：同一个失败修 2 次仍没进展，立刻停手复盘根因或向用户求助。
+- Stop-Loss：同一个失败修 2 次仍没进展，立刻停手；写出两次修复共用的前提并直接验证，或向用户求助。
 - Strict Verification：宣称已修或通过前必须实跑命令。
 - Surface Uncertainty：证据不足、事实矛盾或输出异常时直接说明，不脑补。
 - Context Isolation：独立调研与验收交给子代理；传目标、约束与输出路径，只收回路径和 3 行以内摘要。
