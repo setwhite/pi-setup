@@ -4,6 +4,7 @@ models-store.json
 sessions/
 .pi-history/
 .pi-github-repos/
+skills/mineru-ocr/token.txt
 
 # 系统文件
 .DS_Store
