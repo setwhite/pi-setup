@@ -10,7 +10,7 @@ description: 收集一手外部事实、对比选型或核实第三方库行为�
 
 - Discovery First：问题模糊先搜 1 到 2 轮收敛成一句话，再按子代理隔离方式调研。
 - Primary Sources：官方文档、源码、标准规范与实测 API 响应优先，每条结论附链接或 `路径:行号`。
-- Community Experience：真实踩坑查 Reddit、`linux.do`（带域名）和 Hacker News（见 `references/hackernews.md`）；二手博客只作线索。
+- Community Experience：真实踩坑查 Reddit、`linux.do`（带域名）和 Hacker News（见 `references/hackernews.md`）；二手博客只作线索；选开源项目查维护活跃度与高频 Issue。
 
 ```md
 ## 结论

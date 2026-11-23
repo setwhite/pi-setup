@@ -10,7 +10,7 @@ description: 统一前置规划：按复杂度推进澄清与 ADR、架构与测
 
 ## 1. 澄清与 ADR
 
-- Frontier Rounds：按决策依赖分轮提问；每轮只问当前能拍板、互不依赖的问题并给推荐方案（用户答「是」即采纳）；下游问题留下一轮；查代码或工具能确定的事实自己查。
+- Frontier Rounds：按决策依赖分轮提问；每轮只问当前能拍板、互不依赖的问题并给推荐方案（用户答「是」即采纳）；下游问题留下一轮。
 - Ubiquitous Language：新领域术语当场按 `/skill:docs-glossary` 写入 `docs/GLOSSARY.md`。
 - ADR 门槛：改动难回退、存在真实备选且后来者会追问原因时写入 `docs/adr/`；Append-Only（不写状态、不改旧档，推翻时新建一条注明取代旧档）。
 
