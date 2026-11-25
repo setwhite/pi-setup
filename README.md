@@ -221,7 +221,8 @@ pi remove npm:pi-observational-memory
   // codemode 呈现方式。on 时其他工具照常声明给模型；only 时内置与扩展工具全部隐藏，模型只能经脚本调用。
   // inlineBudget 是声明预算，默认 3000。内置扩展 mcp、llama.cpp、codemode、tool-search 默认加载，用 -builtin:<name> 关掉。
   "codemode": {
-    "mode": "only"
+    "mode": "only",
+    "inlineBudget": 5000
   },
 
   // 启动时启用的工具。+name 加，-name 减。默认 read、bash、edit、write；+codemode 打开 codemode 脚本。
@@ -229,14 +230,25 @@ pi remove npm:pi-observational-memory
     "+codemode"
   ],
 
-  // 明显缓存未命中、保温成功、压缩用量、provider 恢复时给提示。
-  "showCacheMissNotices": true,
+  // 记录里的提示开关，四项默认都关。cacheMisses 提示明显缓存未命中；cacheWarming 提示保温请求的成本；
+  // compactionCosts 提示压缩与分支摘要的成本；reasoningDrops 提示 provider 丢弃 reasoning 项。也能在 /settings 的 Notices 改。
+  "notices": {
+    "cacheMisses": true,
+    "cacheWarming": true,
+    "compactionCosts": true,
+    "reasoningDrops": true
+  },
 
   // 更新后显示精简 changelog，扩展包压成每包一行。
   "collapseChangelog": true,
 
   // true 隐藏启动头与资源列表；header 只隐藏模型范围行与资源列表。
-  "quietStartup": false
+  "quietStartup": false,
+
+  // 终端内联图片渲染。当前终端不支持时设 false，避免显示乱码。
+  "terminal": {
+    "showImages": false
+  }
 }
 ```
 
