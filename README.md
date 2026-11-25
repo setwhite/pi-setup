@@ -111,14 +111,14 @@ pi
 | [`@narumitw/pi-usage`](https://www.npmjs.com/package/@narumitw/pi-usage) | `/usage` 看账号用量与 DeepSeek 余额，`/fast` 切 Codex Fast |
 | [`pi-web-search-lite`](https://www.npmjs.com/package/pi-web-search-lite) | `web_search` 与 `web_fetch`。GitHub 链接走 `gh`，Reddit 链接换成 redlib 域名 |
 | [`pi-todo-lite`](https://www.npmjs.com/package/pi-todo-lite) | `todo` 任务表。显示在输入框上方 |
-| [`@ssk_dev/rpiv-ask-user-question-lean`](https://www.npmjs.com/package/@ssk_dev/rpiv-ask-user-question-lean) | `ask_user_question` 提问工具。原版的 lean 版，初始化 token 少 83% |
+| [`pi-ask-question-lite`](https://www.npmjs.com/package/pi-ask-question-lite) | `ask` 提问工具。一次问 1–4 题，每题 2–6 个选项，一键作答，`Esc` 整次中止。无运行时依赖 |
 
 不要的包删掉 `packages` 里那一行：不装音效删 `pi-jingle`，不装浏览器删 `pi-browser-use-lite` 与 `pi-copy-button`，不在 herdr 里跑删 `pi-herdr-subagents-lite`。
 
-lean 版依赖原版包，原版代码随 lean 版自动装。机器上已有原版 `@juicesharp/rpiv-ask-user-question` 时先卸载，两个版本同时加载会重复注册工具：
+旧模板装过 `@ssk_dev/rpiv-ask-user-question-lean` 的机器先卸掉，两个提问工具会同时出现在工具清单：
 
 ```bash
-pi remove npm:@juicesharp/rpiv-ask-user-question
+pi remove npm:@ssk_dev/rpiv-ask-user-question-lean
 ```
 
 装了独立的 `pi-observational-memory` 或 `pi-vcc` 也要先卸掉，与 `pi-blackhole` 冲突：
@@ -158,7 +158,7 @@ pi remove npm:pi-observational-memory
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-usage",
     "npm:pi-context-view",
-    "npm:@ssk_dev/rpiv-ask-user-question-lean",
+    "npm:pi-ask-question-lite",
     "npm:pi-web-search-lite",
     "npm:pi-todo-lite",
     "npm:pi-herdr-subagents-lite",

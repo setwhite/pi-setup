@@ -11,7 +11,7 @@
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-usage",
     "npm:pi-context-view",
-    "npm:@ssk_dev/rpiv-ask-user-question-lean",
+    "npm:pi-ask-question-lite",
     "npm:pi-web-search-lite",
     "npm:pi-todo-lite",
     "npm:pi-herdr-subagents-lite",
